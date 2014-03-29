@@ -1,6 +1,8 @@
-# ![Logo de Ciboulette](ciboulette.png) Ciboulette <code>Red Social 100% libre y P2P</code>
+# ![Logo de Ciboulette](ciboulette.png) Ciboulette
 
-Utilizando Tor con servicios ocultos, simple blog de texto plano y 
+Es una red social 100% libre entre pares (P2P).
+
+Utilizando Tor y sus servicios ocultos, un simple blog de texto plano y 
 lectores de Noticias (RSS, Atom, RDF) se crea una red social libre, en 
 la que cada persona publica novedades directamente desde su computadora.
 
