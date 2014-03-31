@@ -4,6 +4,8 @@ Es una red social 100% libre, entre pares y descentralizada
 
 Utilizando [Tor](https://www.torproject.org/) y sus servicios ocultos, un simple blog de texto plano y lectores de Noticias (RSS, Atom, 
 RDF) se crea una red social libre, en la que cada persona publica novedades directamente desde su computadora.
+Y es accesible desde cualquier computadora con Tor.
+
 
 ## ¿Por que libre?
 
@@ -14,7 +16,7 @@ Esta hecho únicamente con software libre. Y es una de las pocas redes sociales 
 * La libertad de redistribuir copias para ayudar a su prójimo (libertad 2).
 * La libertad de distribuir copias de sus versiones modificadas a terceros (libertad 3). Esto le permite ofrecer a toda la comunidad la oportunidad de beneficiarse de las modificaciones. El acceso al código fuente es una condición necesaria para ello.
 
-Muchas redes sociales libres moderan a sus usuarios o pretenden un fin especifico para su red, violando nuestra libertad 0
+Muchas redes sociales libres moderan a sus usuarios o pretenden un fin especifico para su red, violando nuestra **libertad 0**
 
 ## ¿Que es entre pares?
 
