@@ -1,0 +1,4 @@
+#/usr/bin/env sh
+
+# servidor
+mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8"
