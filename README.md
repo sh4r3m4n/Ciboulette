@@ -14,7 +14,7 @@ Esta hecho únicamente con software libre. Y es una de las pocas redes sociales 
 * La libertad de redistribuir copias para ayudar a su prójimo (libertad 2).
 * La libertad de distribuir copias de sus versiones modificadas a terceros (libertad 3). Esto le permite ofrecer a toda la comunidad la oportunidad de beneficiarse de las modificaciones. El acceso al código fuente es una condición necesaria para ello.
 
-Muchas redes sociales libres moderan a sus usuarios o pretenden un fin especifico para sus redes violando nuestra libertad numero 0
+Muchas redes sociales libres moderan a sus usuarios o pretenden un fin especifico para su red, violando nuestra libertad 0
 
 ## ¿Que es entre pares?
 
@@ -22,7 +22,8 @@ Que no existen servidores centrales. O sea, los datos van de una computadora a o
 
 ## ¿Que es descentralizada?
 
-Que no posee un centro. Gracias a Tor, una red de pares que comparten saltos en internet y usando ese método: los datos pasan entre pares iguales, de este modo todos lxs pares de ciboulette llegan a todos lxs pares
+Que no posee un centro.
+Gracias a Tor, una red de pares que comparten "saltos" en internet y usando ese método: los datos pasan entre nodos (pares iguales), de este modo todos los nodos de ciboulette se ven entre si.
 
 
 * [Wiki actual](http://wiki.hackcoop.com.ar/Ciboulette)
