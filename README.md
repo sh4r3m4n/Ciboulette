@@ -2,12 +2,14 @@
 
 Es una red social 100% libre, entre pares y descentralizada
 
-Utilizando [Tor](https://www.torproject.org/) y sus servicios ocultos, un simple blog de texto plano y lectores de Noticias (RSS, Atom, 
-RDF) se crea una red social libre, en la que cada persona publica novedades directamente desde su computadora.
-Y es accesible desde cualquier computadora con Tor.
+ 
+Con simple blog y lectores de Noticias (RSS, Atom, RDF) se crea una red 
+social libre en la que cada persona publica novedades directamente desde 
+su computadora. Y es accesible desde cualquier computadora con 
+[Tor](https://www.torproject.org/) gracias a sus servicios ocultos,
 
 
-## ¿Por que libre?
+## ¿Por que 100% libre?
 
 Esta hecho únicamente con software libre. Y es una de las pocas redes sociales que respetan los [conceptos del software libre](https://www.gnu.org/philosophy/free-sw.html) en su uso
 
@@ -18,14 +20,15 @@ Esta hecho únicamente con software libre. Y es una de las pocas redes sociales 
 
 Muchas redes sociales libres moderan a sus usuarios o pretenden un fin especifico para su red, violando nuestra **libertad 0**
 
-## ¿Que es entre pares?
-
-Que no existen servidores centrales. O sea, los datos van de una computadora a otro directamente, pasando entre pares iguales :D
-
 ## ¿Que es descentralizada?
 
-Que no posee un centro.
-Gracias a Tor, una red de pares que comparten "saltos" en internet y usando ese método: los datos pasan entre nodos (pares iguales), de este modo todos los nodos de ciboulette se ven entre si.
+Que no posee un centro. 
+Por que no hay un servidor al que los usuarios tengan que acceder. Los pares iguales.
+Gracias a Tor y la publicación de servicio oculos dentro de la red: los datos pasan entre nodos (pares iguales), de este modo todos los nodos de ciboulette se ven entre si.
+
+## ¿Que es entre pares?
+
+Que no existen servidores centrales. Los datos van de una computadora a otro directamente, pasando entre pares iguales.
 
 
 * [Wiki actual](http://wiki.hackcoop.com.ar/Ciboulette)
