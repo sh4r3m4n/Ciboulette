@@ -104,7 +104,8 @@ while getopts a:n:sklhiu OPCION; do
 		cd /tmp
 		# unificar estas dos lineas
 		wget https://github.com/b4zz4/$REPO/archive/master.zip -O master.zip
-		echo y | unzip master.zip
+		rm -r $REPO-master/
+		unzip master.zip
 		cd $REPO-master/
 		chmod +x $NOMBRE
 		./$NOMBRE -i && echo "actualizado"
@@ -174,7 +175,7 @@ while getopts a:n:sklhiu OPCION; do
 
 		cat /tmp/hostname > ~/.ciboulette/hostname
 		echo
-		echo "Tu dirección de Ciboulette es $(cat ~/.ciboulette/hostname)"
+		echo "Tu dirección de Ciboulette es http://$(cat ~/.ciboulette/hostname)"
 		exit
 		;;
 	esac
@@ -185,7 +186,7 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Iniciar_Ciboulette Publicar_un_articulo Leer_novedades Sindicalizar Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer?"`
+MENU=`echo  "Iniciar_Ciboulette Publicar_un_articulo Leer_novedades Sindicalizar Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - http://$(cat ~/.ciboulette/hostname)"`
 case $MENU in
 		0 )
 			# inicia al servidor
