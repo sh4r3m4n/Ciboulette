@@ -162,7 +162,7 @@ while getopts a:n:sklhiu OPCION; do
 		$aptitude chronicle
 		echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
 		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
-		cp $NOMBRE /usr/bin/
+		cp $NOMBRE /usr/local/bin/
 		/etc/init.d/tor restart
 		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop
 		sleep 10
