@@ -78,7 +78,7 @@ function agregar_nodo {
 }
 
 
-while getopts a:n:skhiu OPCION; do
+while getopts a:n:sklhiu OPCION; do
 	case $OPCION in
                a)
 			echo "Publicando articulo"
