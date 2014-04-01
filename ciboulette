@@ -144,8 +144,6 @@ while getopts a:n:sklhiu OPCION; do
 		fi
 
 		# Crea el directorio local y temas
-		cd
-		HOME="$(pwd)"
 
 		mkdir -p ~/.$NOMBRE/md 2> /dev/null
 		cp -r config ~/.$NOMBRE/
