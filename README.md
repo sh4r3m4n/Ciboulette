@@ -8,6 +8,13 @@ social libre en la que cada persona publica novedades directamente desde
 su computadora. Y es accesible desde cualquier computadora con 
 [Tor](https://www.torproject.org/) gracias a sus servicios ocultos,
 
+## Instalación
+
+~~~
+cd /tmp
+wget https://raw.github.com/b4zz4/Ciboulette/master/ciboulette
+bash ciboulette -u
+~~~
 
 ## ¿Por que 100% libre?
 
@@ -30,13 +37,5 @@ Gracias a Tor y la publicación de servicio oculos dentro de la red: los datos p
 
 Que no existen servidores centrales. Los datos van de una computadora a otro directamente, pasando entre pares iguales.
 
-
-## Instalación
-
-~~~
-cd /tmp
-wget https://raw.github.com/b4zz4/Ciboulette/master/ciboulette
-bash ciboulette -u
-~~~
 
 * [Wiki actual](http://wiki.hackcoop.com.ar/Ciboulette)
