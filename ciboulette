@@ -72,7 +72,7 @@ function servidor_inicio {
 	# inicia el servidor
 	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" || \
 	darkhttpd  ~/.ciboulette --port 4232 || \
-	cat ~/.ciboulette/index.html | nc -l 4232
+	while [ 1 ]; do cat ~/.ciboulette/index.html | nc -l 4232; done
 }
 function agregar_nodo {
 	URL=`cat /dev/stdin`
@@ -147,6 +147,7 @@ while getopts a:n:sklhiu OPCION; do
 
 		mkdir -p ~/.$NOMBRE/md 2> /dev/null
 		cp -r config ~/.$NOMBRE/
+		cp -r favicon.ico ~/.$NOMBRE/
 
 		echo "output = $HOME/.$NOMBRE" >> ~/.$NOMBRE/config
 		echo "input = $HOME/.$NOMBRE/md" >> ~/.$NOMBRE/config
@@ -180,6 +181,8 @@ while getopts a:n:sklhiu OPCION; do
 		cat /tmp/hostname > ~/.$NOMBRE/hostname
 		echo
 		echo "Tu dirección de Ciboulette es http://$(cat ~/.${NOMBRE}/hostname)"
+		# inicia el servidor
+		$NOMBRE -s &
 		exit
 		;;
 	esac
@@ -193,7 +196,7 @@ done
 MENU=`echo  "Publicar_un_articulo Leer_novedades Sindicalizar Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - http://$(cat ~/.ciboulette/hostname)"`
 case $MENU in
 		0 )
-			TITULO=$(url)
+			TITULO=$(url Titulo)
 			mensaje | ciboulette -a "$TITULO"
 			xdg-open "http://127.0.0.1:4232"
 		;;
