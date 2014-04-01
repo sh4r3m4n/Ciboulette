@@ -1,6 +1,6 @@
 # ![Logo de Ciboulette](ciboulette.png) Ciboulette
 
-Es una red social 100% libre, entre pares y descentralizada
+Es una red social 100% libre, entre pares, descentralizada y distribuida
 
  
 Con simple blog y lectores de Noticias (RSS, Atom, RDF) se crea una red 
@@ -34,6 +34,10 @@ Muchas redes sociales libres moderan a sus usuarios o pretenden un fin especific
 Que no posee un centro. 
 Por que no hay un servidor al que los usuarios tengan que acceder. Los pares iguales.
 Gracias a Tor y la publicación de servicio ocultos dentro de la red: los datos pasan entre nodos (pares iguales), de este modo todos los nodos de ciboulette se ven entre si.
+
+## ¿Que es distribuida?
+
+Es una red totalmente distribuida por no tener un centro, ni muchos de ellos.
 
 ## ¿Que es entre pares?
 
