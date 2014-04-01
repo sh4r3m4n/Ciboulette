@@ -142,23 +142,23 @@ while getopts a:n:sklhiu OPCION; do
 			gksu="su -c"
 		fi
 
-		CIBOULETTE="ciboulette"
-
 		echo "$aptitude mini-httpd
 		$aptitude darkhttpd
 		$aptitude tor
 		$aptitude zenity
 		$aptitude chronicle
-		echo 'HiddenServiceDir /var/lib/tor/$CIBOULETTE/' >> /etc/tor/torrc
+		echo 'HiddenServiceDir /var/lib/tor/ciboulette/' >> /etc/tor/torrc
 		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
 		cp $NOMBRE /usr/bin/
 		/etc/init.d/tor restart
-		cp /var/lib/tor/$CIBOULETTE/hostname $HOME/.$CIBOULETTE/hostname
+		cp /var/lib/tor/ciboulette/hostname $HOME/.ciboulette/hostname
 		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop" > $TMP
 		$gksu "bash $TMP"
 		rm $TMP
 
 		# Crea el directorio local y temas
+
+		CIBOULETTE="ciboulette"
 		mkdir -p ~/.$CIBOULETTE/md
 		cp -r xml ~/.$CIBOULETTE/
 		cp -r config ~/.$CIBOULETTE/
