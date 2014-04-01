@@ -86,7 +86,7 @@ while getopts a:n:sklhiu OPCION; do
 			TEXTO=`cat /dev/stdin`
 			TITULO=${OPTARG}
 			DIA=$(date +%c)
-			echo -e "Title: $TITULO\nDate: $DIA\n\n$TEXTO" \
+			echo -e "Title: $TITULO\n\n$TEXTO" \
 			> ~/.ciboulette/md/$(echo $TITULO |sed 's/\ /_/g;s/[^a-zA-Z0-9]//g').md
 			blog_generar
 			exit
