@@ -1,5 +1,5 @@
 blog_title = El nombre de tu blog
-blog_subtitle = Una descripción sobre vos
+blog_subtitle = Una descripcion sobre vos
 theme = xml
 format = markdown
 output = .
