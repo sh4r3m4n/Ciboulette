@@ -161,22 +161,22 @@ while getopts a:n:sklhiu OPCION; do
 		$aptitude tor
 		$aptitude zenity
 		$aptitude chronicle
-		echo 'HiddenServiceDir /var/lib/tor/ciboulette/' >> /etc/tor/torrc
+		echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
 		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
 		cp $NOMBRE /usr/bin/
 		/etc/init.d/tor restart
 		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop
 		sleep 10
-		cat /var/lib/tor/ciboulette/hostname > /tmp/hostname" > $TMP
+		cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname" > $TMP
 		$gksu "bash $TMP"
 		rm $TMP
 
 		mkdir ~/.config/autostart/ 2> /dev/null
  		echo -e "[Desktop Entry]\nName=$NOMBRE\nDescription=Red Social 100% Libre\nIcon=help-faq\nType=Application\nExec=$NOMBRE -s\nCategories=GTK;Utility;" > ~/.config/autostart/$NOMBRE.desktop
 
-		cat /tmp/hostname > ~/.ciboulette/hostname
+		cat /tmp/hostname > ~/.$NOMBRE/hostname
 		echo
-		echo "Tu dirección de Ciboulette es http://$(cat ~/.ciboulette/hostname)"
+		echo "Tu dirección de Ciboulette es http://$(cat ~/.${NOMBRE}/hostname)"
 		exit
 		;;
 	esac
