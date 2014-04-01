@@ -145,10 +145,10 @@ while getopts a:n:sklhiu OPCION; do
 		# Crea el directorio local y temas
 
 		CIBOULETTE="ciboulette"
-		mkdir -p ~/.$CIBOULETTE/md 2> /dev/null
-		cp -r xml ~/.$CIBOULETTE/
-		cp -r config ~/.$CIBOULETTE/
-		touch ~/.$CIBOULETTE/hostname
+		mkdir -p ~/.$NOMBRE/md 2> /dev/null
+		cp -r xml ~/.$NOMBRE/
+		cp -r config ~/.$NOMBRE/
+		touch ~/.$NOMBRE/hostname
 
 		cd
 		DIR=$(pwd)
@@ -164,16 +164,17 @@ while getopts a:n:sklhiu OPCION; do
 		/etc/init.d/tor restart
 		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop
 		sleep 10
-		cat /var/lib/tor/ciboulette/hostname > $DIR/.ciboulette/hostname" > $TMP
+		cat /var/lib/tor/ciboulette/hostname > /tmp/hostname" > $TMP
 		$gksu "bash $TMP"
 		rm $TMP
+
 
 		mkdir ~/.config/autostart/ 2> /dev/null
  		echo -e "[Desktop Entry]\nName=$NOMBRE\nDescription=Red Social 100% Libre\nIcon=help-faq\nType=Application\nExec=$NOMBRE -s\nCategories=GTK;Utility;" > ~/.config/autostart/$NOMBRE.desktop
 
-
+		cat /tmp/hostname > ~/.ciboulette/hostname
 		echo
-		echo "Tu dirección de Ciboulette es $(~/.ciboulette/hostname)"
+		echo "Tu dirección de Ciboulette es $(cat ~/.ciboulette/hostname)"
 		exit
 		;;
 	esac
