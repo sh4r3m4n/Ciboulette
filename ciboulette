@@ -148,13 +148,11 @@ while getopts a:n:sklhiu OPCION; do
 		cd
 		HOME="$(pwd)"
 
-		CIBOULETTE="ciboulette"
 		mkdir -p ~/.$NOMBRE/md 2> /dev/null
-		cp -r xml ~/.$NOMBRE/
 		cp -r config ~/.$NOMBRE/
 
-		echo "output = $HOME/.ciboulette" >> ~/.$NOMBRE/config
-		echo "input = $HOME/.ciboulette/md" >> ~/.$NOMBRE/config
+		echo "output = $HOME/.$NOMBRE" >> ~/.$NOMBRE/config
+		echo "input = $HOME/.$NOMBRE/md" >> ~/.$NOMBRE/config
 
 		touch ~/.$NOMBRE/hostname
 
