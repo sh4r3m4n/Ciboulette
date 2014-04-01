@@ -160,8 +160,8 @@ while getopts a:n:sklhiu OPCION; do
 		cp $NOMBRE /usr/bin/
 		/etc/init.d/tor restart
 		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop
-		sleep 3
-		cat /var/lib/tor/ciboulette/hostname > ~/.ciboulette/hostname" > $TMP
+		sleep 10
+		cat /var/lib/tor/ciboulette/hostname > $HOME/.ciboulette/hostname" > $TMP
 		$gksu "bash $TMP"
 		rm $TMP
 
