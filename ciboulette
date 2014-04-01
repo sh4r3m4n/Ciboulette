@@ -104,7 +104,7 @@ while getopts a:n:sklhiu OPCION; do
 		cd /tmp
 		# unificar estas dos lineas
 		wget https://github.com/b4zz4/$REPO/archive/master.zip -O master.zip
-		unzip master.zip
+		echo y | unzip master.zip
 		cd $REPO-master/
 		chmod +x $NOMBRE
 		./$NOMBRE -i && echo "actualizado"
@@ -150,7 +150,7 @@ while getopts a:n:sklhiu OPCION; do
 		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
 		cp $NOMBRE /usr/bin/
 		/etc/init.d/tor restart
-		cat /var/lib/tor/$CIBOULETTE/hostname > $HOME/.$CIBOULETTE/hostname
+		cp /var/lib/tor/$CIBOULETTE/hostname $HOME/.$CIBOULETTE/hostname
 		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop" > $TMP
 		$gksu "bash $TMP"
 		rm $TMP
