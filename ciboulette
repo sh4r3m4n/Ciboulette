@@ -158,6 +158,12 @@ while getopts a:n:sklhiu OPCION; do
 		$aptitude tor
 		$aptitude zenity
 		$aptitude chronicle
+                $aptitude memcached
+                $aptitude libtext-markdown-perl
+                $aptitude libtext-textile-perl
+                $aptitude libtext-vimcolor-perl
+                $aptitude libsoap-lite-perl
+                $aptitude libipc-sharedcache-perl
 		echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
 		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
 		cp $NOMBRE /usr/local/bin/
