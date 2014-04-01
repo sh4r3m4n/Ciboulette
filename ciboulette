@@ -111,7 +111,7 @@ while getopts a:n:sklhiu OPCION; do
 		exit
 	;;
 	h)
-		echo "$(basename $0) "
+		echo "$(basename $0) $(cat ~/.ciboulette/hostname)"
 		echo
 		echo "  -h Esta ayuda"
 		echo "  -i Instalación"
@@ -150,7 +150,7 @@ while getopts a:n:sklhiu OPCION; do
 		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
 		cp $NOMBRE /usr/bin/
 		/etc/init.d/tor restart
-		cat /var/lib/tor/$CIBOULETTE/hostname > ~/.$CIBOULETTE/hostname
+		cat /var/lib/tor/$CIBOULETTE/hostname > $HOME/.$CIBOULETTE/hostname
 		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop" > $TMP
 		$gksu "bash $TMP"
 		rm $TMP
