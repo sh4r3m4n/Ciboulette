@@ -161,6 +161,10 @@ while getopts a:n:skhiu OPCION; do
 		cp -r xml ~/.$CIBOULETTE/
 		cp -r config ~/.$CIBOULETTE/
 
+		mkdir ~/.config/autostart/
+		echo -e "[Desktop Entry]\nName=$NOMBRE\nDescription=Red Social 100% Libre\nIcon=help-faq\nType=Application\nExec=$NOMBRE -s\nCategories=GTK;Utility;" > ~/.config/autostart/$NOMBRE.desktop
+
+
 		exit
 		;;
 	esac
