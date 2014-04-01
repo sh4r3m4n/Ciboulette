@@ -1,4 +1,200 @@
-#/usr/bin/env sh
+#!/bin/bash
+#
+#	Ciboulette una red social 100% libre, descentralizada y entre pares
+#	AGPLv3+ © bazza
+#
 
-# servidor
-mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8"
+#---------------------- funciones graficas -----------------
+function opciones {
+	while getopts t:m: OPCION; do
+	        case $OPCION in
+	                t) TITULO=${OPTARG}
+	                ;;
+	                m) MENSAJE=${OPTARG}
+	                ;;
+	        esac
+	done
+	# parametros
+	N=0
+	for T in $(cat /dev/stdin); do
+		T=$(echo $T | sed 's/_/\ /g')
+		C="$C $N \"$T\""
+		N=$(($N+1))
+	done
+	# genera el menu
+	eval "zenity --title \"$TITULO\" --text \"$MENSAJE\" --list --height=250 --column \"\" --column \"\" --hide-column 1  --hide-header $C"
+}
+
+function error {
+	zenity --error --text="$*"
+}
+function alerta {
+	zenity --warning --text="$(cat /dev/stdin)"
+}
+function clave {
+	zenity --title "Clave" --text "Introducir la clave" --entry --entry-text="$*"
+}
+function url {
+	zenity --title "URL" --text "Dirección" --entry --entry-text="$*"
+}
+function archivo {
+	zenity --title "Elije el archivo" --file-selection
+}
+function archivos {
+	echo -e "$(zenity --title "Archivos" --text="Elije los archivos" --file-selection --multiple --separator="\n" \
+	|| error "si necesita un archivo" && exit)"
+}
+function mensaje {
+	zenity --title "Mensaje" --text="Escribe el mensaje" --width=450 --height=350 --text-info --editable
+}
+function mostrar {
+	# mensaje de entrada
+	MENSAJE=`cat /dev/stdin`
+	if [ "$(echo "$MENSAJE" | wc -l )" == "1" ]; then
+		zenity --title "Mensaje decifrado" --width=450 --text="$*" --entry --entry-text="$MENSAJE"
+	else
+		echo "$MENSAJE" | zenity --title "Mensaje decifrado" --text="$*" --width=450 --height=350 --text-info
+	fi
+	echo "$MENSAJE" | xsel -i
+}
+function progreso {
+	pid=`mktemp`
+	zenity --progress --pulsate --auto-close --title "Espere por favor..." --text="$*" & echo $! > $pid
+	cat /dev/stdin
+	kill `cat $pid`
+}
+function blog_generar {
+	chronicle --config ~/.ciboulette/config
+}
+function servidor_inicio {
+	# inicia el servidor
+	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" || \
+	darkhttpd  ~/.ciboulette --port 4232 || \
+	cat ~/.ciboulette/index.html | nc -l 4232
+}
+function agregar_nodo {
+	URL=`cat /dev/stdin`
+	torify liferea-add-feed "$URL"
+}
+
+
+while getopts a:n:skhiu OPCION; do
+	case $OPCION in
+               a)
+			echo "Publicando articulo"
+			TEXTO=`cat /dev/stdin`
+			TITULO=${OPTARG}
+			DIA=$(date +%c)
+			echo "Title: $TITULO\nDate: $DIA\n\n$TEXTO" \
+			> ~/.ciboulette/md/$(echo $TITULO |sed 's/\ /_/g;s/[^a-zA-Z0-9]//g').md
+			blog_generar
+			exit
+                ;;
+                n) echo ${OPTARG} | agregar_nodo; exit
+                ;;
+                l) torify liferea; exit
+                ;;
+                s) servidor_inicio; exit
+                ;;
+                k) servidor_matar; exit
+                ;;
+	u)
+		NOMBRE=`basename $0`
+		REPO="Ciboulette"
+		cd /tmp
+		# unificar estas dos lineas
+		wget https://github.com/b4zz4/$REPO/archive/master.zip -O master.zip
+		unzip master.zip
+		cd $REPO-master/
+		chmod +x $NOMBRE
+		./$NOMBRE -i && echo "actualizado"
+		exit
+	;;
+	h)
+		echo "$(basename $0) "
+		echo
+		echo "  -h Esta ayuda"
+		echo "  -i Instalación"
+		echo "  -s Iniciar el servidor"
+		echo "  -k matar el servidor"
+		echo "  -a [titulo texto] agregar articulo"
+		echo "  -n agregar nodo"
+		echo "  -u Actualizar"
+		exit
+	;;
+	i)
+		NOMBRE=`basename $0`
+		echo -e "[Desktop Entry]\nName=$NOMBRE\nDescription=Red Social 100% Libre\nIcon=help-faq\nType=Application\nExec=$NOMBRE\nCategories=GTK;Utility;" > /tmp/$NOMBRE.desktop
+		# dependencias
+		TMP=$(mktemp)
+
+		# verifica el sistema operativo
+		if [ "$(which yum)" ]; then
+			aptitude="yum -y install"
+		elif [ "$(which pacman)" ]; then
+			aptitude="pacman -S"
+		else
+		aptitude="apt-get -y install"
+		fi
+		if [ "$(which gksu)" ]; then
+			gksu="gksu"
+		else
+			gksu="su -c"
+		fi
+		echo "$aptitude mini-httpd
+		$aptitude darkhttpd
+		$aptitude tor
+		$aptitude zenity
+		$aptitude chronicle
+		echo 'HiddenServiceDir /var/lib/tor/$CIBOULETTE/' >> /etc/tor/torrc
+		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
+		cp $NOMBRE /usr/bin/
+		/etc/init.d/tor restart
+		cat /var/lib/tor/$CIBOULETTE/hostname > ~/.$CIBOULETTE/hostname
+		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop" > $TMP
+		$gksu "bash $TMP"
+		rm $TMP
+
+		# Crea el directorio local y temas
+		CIBOULETTE="ciboulette"
+		mkdir -p ~/.$CIBOULETTE/md
+		cp -r xml ~/.$CIBOULETTE/
+		cp -r config ~/.$CIBOULETTE/
+
+		exit
+		;;
+	esac
+done
+
+
+
+# -------------------------- Wizard ----------------------------------
+
+# ¿Que queres hacer?
+MENU=`echo  "Iniciar_Ciboulette Publicar_un_articulo Leer_novedades Sindicalizar Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer?"`
+case $MENU in
+		0 )
+			# inicia al servidor
+			ciboulette -s
+		;;
+
+		1 )
+			TITULO=$(url)
+			TEXTO=$(mensaje)
+			echo  "$TEXTO" | ciboulette -a "$TITULO"
+		;;
+		2 )
+			ciboulette -l
+		;;
+		3 )
+			URL=$(url)
+			ciboulette -n "$URL"
+		;;
+		4)
+			# mata todo los netcat
+			ciboulette -k
+
+		;;
+
+esac
+
