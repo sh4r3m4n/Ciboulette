@@ -150,6 +150,9 @@ while getopts a:n:sklhiu OPCION; do
 		cp -r config ~/.$CIBOULETTE/
 		touch ~/.$CIBOULETTE/hostname
 
+		cd
+		DIR=$(pwd)
+
 		echo "$aptitude mini-httpd
 		$aptitude darkhttpd
 		$aptitude tor
@@ -161,7 +164,7 @@ while getopts a:n:sklhiu OPCION; do
 		/etc/init.d/tor restart
 		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop
 		sleep 10
-		cat /var/lib/tor/ciboulette/hostname > $HOME/.ciboulette/hostname" > $TMP
+		cat /var/lib/tor/ciboulette/hostname > $DIR/.ciboulette/hostname" > $TMP
 		$gksu "bash $TMP"
 		rm $TMP
 
