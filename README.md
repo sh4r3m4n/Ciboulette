@@ -16,6 +16,8 @@ wget https://raw.github.com/b4zz4/Ciboulette/master/ciboulette
 bash ciboulette -u
 ~~~
 
+Luego de instalarlo se puede usar desde la terminal @ciboulette -h@ o desde su interfaz gráfica.
+
 ## ¿Por que 100% libre?
 
 Esta hecho únicamente con software libre. Y es una de las pocas redes sociales que respetan los [conceptos del software libre](https://www.gnu.org/philosophy/free-sw.html) en su uso
@@ -31,7 +33,7 @@ Muchas redes sociales libres moderan a sus usuarios o pretenden un fin especific
 
 Que no posee un centro. 
 Por que no hay un servidor al que los usuarios tengan que acceder. Los pares iguales.
-Gracias a Tor y la publicación de servicio oculos dentro de la red: los datos pasan entre nodos (pares iguales), de este modo todos los nodos de ciboulette se ven entre si.
+Gracias a Tor y la publicación de servicio ocultos dentro de la red: los datos pasan entre nodos (pares iguales), de este modo todos los nodos de ciboulette se ven entre si.
 
 ## ¿Que es entre pares?
 
