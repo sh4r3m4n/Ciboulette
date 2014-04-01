@@ -142,6 +142,14 @@ while getopts a:n:sklhiu OPCION; do
 			gksu="su -c"
 		fi
 
+		# Crea el directorio local y temas
+
+		CIBOULETTE="ciboulette"
+		mkdir -p ~/.$CIBOULETTE/md 2> /dev/null
+		cp -r xml ~/.$CIBOULETTE/
+		cp -r config ~/.$CIBOULETTE/
+		touch ~/.$CIBOULETTE/hostname
+
 		echo "$aptitude mini-httpd
 		$aptitude darkhttpd
 		$aptitude tor
@@ -151,22 +159,18 @@ while getopts a:n:sklhiu OPCION; do
 		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
 		cp $NOMBRE /usr/bin/
 		/etc/init.d/tor restart
-		cp /var/lib/tor/ciboulette/hostname $HOME/.ciboulette/hostname
-		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop" > $TMP
+		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop
+		sleep 3
+		cat /var/lib/tor/ciboulette/hostname > ~/.ciboulette/hostname" > $TMP
 		$gksu "bash $TMP"
 		rm $TMP
-
-		# Crea el directorio local y temas
-
-		CIBOULETTE="ciboulette"
-		mkdir -p ~/.$CIBOULETTE/md
-		cp -r xml ~/.$CIBOULETTE/
-		cp -r config ~/.$CIBOULETTE/
 
 		mkdir ~/.config/autostart/
 		echo -e "[Desktop Entry]\nName=$NOMBRE\nDescription=Red Social 100% Libre\nIcon=help-faq\nType=Application\nExec=$NOMBRE -s\nCategories=GTK;Utility;" > ~/.config/autostart/$NOMBRE.desktop
 
 
+		echo
+		echo "Tu dirección de Ciboulette es $(~/.ciboulette/hostname)"
 		exit
 		;;
 	esac
