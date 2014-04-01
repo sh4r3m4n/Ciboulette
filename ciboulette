@@ -82,11 +82,9 @@ while getopts a:n:sklhiu OPCION; do
 	case $OPCION in
                a)
 			echo "Publicando articulo"
-			TEXTO=`cat /dev/stdin`
 			TITULO=${OPTARG}
-			DIA=$(date +%c)
-			echo -e "Title: $TITULO\n\n$TEXTO" \
-			> ~/.ciboulette/md/$(echo $TITULO |sed 's/\ /_/g;s/[^a-zA-Z0-9_]//g').md
+			TEXTO=`cat /dev/stdin`
+			echo -e "Title: $TITULO\n\n$TEXTO" > ~/.ciboulette/md/$(echo $TITULO |sed 's/\ /_/g;s/[^a-zA-Z0-9_]//g').md
 			blogear
 			exit
                 ;;
