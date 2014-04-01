@@ -147,11 +147,8 @@ while getopts a:n:sklhiu OPCION; do
 		mkdir -p ~/.$NOMBRE/md 2> /dev/null
 		cp -r xml ~/.$NOMBRE/
 		cp -r config ~/.$NOMBRE/
-		touch ~/.$NOMBRE/hostname
 		echo -e "output = /home/eduardo/.ciboulette\ninput = /home/eduardo/.ciboulette/md" >> ~/.$NOMBRE/config
-
-		cd
-		DIR=$(pwd)
+		touch ~/.$NOMBRE/hostname
 
 		echo "$aptitude mini-httpd
 		$aptitude darkhttpd
@@ -167,7 +164,6 @@ while getopts a:n:sklhiu OPCION; do
 		cat /var/lib/tor/ciboulette/hostname > /tmp/hostname" > $TMP
 		$gksu "bash $TMP"
 		rm $TMP
-
 
 		mkdir ~/.config/autostart/ 2> /dev/null
  		echo -e "[Desktop Entry]\nName=$NOMBRE\nDescription=Red Social 100% Libre\nIcon=help-faq\nType=Application\nExec=$NOMBRE -s\nCategories=GTK;Utility;" > ~/.config/autostart/$NOMBRE.desktop
@@ -185,24 +181,23 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Iniciar_Ciboulette Publicar_un_articulo Leer_novedades Sindicalizar Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - http://$(cat ~/.ciboulette/hostname)"`
+MENU=`echo  "Publicar_un_articulo Leer_novedades Sindicalizar Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - http://$(cat ~/.ciboulette/hostname)"`
 case $MENU in
 		0 )
-			# inicia al servidor
-			ciboulette -s
-		;;
-
-		1 )
 			TITULO=$(url)
 			mensaje | ciboulette -a "$TITULO"
-			xdg-open http://127.0.0.1:4232/
+			xdg-open "http://127.0.0.1:4232"
 		;;
-		2 )
+		1 )
 			ciboulette -l
 		;;
-		3 )
+		2 )
 			URL=$(url)
 			ciboulette -n "$URL"
+		;;
+		3 )
+			# inicia al servidor
+			ciboulette -s
 		;;
 		4)
 			# mata todo los netcat
