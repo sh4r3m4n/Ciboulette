@@ -63,9 +63,8 @@ function progreso {
 	cat /dev/stdin
 	kill `cat $pid`
 }
-function blog_generar {
-	cd ~/.ciboulette/
-	chronicle --config config
+function blogear {
+	chronicle --config ~/.ciboulette/config
 }
 function servidor_inicio {
 	# inicia el servidor
@@ -87,8 +86,8 @@ while getopts a:n:sklhiu OPCION; do
 			TITULO=${OPTARG}
 			DIA=$(date +%c)
 			echo -e "Title: $TITULO\n\n$TEXTO" \
-			> ~/.ciboulette/md/$(echo $TITULO |sed 's/\ /_/g;s/[^a-zA-Z0-9]//g').md
-			blog_generar
+			> ~/.ciboulette/md/$(echo $TITULO |sed 's/\ /_/g;s/[^a-zA-Z0-9_]//g').md
+			blogear
 			exit
                 ;;
                 n) echo ${OPTARG} | agregar_nodo; exit
@@ -151,6 +150,7 @@ while getopts a:n:sklhiu OPCION; do
 		cp -r xml ~/.$NOMBRE/
 		cp -r config ~/.$NOMBRE/
 		touch ~/.$NOMBRE/hostname
+		echo -e "output = /home/eduardo/.ciboulette\ninput = /home/eduardo/.ciboulette/md" >> ~/.$NOMBRE/config
 
 		cd
 		DIR=$(pwd)
