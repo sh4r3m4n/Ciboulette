@@ -64,7 +64,8 @@ function progreso {
 	kill `cat $pid`
 }
 function blog_generar {
-	chronicle --config ~/.ciboulette/config
+	cd ~/.ciboulette/
+	chronicle --config config
 }
 function servidor_inicio {
 	# inicia el servidor
@@ -85,7 +86,7 @@ while getopts a:n:sklhiu OPCION; do
 			TEXTO=`cat /dev/stdin`
 			TITULO=${OPTARG}
 			DIA=$(date +%c)
-			echo "Title: $TITULO\nDate: $DIA\n\n$TEXTO" \
+			echo -e "Title: $TITULO\nDate: $DIA\n\n$TEXTO" \
 			> ~/.ciboulette/md/$(echo $TITULO |sed 's/\ /_/g;s/[^a-zA-Z0-9]//g').md
 			blog_generar
 			exit
@@ -195,8 +196,8 @@ case $MENU in
 
 		1 )
 			TITULO=$(url)
-			TEXTO=$(mensaje)
-			echo  "$TEXTO" | ciboulette -a "$TITULO"
+			mensaje | ciboulette -a "$TITULO"
+			xdg-open http://127.0.0.1:4232/
 		;;
 		2 )
 			ciboulette -l

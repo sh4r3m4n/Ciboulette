@@ -2,5 +2,5 @@ blog_title = El nombre de tu blog
 blog_subtitle = Una descripción sobre vos
 theme = xml
 format = markdown
-output = ~/.ciboulette
-input = ~/.ciboulette/md
+output = .
+input = md
