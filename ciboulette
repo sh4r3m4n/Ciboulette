@@ -86,7 +86,7 @@ while getopts a:n:sklhiu OPCION; do
 			TEXTO=`cat /dev/stdin`
 			echo -e "Title: $TITULO\n\n$TEXTO" > ~/.ciboulette/md/$(echo $TITULO |sed 's/\ /_/g;s/[^a-zA-Z0-9_]//g').md
 			blogear
-			cd ~/.ciboulette
+			cd ~/.ciboulette/
 			rm index.html
 			cp index.rss index.html
 			exit
