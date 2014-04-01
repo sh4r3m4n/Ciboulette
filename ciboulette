@@ -150,7 +150,6 @@ while getopts a:n:sklhiu OPCION; do
 		cp -r xml ~/.$NOMBRE/
 		cp -r config ~/.$NOMBRE/
 
-		echo "theme-dir = /home/eduardo/.ciboulette/" >> ~/.$NOMBRE/config
 		echo "output = $HOME/.ciboulette" >> ~/.$NOMBRE/config
 		echo "input = $HOME/.ciboulette/md" >> ~/.$NOMBRE/config
 
