@@ -64,15 +64,18 @@ function progreso {
 	kill `cat $pid`
 }
 function blogear {
-	chronicle --config ~/.ciboulette/config
 	cd ~/.ciboulette/
+	chronicle --config ~/.ciboulette/config
 	cp index.rss index.html
 }
+
 function servidor_inicio {
 	# inicia el servidor
 	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" || \
 	darkhttpd  ~/.ciboulette --port 4232 || \
-	while [ 1 ]; do cat ~/.ciboulette/index.html | nc -l 4232; done
+	{ while [ 1 ]; do
+		cat ~/.ciboulette/index.html | nc -l 4232 2> /dev/null
+	done }
 }
 function agregar_nodo {
 	URL=`cat /dev/stdin`
@@ -193,7 +196,7 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Leer_novedades Sindicalizar Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - http://$(cat ~/.ciboulette/hostname)"`
+MENU=`echo  "Publicar_un_articulo Perfil Leer_novedades Sindicalizar Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - http://$(cat ~/.ciboulette/hostname)"`
 case $MENU in
 		0 )
 			TITULO=$(url Titulo)
@@ -201,17 +204,24 @@ case $MENU in
 			xdg-open "http://127.0.0.1:4232"
 		;;
 		1 )
-			ciboulette -l
+			ARCHIVO=$(archivo)
+			Nombre=$(url Nombre)
+			Descripcion=$(url Descripcion)
+			convert "$ARCHIVO" -resize 16x16 ~/.ciboulette/favicon.ico
+			convert "$ARCHIVO" -resize 128x128 ~/.ciboulette/avatar.png
 		;;
 		2 )
+			ciboulette -l
+		;;
+		3 )
 			URL=$(url)
 			ciboulette -n "$URL"
 		;;
-		3 )
+		4 )
 			# inicia al servidor
 			ciboulette -s
 		;;
-		4)
+		5 )
 			# mata todo los netcat
 			ciboulette -k
 
