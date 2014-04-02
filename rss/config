@@ -1,0 +1,23 @@
+# to generate the rss feed, override the template and the itemtemplate
+
+timesections false
+plugindirs none
+daysections false
+define feedoutput true
+
+template rss/template
+itemtemplate rss/itemtemplate
+outputfile  rss20.xml
+
+xmltitle Mi Ciboulette
+#xmllink http://localhost:4232/
+#xmlurl http://localhost:4232/rss20.xml
+xmllanguage es
+xmldescription Una red social 100% libre y distribuida
+xmlownername juan perez
+xmlowneremail joe@joedicastro.com
+
+
+feed 3h http://127.0.0.1:4232/
+feed 3h http://www.agenciawalsh.org/index.php?format=feed&type=rss
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>__xmltitle__</title>
+    <link>__xmllink__</link>
+    <image>
+        <url>avatar.png</url>
+    </image>
+    <language>__xmllanguage__</language>
+    <description>__xmldescription__</description>
+    <atom:link href="__xmlurl__" rel="self" type="application/rss+xml"/>
+
+__items__
+
+  </channel>
+</rss>
