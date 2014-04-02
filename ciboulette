@@ -164,9 +164,9 @@ while getopts a:n:sklhiu OPCION; do
 		$aptitude zenity
 		$aptitude chronicle
                 $aptitude memcached
+                $aptitude liferea
                 $aptitude libtext-markdown-perl
                 $aptitude libtext-textile-perl
-                $aptitude libtext-vimcolor-perl
                 $aptitude libsoap-lite-perl
                 $aptitude libipc-sharedcache-perl
 		echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
@@ -206,10 +206,14 @@ case $MENU in
 		;;
 		1 )
 			ARCHIVO=$(archivo)
-			Nombre=$(url Nombre)
-			Descripcion=$(url Descripcion)
+			NOMBRE=$(url Nombre)
+			DESCRIPCION=$(url Descripcion)
 			convert "$ARCHIVO" -resize 16x16 ~/.ciboulette/favicon.ico
 			convert "$ARCHIVO" -resize 128x128 ~/.ciboulette/avatar.png
+
+			echo "blog_title = $NOMBRE\n" >> ~/.ciboulette/config
+			echo "blog_subtitle = $DESCRIPCION" >> ~/.ciboulette/config
+
 		;;
 		2 )
 			ciboulette -l
