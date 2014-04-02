@@ -37,7 +37,7 @@ minación de datos, etc.
 ## Redes sociales libres negadas
 
 El mail, los feed, los IRC, plataformas como: wordpress, drupal y la 
-mismisima internet ya eran parte de las redes sociales libres, pero 
+mismísima internet ya eran parte de las redes sociales libres, pero 
 lamentablemente se escribió nuevo código dándoles la espalda. 
 
 Es de destacar que los mails, feed e IRC son federables y tiene muchos 
@@ -47,3 +47,13 @@ mas años que las redes sociales no libres.
 
 Tenemos que eliminar al servidor centralizado, cada nodo tiene que ser 
 su propio servidor.
+
+
+# Ciboulette
+
+Por estas razones ciboulette parte de la idea de tomar muchos programas 
+y protocoles ya disponibles, infraestructura de pares, redes libres. 
+Creando nuestra propia infraestructura "social" para compartir y 
+comunicar entre pares, sin grandes servidores y con una infraestructura 
+independiente a la red social, las redes sociales solo las conforman 
+personas, no computadoras.
