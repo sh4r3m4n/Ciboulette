@@ -50,6 +50,6 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 
 * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
 * Al usar imágenes en un articulo se copien en una carpeta y cree miniaturas
-** Generar galería de las imágenes
+ * Generar galería de las imágenes
 * Método para compartir archivos y multimedia
 * Publicador y editor con CGI (solo para la red local)
