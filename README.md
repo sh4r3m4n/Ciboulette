@@ -16,9 +16,9 @@ wget https://raw.github.com/b4zz4/Ciboulette/master/ciboulette
 bash ciboulette -u
 ~~~
 
-Luego de instalarlo se puede usar desde la terminal `ciboulette -h` o desde su interfaz gráfica.
+Luego de instalarlo se puede usar desde la terminal [ciboulette -h](ayuda.md) o desde su [interfaz gráfica](captura.png).
 
-* [Wiki actual](http://wiki.hackcoop.com.ar/Ciboulette)
+* [Wiki del proyecto](http://wiki.hackcoop.com.ar/Ciboulette)
 
 ## ¿Por que 100% libre?
 
