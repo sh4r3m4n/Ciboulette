@@ -160,6 +160,7 @@ while getopts a:n:sklhiu OPCION; do
 		echo "$aptitude mini-httpd
 		$aptitude darkhttpd
 		$aptitude tor
+		$aptitude torsocks
 		$aptitude zenity
 		$aptitude chronicle
                 $aptitude memcached
