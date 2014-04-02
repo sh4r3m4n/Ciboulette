@@ -219,6 +219,7 @@ case $MENU in
 			ciboulette -l
 		;;
 		3 )
+			ciboulette -l
 			URL=$(url)
 			ciboulette -n "$URL"
 		;;
