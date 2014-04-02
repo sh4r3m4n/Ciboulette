@@ -18,6 +18,8 @@ bash ciboulette -u
 
 Luego de instalarlo se puede usar desde la terminal `ciboulette -h` o desde su interfaz gráfica.
 
+* [Wiki actual](http://wiki.hackcoop.com.ar/Ciboulette)
+
 ## ¿Por que 100% libre?
 
 Esta hecho únicamente con software libre. Y es una de las pocas redes sociales que respetan los [conceptos del software libre](https://www.gnu.org/philosophy/free-sw.html) en su uso
@@ -44,4 +46,10 @@ Es una red totalmente distribuida por no tener un centro, ni muchos de ellos.
 Que no existen servidores centrales. Los datos van de una computadora a otro directamente, pasando entre pares iguales.
 
 
-* [Wiki actual](http://wiki.hackcoop.com.ar/Ciboulette)
+## Quehaceres
+
+* Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
+* Al usar imágenes en un articulo se copien en una carpeta y cree miniaturas
+** Generar galería de las imágenes
+* Método para compartir archivos y multimedia
+* Publicador y editor con CGI (solo para la red local)
