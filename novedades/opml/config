@@ -5,5 +5,5 @@ daysections false
 
 template opml/template
 define feeditemtemplate opml/feeditemtemplate
-outputfile  ../public_html/opml.xml
+outputfile  opml.xml
 
