@@ -124,8 +124,7 @@
     <body id="rawdog" onload="readReadColor()">
         <div id="page">
             <div id="header">
-                <h1><img src="../avatar.png" /> Ciboulette</h1>
-		<h2> __num_items__  / __num_feeds__ </h2>
+                <h1><img src="../avatar.png" /> Ciboulette (__num_items__  / __num_feeds__) </h1>
                 <p><a onclick="toggleall('block')">Abrir todos</a> <a onclick="toggleall('none')">Cerar todos</a> <a onclick="markAllRead()">Marcar como leidos</a></p>
             </div>
             <div id=beggining>
