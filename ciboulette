@@ -38,6 +38,9 @@ function clave {
 function url {
 	zenity --title "URL" --text "Dirección" --entry --entry-text="$*"
 }
+function titulo {
+	zenity --title "Titulo" --text "¿Sobre que vas a hablar?" --entry --entry-text="$*"
+}
 function archivo {
 	zenity --title "Elije el archivo" --file-selection
 }
@@ -72,7 +75,11 @@ function blogear {
 
 function servidor_inicio {
 	# inicia el servidor
-	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8"
+	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" -i /tmp/ciboulette
+}
+function servidor_inicio {
+	# matar el servidor
+	kill $(cat /tmp/ciboulette)
 }
 
 function nodo_agregar {
@@ -217,10 +224,10 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Perfil Leer_novedades Sindicalizar Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - $(cat ~/.ciboulette/hostname)"`
+MENU=`echo  "Publicar_un_articulo Avatar Perfil Leer_novedades Sindicalizar Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - $(cat ~/.ciboulette/hostname)"`
 case $MENU in
 		0 )
-			TITULO=$(url Titulo)
+			TITULO="$(titulo)"
 			mensaje | ciboulette -a "$TITULO"
 			xdg-open "http://127.0.0.1:4232"
 		;;
@@ -228,12 +235,12 @@ case $MENU in
 			ARCHIVO=$(archivo "Imagen del perfil")
 			convert "$ARCHIVO" -resize 16x16 ~/.ciboulette/favicon.ico
 			convert "$ARCHIVO" -resize 128x128 ~/.ciboulette/avatar.png
-
+		;;
+		2)
 			#NOMBRE=$(url Nombre)
 			#DESCRIPCION=$(url Descripcion)
 			#echo "blog_title = $NOMBRE\n" >> ~/.ciboulette/config
 			#echo "blog_subtitle = $DESCRIPCION" >> ~/.ciboulette/config
-
 		;;
 		2 )
 			xdg-open "http://127.0.0.1:4232/novedades/"
