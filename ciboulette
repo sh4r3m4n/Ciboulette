@@ -212,7 +212,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		echo "http://$(cat /tmp/hostname)" > ~/.$NOMBRE/hostname
 
 		echo
-		echo "Tu dirección de Ciboulette es http://$(cat ~/.${NOMBRE}/hostname)"
+		echo "Tu dirección de Ciboulette es $(cat ~/.${NOMBRE}/hostname)"
 		# inicia el servidor
 		$NOMBRE -s &
 		$NOMBRE -w
