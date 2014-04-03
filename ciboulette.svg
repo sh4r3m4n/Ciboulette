@@ -8,11 +8,34 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="151"
    height="133"
-   id="svg9291">
+   id="svg9291"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="ciboulette.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview54"
+     showgrid="false"
+     inkscape:zoom="1.7744361"
+     inkscape:cx="75.5"
+     inkscape:cy="66.5"
+     inkscape:window-x="223"
+     inkscape:window-y="26"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg9291" />
   <defs
      id="defs9293">
     <inkscape:path-effect
@@ -117,10 +140,6 @@
        id="g5462"
        style="display:inline">
       <path
-         d="m 1480.5382,-458.53789 c 8.5753,-22.50321 23.2148,-42.66257 41.9598,-57.78063 17.8381,-14.38666 39.3461,-24.18474 61.9078,-28.20245"
-         id="path3020"
-         style="fill:none;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
          d="m 1571.9326,-434.1309 c 0,0 -3.7198,6.88492 1.912,6.48302 5.6317,-0.40191 16.9144,-12.3549 21.8817,-7.6186 2.4794,2.36407 5.3781,-15.98065 5.3781,-15.98065 0,0 17.2583,8.58979 15.0864,6.48746 -14.7016,-14.23043 -14.7605,-22.33111 -14.7605,-22.33111 l -29.4977,32.95988 z"
          id="path4336"
          style="fill:#332431;fill-opacity:1;stroke-width:1px" />
@@ -215,7 +234,7 @@
             <dc:title>Open Clip Art Library</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title></dc:title>
+        <dc:title />
         <dc:date>2013-03-02T14:16:41</dc:date>
         <dc:description>A cartoon style cut onion. Originally an asset for hedgewars.org.</dc:description>
         <dc:source>http://openclipart.org/detail/175418/cut-onion-by-mray-175418</dc:source>
