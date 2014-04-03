@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="style.css" type="text/css">
-	<link href="../rss20.xml" rel="alternate" title="ATOM" type="application/atom+xml" />
+	<link href="rss20.xml" rel="alternate" title="ATOM" type="application/atom+xml" />
         <title>Ciboulette</title>
         <script type="text/javascript">
             /*localStorage.clear();*/
