@@ -77,7 +77,7 @@ function servidor_inicio {
 	# inicia el servidor
 	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" -i /tmp/ciboulette
 }
-function servidor_inicio {
+function servidor_matar {
 	# matar el servidor
 	kill $(cat /tmp/ciboulette)
 }
@@ -237,10 +237,7 @@ case $MENU in
 			convert "$ARCHIVO" -resize 128x128 ~/.ciboulette/avatar.png
 		;;
 		2)
-			#NOMBRE=$(url Nombre)
-			#DESCRIPCION=$(url Descripcion)
-			#echo "blog_title = $NOMBRE\n" >> ~/.ciboulette/config
-			#echo "blog_subtitle = $DESCRIPCION" >> ~/.ciboulette/config
+			xdg-open ~/.ciboulette/config
 		;;
 		2 )
 			xdg-open "http://127.0.0.1:4232/novedades/"
