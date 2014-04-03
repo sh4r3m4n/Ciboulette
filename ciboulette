@@ -75,11 +75,11 @@ function blogear {
 
 function servidor_inicio {
 	# inicia el servidor
-	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" -i /tmp/ciboulette -c ~/.ciboulette/cgi-bin/
+	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" -i /tmp/ciboulette.pid -c ~/.ciboulette/cgi-bin/
 }
 function servidor_matar {
 	# matar el servidor
-	kill $(cat /tmp/ciboulette)
+    kill $(cat /tmp/ciboulette).pid
 }
 
 function nodo_agregar {
@@ -124,11 +124,12 @@ while getopts a:b:n:skdlhiuw OPCION; do
                 ;;
 	u)
 		NOMBRE=`basename $0`
+        AUTOR="sh4r3m4n"
 		REPO="Ciboulette"
-		ZIP="beta"
+		ZIP="master"
 		cd /tmp
 		# unificar estas dos lineas
-		wget https://github.com/b4zz4/$REPO/archive/$ZIP.zip -O master.zip
+		wget https://github.com/$AUTOR/$REPO/archive/$ZIP.zip -O master.zip
 		rm -r $REPO-$ZIP/
 		unzip master.zip
 		cd $REPO-$ZIP/
