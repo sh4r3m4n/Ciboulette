@@ -79,7 +79,10 @@ function servidor_inicio {
 }
 function servidor_matar {
 	# matar el servidor
-    kill $(cat /tmp/ciboulette).pid
+    if [ -f /tmp/ciboulette.pid ]
+    then
+        kill $(cat /tmp/ciboulette.pid)
+    fi
 }
 
 function nodo_agregar {
