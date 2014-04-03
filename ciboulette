@@ -224,7 +224,7 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Avatar Perfil Leer_novedades Sindicalizar Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - $(cat ~/.ciboulette/hostname)"`
+MENU=`echo  "Publicar_un_articulo Avatar Perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - $(cat ~/.ciboulette/hostname)"`
 case $MENU in
 		0 )
 			TITULO="$(titulo)"
