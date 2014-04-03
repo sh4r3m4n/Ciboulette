@@ -125,7 +125,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 	u)
 		NOMBRE=`basename $0`
 		REPO="Ciboulette"
-		ZIP="beta"
+		ZIP="master"
 		cd /tmp
 		# unificar estas dos lineas
 		wget https://github.com/b4zz4/$REPO/archive/$ZIP.zip -O master.zip
