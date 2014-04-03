@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 #	Ciboulette una red social 100% libre, descentralizada y entre pares
+#	version 0.2
 #	AGPLv3+ © bazza
 #
 
@@ -169,7 +170,9 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		mkdir -p ~/.$NOMBRE/md 2> /dev/null
 		cp -r config ~/.$NOMBRE/
 		cp -r favicon.ico ~/.$NOMBRE/
+		FEED="$(cat ~/.$NOMBRE/novedades/config | grep "^feed ")"
 		cp -r novedades ~/.$NOMBRE/
+		echo "$FEED" >> ~/.$NOMBRE/novedades/config
 
 		echo "output = $HOME/.$NOMBRE" >> ~/.$NOMBRE/config
 		echo "input = $HOME/.$NOMBRE/md" >> ~/.$NOMBRE/config
