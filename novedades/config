@@ -1,5 +1,4 @@
 plugindirs plugins
-
 splitstate false
 
 maxarticles 1000
@@ -10,16 +9,15 @@ expireage 1d
 keepmin 20
 
 currentonly false
-daysections true
-
-dayformat %A, %d de %B
 
 timesections true
 timeformat %H:%M
+daysections true
+dayformat %A, %d de %B
 datetimeformat %H:%M, %A, %d de %B
 
 template templates/template
-itemtemplate templates/item 
+itemtemplate templates/item
 
 outputfile index.html
 
@@ -47,9 +45,10 @@ xmlurl http://localhost:4232/novedades/rss.xml
 
 xmllanguage es
 
-feed 3h http://127.0.0.1:4232/
-
 xmltitle Mi Ciboulette
 xmldescription Una red social 100% libre y distribuida
 xmlownername juan perez
 xmlowneremail joe@joedicastro.com
+
+
+feed 3h http://127.0.0.1:4232/
