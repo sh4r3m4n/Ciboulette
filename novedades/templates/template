@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="style.css" type="text/css">
-        <title>rawdog</title>
+	<link href="../rss20.xml" rel="alternate" title="ATOM" type="application/atom+xml" />
+        <title>Ciboulette</title>
         <script type="text/javascript">
             /*localStorage.clear();*/
             function readReadColor(){
@@ -96,7 +97,6 @@
                         window.location = "#" + previous.parentNode.id;
                     }else{
                         /*popup("end");*/
-                        alert("end");
                     }
                 }
             }
@@ -124,11 +124,12 @@
     <body id="rawdog" onload="readReadColor()">
         <div id="page">
             <div id="header">
-                <h1>rawdog __version__: __num_items__ items from __num_feeds__ feeds</h1>
-                <p><a onclick="toggleall('block')">Open all</a> <a onclick="toggleall('none')">Close all</a> <a onclick="markAllRead()">Mark All Read</a></p>
+                <h1>Ciboulette</h1>
+		<h2> __num_items__  / __num_feeds__ </h2>
+                <p><a onclick="toggleall('block')">Abrir todos</a> <a onclick="toggleall('none')">Cerar todos</a> <a onclick="markAllRead()">Marcar como leidos</a></p>
             </div>
             <div id=beggining>
-                <p>You've reached the beggining</p>
+                <p>Llegaste al inicio</p>
             </div>
             <div class="pages">
                 __paged_output_pages__
@@ -140,7 +141,7 @@
                 __paged_output_pages__
             </div>
         </div>
-        <a id="toTopButton" href="#">Top^</a>
+        <a id="toTopButton" href="#">&uarr;</a>
         <div id="floatingNav">
             <p id="navNext" onclick="nextPrev('next')">&uarr;</p>
             <p id="navPrev" onclick="nextPrev('previous')">&darr;</p>

@@ -114,7 +114,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
                 ;;
                 d) nodos_actualizar; exit
                 ;;
-                s) servidor_inicio ; exit
+                s) servidor_matar; servidor_inicio ; exit
                 ;;
                 k) servidor_matar; exit
                 ;;
