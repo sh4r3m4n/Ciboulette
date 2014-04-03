@@ -133,7 +133,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		echo
 		echo "  -h | esta ayuda"
 		echo "  -i | instalación"
-		echo "  -w | descargar novedades"
+		echo "  -w | actualizar tu ciboulette"
 		echo "  -s | iniciar el servidor"
 		echo "  -k | matar el servidor"
 		echo "  -a [titulo texto] | agregar articulo"
@@ -203,7 +203,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		$NOMBRE -s &
 		$NOMBRE -w
 		$NOMBRE -d
-		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * ciboulette -d # Ciboulette';) | crontab -
+		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d # Ciboulette';) | crontab -
 		exit
 		;;
 	esac
