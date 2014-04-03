@@ -71,11 +71,7 @@ function blogear {
 
 function servidor_inicio {
 	# inicia el servidor
-	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" || \
-	darkhttpd  ~/.ciboulette --port 4232 || \
-	{ while [ 1 ]; do
-		cat ~/.ciboulette/index.html | nc -l 4232 2> /dev/null
-	done }
+	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8"
 }
 
 function nodo_agregar {
