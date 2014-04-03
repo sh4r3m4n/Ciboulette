@@ -5,6 +5,6 @@ daysections false
 
 template opml/template
 define feeditemtemplate opml/feeditemtemplate
-outputfile  opml.xml
+outputfile  contactxs.ompl
 
 xmltitle = Ciboulette
