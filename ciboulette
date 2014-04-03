@@ -75,7 +75,7 @@ function blogear {
 
 function servidor_inicio {
 	# inicia el servidor
-	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" -i /tmp/ciboulette
+	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" -i /tmp/ciboulette -c cgi-bin/*
 }
 function servidor_matar {
 	# matar el servidor

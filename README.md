@@ -50,7 +50,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 
 * ~~Lector local y estatico de feed ([rawdog](http://offog.org/code/rawdog/) + https://github.com/roop/ngoplanet_org/)~~
  * Publicador y editor con CGI (solo para la red local)
-* [Pidgin para ciboulette](pidgin.png)
+* [Chat para ciboulette](chat.png)
 * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
 * Al usar imágenes en un articulo se copien en una carpeta y cree miniaturas
  * Generar galería de las imágenes
