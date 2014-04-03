@@ -80,7 +80,7 @@ function servidor_inicio {
 }
 function servidor_matar {
 	# matar el servidor
-	[ "$(cat /tmp/ciboulette.pid 2> /dev/null )" ] && kill $(cat /tmp/ciboulette.pid) 2> /dev/null
+	[ "$(cat /tmp/ciboulette.pid 2> /dev/null )" ] && kill "$(cat /tmp/ciboulette.pid)" 2> /dev/null
 }
 
 function nodo_agregar {
