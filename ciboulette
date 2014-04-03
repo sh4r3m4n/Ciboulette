@@ -80,21 +80,21 @@ function servidor_inicio {
 
 function nodo_agregar {
 	URL=`cat /dev/stdin`
-	torify rawdog -d ~/.ciboulette/novedades/ -a "$URL"
+	torify rawdog -d ~/.ciboulette/novedades/ -a "$URL" 2> /dev/null
 }
 function nodo_borrar {
 	URL=`cat /dev/stdin`
-	torify rawdog -d ~/.ciboulette/novedades/ -r "$URL"
+	torify rawdog -d ~/.ciboulette/novedades/ -r "$URL" 2> /dev/null
 }
 function nodos_lista {
-	torify rawdog -d ~/.ciboulette/novedades/ -l
+	torify rawdog -d ~/.ciboulette/novedades/ -l 2> /dev/null
 }
 function nodos_actualizar {
-	torify rawdog -d ~/.ciboulette/novedades/ -wu
+	torify rawdog -d ~/.ciboulette/novedades/ -wu 2> /dev/null
 }
 
 
-while getopts a:n:sklhiu OPCION; do
+while getopts a:b:n:skdlhiuw OPCION; do
 	case $OPCION in
                a)
 			echo "Publicando articulo"
@@ -103,6 +103,8 @@ while getopts a:n:sklhiu OPCION; do
 			echo -e "Title: $TITULO\n\n$TEXTO" > ~/.ciboulette/md/$(echo $TITULO |sed 's/\ /_/g;s/[^a-zA-Z0-9_]//g').md
 			blogear
 			exit
+                ;;
+                w) blogear; exit
                 ;;
                 n) echo ${OPTARG} | nodo_agregar; exit
                 ;;
@@ -135,13 +137,14 @@ while getopts a:n:sklhiu OPCION; do
 		echo
 		echo "  -h | esta ayuda"
 		echo "  -i | instalación"
+		echo "  -w | descargar novedades"
 		echo "  -s | iniciar el servidor"
 		echo "  -k | matar el servidor"
 		echo "  -a [titulo texto] | agregar articulo"
 		echo "  -n [url del nodo] | agregar nodo"
 		echo "  -d | actualizar noticias"
 		echo "  -b [url del nodo] | borrar nodo"
-		echo "  -l | inicia liferea "
+		echo "  -l | lisa de nodos "
 		echo "  -u Actualizar la aplicación"
 		exit
 	;;
@@ -202,6 +205,9 @@ while getopts a:n:sklhiu OPCION; do
 		echo "Tu dirección de Ciboulette es http://$(cat ~/.${NOMBRE}/hostname)"
 		# inicia el servidor
 		$NOMBRE -s &
+		$NOMBRE -w
+		$NOMBRE -d
+		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * ciboulette -d # Ciboulette';) | crontab -
 		exit
 		;;
 	esac
