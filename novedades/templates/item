@@ -4,8 +4,8 @@
         <h4 class="itemtitle unread"><a href="__url__">>> </a>__title_no_link__</h4>
         <p class="itembyline">
         __if_author__by __author____endif__
-        in __feed_title__
-        __if_date__at __date____endif__
+        de __feed_title__
+        __if_date__a las __date____endif__
     </div>
     __if_description__<div class="itemdescription" id="item__guid__">
         __description__
