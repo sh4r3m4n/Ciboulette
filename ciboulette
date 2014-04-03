@@ -79,7 +79,7 @@ function servidor_inicio {
 }
 function servidor_matar {
 	# matar el servidor
-	kill $(cat /tmp/ciboulette)
+	[ "$(cat /tmp/ciboulette 2> /dev/null )" ] && kill $(cat /tmp/ciboulette) 2> /dev/null
 }
 
 function nodo_agregar {
