@@ -119,12 +119,13 @@ while getopts a:n:sklhiu OPCION; do
 	u)
 		NOMBRE=`basename $0`
 		REPO="Ciboulette"
+		ZIP="beta"
 		cd /tmp
 		# unificar estas dos lineas
-		wget https://github.com/b4zz4/$REPO/archive/master.zip -O master.zip
-		rm -r $REPO-master/
+		wget https://github.com/b4zz4/$REPO/archive/$ZIP.zip -O master.zip
+		rm -r $REPO-$ZIP/
 		unzip master.zip
-		cd $REPO-master/
+		cd $REPO-$ZIP/
 		chmod +x $NOMBRE
 		./$NOMBRE -i && echo "actualizado"
 		exit
@@ -169,6 +170,7 @@ while getopts a:n:sklhiu OPCION; do
 		mkdir -p ~/.$NOMBRE/md 2> /dev/null
 		cp -r config ~/.$NOMBRE/
 		cp -r favicon.ico ~/.$NOMBRE/
+		cp -r novedades ~/.$NOMBRE/
 
 		echo "output = $HOME/.$NOMBRE" >> ~/.$NOMBRE/config
 		echo "input = $HOME/.$NOMBRE/md" >> ~/.$NOMBRE/config
