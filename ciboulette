@@ -75,11 +75,12 @@ function blogear {
 
 function servidor_inicio {
 	# inicia el servidor
-	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" -i /tmp/ciboulette -c ~/.ciboulette/cgi-bin/
+	rm /tmp/ciboulette.pid
+	mini-httpd -p 4232 -d ~/.ciboulette -T "UTF8" -i /tmp/ciboulette.pid -c ~/.ciboulette/cgi-bin/
 }
 function servidor_matar {
 	# matar el servidor
-	[ "$(cat /tmp/ciboulette 2> /dev/null )" ] && kill $(cat /tmp/ciboulette) 2> /dev/null
+	[ "$(cat /tmp/ciboulette.pid 2> /dev/null )" ] && kill $(cat /tmp/ciboulette.pid) 2> /dev/null
 }
 
 function nodo_agregar {
@@ -118,9 +119,12 @@ while getopts a:b:n:skdlhiuw OPCION; do
                 ;;
                 d) nodos_actualizar; exit
                 ;;
-                s) servidor_matar; servidor_inicio ; exit
+                s) servidor_matar
+		   servidor_inicio
+		 exit
                 ;;
-                k) servidor_matar; exit
+                k)
+			servidor_matar; exit
                 ;;
 	u)
 		NOMBRE=`basename $0`
