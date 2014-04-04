@@ -76,12 +76,8 @@ function blogear {
 function servidor_inicio {
 	# inicia el servidor
 	rm -f /tmp/ciboulette.pid
-    if [ "$(uname -r | grep ARCH)" ] # Si corremos arch
-    then 
-        SERVER=/usr/bin/mini_httpd
-    else
-        SERVER=/usr/sbin/mini-httpd
-    fi
+	# Si corremos arch
+	[ "$(uname -r | grep ARCH)" ] && SERVER=/usr/bin/mini_httpd || SERVER=/usr/sbin/mini-httpd
 	$SERVER -p 4232 -d ~/.ciboulette -T "UTF8" -i /tmp/ciboulette.pid #-c ~/.ciboulette/cgi-bin/
 }
 function servidor_matar {
@@ -175,7 +171,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		elif [ "$(which pacman)" ]; then
 			aptitude="yaourt -S"
 		else
-		aptitude="apt-get -y install"
+			aptitude="apt-get -y install"
 		fi
 		if [ "$(which gksu)" ]; then
 			gksu="gksu"
@@ -203,28 +199,26 @@ while getopts a:b:n:skdlhiuw OPCION; do
 
 		touch ~/.$NOMBRE/hostname
 
+
+		# en Mint, Debian, Fedora (?)
+		PACKAGES="mini-httpd tor torsocks zenity chronicle rawdog libtext-markdown-perl"
+
+		# en Arch
 	        if [ "$(uname -r | grep ARCH)" ]; then
-			# en Arch
 			PACKAGES="mini_httpd tor torsocks zenity chronichle rawdog perl-text-markdown python2-feedparser"
-	        else
-			# en Mint, Debian, Fedora (?)
-			PACKAGES="mini-httpd tor torsocks zenity chronicle rawdog libtext-markdown-perl"
 	        fi
 
 		echo "$aptitude $PACKAGES
 		echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
 		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
 		cp $NOMBRE /usr/local/bin/
-		# Reinicia el demonio
-	        if [ "$(uname -r | grep ARCH)" ]; then
-			systemctl restart tor
-		else
-			/etc/init.d/tor restart
-		fi
+		systemctl restart tor
+		/etc/init.d/tor restart
 		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop
 		sleep 10
 		cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname" > $TMP
-	        echo 'Se necesita autenticación como superusuario para instalar los paquetes. Debe proporcionar la contraseña de root"
+
+	        echo "Se necesita autenticación como superusuario para instalar los paquetes. Debe proporcionar la contraseña de root"
 		$gksu "bash $TMP"
 		rm $TMP
 
@@ -253,32 +247,36 @@ done
 MENU=`echo  "Publicar_un_articulo Avatar Perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - $(cat ~/.ciboulette/hostname)"`
 case $MENU in
 		0 )
+			# Publicar articulo
 			TITULO="$(titulo)"
 			mensaje | ciboulette -a "$TITULO"
 			xdg-open "http://127.0.0.1:4232"
 		;;
 		1 )
+			# Imagen del perfil
 			ARCHIVO=$(archivo "Imagen del perfil")
 			convert "$ARCHIVO" -resize 16x16 ~/.ciboulette/favicon.ico
 			convert "$ARCHIVO" -resize 128x128 ~/.ciboulette/avatar.png
 		;;
 		2)
+			# Configuración del perfil
 			xdg-open ~/.ciboulette/config
 		;;
-		2 )
+		3)
+			# Novedades
 			xdg-open "http://127.0.0.1:4232/novedades/"
 		;;
-		3 )
+		4)
+			# Agregar nodo
 			URL=$(url)
 			ciboulette -n "$URL"
 		;;
-		4 )
-			# inicia al servidor
+		5)
+			# Inicia al servidor
 			ciboulette -s
 		;;
-		5 )
-			# mata el servidor
+		6)
+			# Mata el servidor
 			ciboulette -k
 		;;
-
 esac
