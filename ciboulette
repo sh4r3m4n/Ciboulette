@@ -185,6 +185,12 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		cp -r novedades ~/.$NOMBRE/
 		echo "$FEED" >> ~/.$NOMBRE/novedades/config
 
+                # comprueba si esta instalando o actualizando
+                if [ ! "$(cat ~/.ciboulette/hostname)" ]; then
+                        # agrega tu nombre de usuario por defecto
+                        echo "blog_title = `whoami`" >> ~/.$NOMBRE/config
+                fi
+
 		echo "output = $HOME/.$NOMBRE" >> ~/.$NOMBRE/config
 		echo "input = $HOME/.$NOMBRE/md" >> ~/.$NOMBRE/config
 
