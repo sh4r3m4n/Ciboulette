@@ -134,7 +134,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
                 ;;
 	u)
 		NOMBRE=`basename $0`
-        AUTOR="sh4r3m4n"
+        	AUTOR="b4zz4"
 		REPO="Ciboulette"
 		ZIP="master"
 		cd /tmp
@@ -203,26 +203,28 @@ while getopts a:b:n:skdlhiuw OPCION; do
 
 		touch ~/.$NOMBRE/hostname
 
-        if [ "$(uname -r | grep ARCH)" ]
-        then
-            PACKAGES="mini_httpd tor torsocks zenity chronichle rawdog perl-text-markdown python2-feedparser"
-        else
-            PACKAGES="mini-httpd tor torsocks zenity chronicle rawdog"
-        fi
-		echo "$aptitude mini-httpd tor torsocks zenity chronicle rawdog
+	        if [ "$(uname -r | grep ARCH)" ]; then
+			# en Arch
+			PACKAGES="mini_httpd tor torsocks zenity chronichle rawdog perl-text-markdown python2-feedparser"
+	        else
+			# en Mint, Debian, Fedora (?)
+			PACKAGES="mini-httpd tor torsocks zenity chronicle rawdog libtext-markdown-perl"
+	        fi
+
+		echo "$aptitude $PACKAGES
 		echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
 		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
 		cp $NOMBRE /usr/local/bin/
-        if [ \"\$\(uname -r | grep ARCH\" ]
-        then
-            systemctl restart tor
-        else
-		/etc/init.d/tor restart
-            fi
+		# Reinicia el demonio
+	        if [ "$(uname -r | grep ARCH)" ]; then
+			systemctl restart tor
+		else
+			/etc/init.d/tor restart
+		fi
 		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop
 		sleep 10
 		cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname" > $TMP
-        echo 'Se necesita autenticación como superusuario para instalar los paquetes. Debe proporcionar la contraseña de root"
+	        echo 'Se necesita autenticación como superusuario para instalar los paquetes. Debe proporcionar la contraseña de root"
 		$gksu "bash $TMP"
 		rm $TMP
 
