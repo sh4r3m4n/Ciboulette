@@ -78,11 +78,11 @@ function servidor_inicio {
 	rm -f /tmp/ciboulette.pid
 	# Si corremos arch
 	[ "$(uname -r | grep ARCH)" ] && SERVER=/usr/bin/mini_httpd || SERVER=/usr/sbin/mini-httpd
-	$SERVER -p 4232 -d ~/.ciboulette -T "UTF8" -i /tmp/ciboulette.pid #-c ~/.ciboulette/cgi-bin/
+	$SERVER -i /tmp/ciboulette.pid -p 4232 -d ~/.ciboulette -T "UTF8" -c ~/.ciboulette/cgi-bin/
 }
 function servidor_matar {
 	# matar el servidor
-	[ "$(cat /tmp/ciboulette.pid 2> /dev/null )" ] && kill "$(cat /tmp/ciboulette.pid)" 2> /dev/null
+	[ -f /tmp/ciboulette.pid ] && kill "$(cat /tmp/ciboulette.pid)" 2> /dev/null
 }
 
 function nodo_agregar {
