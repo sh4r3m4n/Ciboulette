@@ -48,13 +48,14 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 
 ## Quehaceres
 
+* [Acceso transparente a los servicios ocultos](https://grepular.com/Transparent_Access_to_Tor_Hidden_Services)
 * ~~Lector local y estatico de feed ([rawdog](http://offog.org/code/rawdog/) + https://github.com/roop/ngoplanet_org/)~~
  * Publicador y editor de perfil con CGI (solo para la red local)
  * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
 * ~~Sacar el nombre del usuario de `whoami`~~
  * Poner datos de `finger` guardados en los archivos `.plan`, `.project` y `.pgpkey`
 * [Chat para ciboulette](chat.png) prosody + [mod_onions](https://blog.thijsalkema.de/blog/2013/06/11/xmpp-federation-over-tor-hidden-services/)
-* Método para compartir archivos y multimedia
+* Método para compartir archivos y multimedia (carpeta XDG_PUBLICSHARE_DIR)
  * Al usar imágenes en un articulo se copien en una carpeta y cree miniaturas
   * Generar galería de las imágenes
 * Método para compartir archivos y multimedia
