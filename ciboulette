@@ -262,7 +262,7 @@ case $MENU in
 			ARCHIVO=$(archivo "Imagen del perfil")
 			convert "$ARCHIVO" -resize 16x16 ~/.ciboulette/favicon.ico
 			convert "$ARCHIVO" -resize 128x128 ~/.ciboulette/avatar.png
-			qrencode "`cat ~/.ciboulette/hostname`" -o qr.png
+			qrencode -m 0 -s 1 "`cat ~/.ciboulette/hostname`" -o qr.png
 		;;
 		2)
 			# Configuración del perfil
