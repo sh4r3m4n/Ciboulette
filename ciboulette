@@ -199,8 +199,6 @@ while getopts a:b:n:skdlhiuw OPCION; do
 
 		touch ~/.$NOMBRE/hostname
 
-
-
 		echo "" > $TMP
 		# en Arch
 	        if [ "$(uname -r | grep ARCH)" ]; then
@@ -234,11 +232,20 @@ while getopts a:b:n:skdlhiuw OPCION; do
 
 		echo
 		echo "Tu dirección de Ciboulette es $(cat ~/.${NOMBRE}/hostname)"
+		mkdir ~/.$NOMBRE/compartir
+		cd ~/.$NOMBRE/
+
+		if [ "$XDG_PUBLICSHARE_DIR" ]; then
+			ls -s "$XDG_PUBLICSHARE_DIR" compartir
+			[ "$XDG_PUBLICSHARE_DIR" ] && echo "Compartiendo la carpeta $XDG_PUBLICSHARE_DIR"
+		fi
+
 		# inicia el servidor
 		$NOMBRE -s &
 		$NOMBRE -w
 		$NOMBRE -d
 		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d # Ciboulette';) | crontab -
+		$NOMBRE -h
 		exit
 		;;
 	esac
@@ -262,7 +269,7 @@ case $MENU in
 			ARCHIVO=$(archivo "Imagen del perfil")
 			convert "$ARCHIVO" -resize 16x16 ~/.ciboulette/favicon.ico
 			convert "$ARCHIVO" -resize 128x128 ~/.ciboulette/avatar.png
-			qrencode -m 0 -s 1 "`cat ~/.ciboulette/hostname`" -o qr.png
+			qrencode "`cat ~/.ciboulette/hostname`" -o qr.png
 		;;
 		2)
 			# Configuración del perfil
