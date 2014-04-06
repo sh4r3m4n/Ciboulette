@@ -54,6 +54,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
  * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
 * ~~Sacar el nombre del usuario de `whoami`~~
  * Poner datos de `finger` guardados en los archivos `.plan`, `.project` y `.pgpkey`
+ * Generar QR y guardarlo en `.xface`
 * [Chat para ciboulette](chat.png) prosody + [mod_onions](https://blog.thijsalkema.de/blog/2013/06/11/xmpp-federation-over-tor-hidden-services/)
 * Método para compartir archivos y multimedia (carpeta XDG_PUBLICSHARE_DIR)
  * Al usar imágenes en un articulo se copien en una carpeta y cree miniaturas
