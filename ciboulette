@@ -204,12 +204,14 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		echo "" > $TMP
 		# en Arch
 	        if [ "$(uname -r | grep ARCH)" ]; then
-			PACKAGES="darkhttpd tor torsocks zenity chronichle rawdog perl-text-markdown python2-feedparser"
-			while read i; do echo "Instalar los programas $i"; done
+			echo "darkhttpd tor torsocks zenity chronichle rawdog perl-text-markdown python2-feedparser" | \
+			sed 's/\ /\n/g' | while read i; do 
+				[ ! "$(which $i)" ] && echo "Instalar los programas $i"
+			done
 		else
 			# en Mint, Debian, Fedora (?)
-			PACKAGES="mini-httpd tor torsocks zenity chronicle rawdog libtext-markdown-perl"
-			while read i; do echo "$aptitude $i"; done > $TMP
+			echo "mini-httpd tor torsocks zenity chronicle rawdog libtext-markdown-perl" | \
+			sed 's/\ /\n/g' | while read i; do echo "$aptitude $i"; done > $TMP
 	        fi
 
 		echo "echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
