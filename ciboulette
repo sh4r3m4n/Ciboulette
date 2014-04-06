@@ -77,8 +77,8 @@ function servidor_inicio {
 	# inicia el servidor
 	rm -f /tmp/ciboulette.pid
 	# Si corremos arch
-	[ "$(uname -r | grep ARCH)" ] && SERVER=/usr/bin/mini_httpd || SERVER=/usr/sbin/mini-httpd
-	$SERVER -i /tmp/ciboulette.pid -p 4232 -d ~/.ciboulette -T "UTF8" -c ~/.ciboulette/cgi-bin/
+	[ "$(uname -r | grep ARCH)" ] && darkhttpd ~/.ciboulette --port 4232 --pidfile /tmp/ciboulette.pid || \
+	/usr/sbin/mini-httpd -i /tmp/ciboulette.pid -p 4232 -d ~/.ciboulette -T "UTF8" -c ~/.ciboulette/cgi-bin/
 }
 function servidor_matar {
 	# matar el servidor
@@ -200,23 +200,26 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		touch ~/.$NOMBRE/hostname
 
 
-		# en Mint, Debian, Fedora (?)
-		PACKAGES="mini-httpd tor torsocks zenity chronicle rawdog libtext-markdown-perl"
 
+		echo "" > $TMP
 		# en Arch
 	        if [ "$(uname -r | grep ARCH)" ]; then
-			PACKAGES="mini_httpd tor torsocks zenity chronichle rawdog perl-text-markdown python2-feedparser"
+			PACKAGES="darkhttpd tor torsocks zenity chronichle rawdog perl-text-markdown python2-feedparser"
+			while read i; do echo "Instalar los programas $i"; done
+		else
+			# en Mint, Debian, Fedora (?)
+			PACKAGES="mini-httpd tor torsocks zenity chronicle rawdog libtext-markdown-perl"
+			while read i; do echo "$aptitude $i"; done > $TMP
 	        fi
 
-		echo "$aptitude $PACKAGES
-		echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
+		echo "echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
 		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
 		cp $NOMBRE /usr/local/bin/
-		systemctl restart tor
-		/etc/init.d/tor restart
+		systemctl restart tor 2> /dev/null
+		/etc/init.d/tor restart 2> /dev/null
 		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop
 		sleep 10
-		cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname" > $TMP
+		cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname" >> $TMP
 
 	        echo "Se necesita autenticación como superusuario para instalar los paquetes. Debe proporcionar la contraseña de root"
 		$gksu "bash $TMP"
