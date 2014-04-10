@@ -2,9 +2,9 @@
 
 El negocio de convertir a internet en otro televisor se agoto, nunca va a funcionar, grandes portales se agoto, miles de "empresas" dejaron de existir en poco tiempo.
 
-Pero las herramientas nativas de internet invitan a compartir, compartir archivos de par a par es un habito desde el comienzo de internet y todos comparten, luego se suman los chats, blogger, fotologs.
+Pero las herramientas nativas de internet invitan a compartir, compartir archivos de par a par es un habito desde el comienzo de internet y todos comparten, luego se suman los chats, wikis, blog, galerias de fotos.
 
-Para los capitalista nace un nuevo negocio, las "redes sociales". Que no son más que las herramientas hackers usadas para la trivialidad y el chusmerio, de paso llenan sus bases de datos de conocimientos sobre los usuarios. Y como dicta el refrán: "El conocimiento es poder".
+Para los capitalista nace un nuevo negocio, las "redes sociales". Que no son más que las herramientas hackers usadas para la trivialidad y el chusmerio, de paso llenan sus bases de datos de conocimientos sobre l@s usuari@s. Y como dicta el refrán: "El conocimiento es poder".
 
 ## Solución de errores y copiar errores
 
@@ -22,15 +22,17 @@ Tal vez uno de los modelos más interesante es friendika que tiene algunos conce
 
 Muchas redes sociales "libres", por no decir casi todas, usan un servidor centralizado o muchos de ellos (una federación), esto sigue teniendo el problemas del control sobre la información: la moderación, espionaje, minación de datos, etc.
 
+Muchas veces no deja de entrever que muchas de estas redes sociales no quieren más que ser competencia de las redes sociales capitalista.
+
 ### El principal competidor potencial
 
-Se pone en discusión en verdadero problema de la internet, hay grandes servidores en el centro y están ahí por que los dejamos o mejor dicho por que los pusimos ahí. Es fácil diseñar con este modelo, es el modelo nativo de la red. En los 50's a los 70's no podían hacer otra cosa, había pocas computadoras y muchos para usarlas, el terner grandes servidores con "clientes bobos" era practico. 
+Se pone en discusión en verdadero problema de la internet, hay grandes servidores en el centro y están ahí por que los dejamos o mejor dicho por que los pusimos ahí. Es fácil diseñar con este modelo, es el modelo nativo de la red. En los 50's a los 70's no podían hacer otra cosa, había pocas computadoras y muchos para usarlas, el tener grandes servidores con "clientes bobos" era practico. 
 
-Pero hoy en día solo sirven para empoderar a los programas como servicios y a los servidores centralizados y muchas veces no deja de entrever que muchas de estas redes sociales no quieren más que ser competencia de las redes sociales capitalista.
+Pero hoy en día solo sirve crear programas como servicios.
 
 ## Redes sociales libres negadas
 
-El mail, los feed, los IRC, plataformas como: wordpress, drupal y la mismísima internet ya eran parte de las redes sociales libres, pero lamentablemente se escribió nuevo código dándoles la espalda. 
+El mail, los feed, los IRC, emule, plataformas como: wordpress, drupal y la mismísima internet ya eran parte de las red social libre, pero lamentablemente se escribió nuevo código dándoles la espalda a estas estructuras nativas que solo deberíamos volver mas horizontales y plurales.
 
 Es de destacar que los mails, feed e IRC son federables y tiene muchos mas años que las redes sociales no libres.
 
@@ -40,4 +42,4 @@ Tenemos que eliminar al servidor centralizado, cada nodo tiene que ser su propio
 
 # Ciboulette
 
-Por estas razones ciboulette parte de la idea de tomar muchos programas y protocoles ya disponibles, infraestructura de pares, redes libres. Creando nuestra propia **infraestructura social** para compartir y comunicar entre pares, sin grandes servidores y con una infraestructura independiente a la red social, las redes sociales solo las conforman personas, no computadoras.
+Por estas razones ciboulette parte de la idea de tomar muchos programas y protocoles ya existentes, infraestructura de pares, redes libres. Creando nuestra propia **infraestructura social** para compartir y comunicar entre pares, sin grandes servidores centralizados; las redes sociales solo las conforman personas.

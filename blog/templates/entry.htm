@@ -1,0 +1,8 @@
+<a id="$NB_EntryID"></a>
+<h2><a href="${ARCHIVES_PATH}$NB_EntryPermalink">$NB_MetaTitle</a></h2>
+<h5>$NB_EntryDate $template_postedby <a href="#">$NB_EntryAuthor</a></h5>
+$NB_EntryBody
+<p class="well well-sm">
+	<span class="glyphicon glyphicon-refresh">&nbsp;</span>
+	$([ ! -z "$NB_EntryCategories" ] && echo "<span class="glyphicon glyphicon-tags">&nbsp;</span> $template_catlinks $NB_EntryCategories")
+</p>

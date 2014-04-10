@@ -5,6 +5,12 @@
 #	AGPLv3+ © bazza
 #
 
+export NOMBRE="ciboulette"
+export CARPETA="~/.$NOMBRE/"
+export BLOG="${CARPETA}blog"
+export COMPARTIR="${CARPETA}compartir"
+export NOVEDADES="${CARPETA}novedades"
+
 #---------------------- funciones graficas -----------------
 function opciones {
 	while getopts t:m: OPCION; do
@@ -68,38 +74,37 @@ function progreso {
 	kill `cat $pid`
 }
 function blogear {
-	cd ~/.ciboulette/
-	chronicle --config ~/.ciboulette/config
-	cp index.rss index.html
+	# nanoblogger construye el blog
+	nb -b $BLOG update all
 }
 
 function servidor_inicio {
 	# inicia el servidor
-	rm -f /tmp/ciboulette.pid
+	rm -f /tmp/$NOMBRE.pid
 	# Si corremos arch
-	[ "$(uname -r | grep ARCH)" ] && darkhttpd ~/.ciboulette --port 4232 --pidfile /tmp/ciboulette.pid || \
-	/usr/sbin/mini-httpd -i /tmp/ciboulette.pid -p 4232 -d ~/.ciboulette -T "UTF8" -c ~/.ciboulette/cgi-bin/
+	[ "$(uname -r | grep ARCH)" ] && darkhttpd $BLOG --port 4232 --pidfile /tmp/$NOMBRE.pid || \
+	/usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$BLOG" -T "UTF8" -c "cgi-bin/*"
 }
 function servidor_matar {
 	# matar el servidor
-	[ -f /tmp/ciboulette.pid ] && kill "$(cat /tmp/ciboulette.pid)" 2> /dev/null
+	[ -f /tmp/$NOMBRE.pid ] && kill "$(cat /tmp/$NOMBRE.pid)" 2> /dev/null
 }
 
 function nodo_agregar {
 	URL=`cat /dev/stdin`
-	torify rawdog -d ~/.ciboulette/novedades/ -a "$URL" 2> /dev/null
+	torify rawdog -d $NOVEDADES -a "$URL" 2> /dev/null
 }
 function nodo_borrar {
 	URL=`cat /dev/stdin`
-	torify rawdog -d ~/.ciboulette/novedades/ -r "$URL" 2> /dev/null
+	torify rawdog -d $NOVEDADES -r "$URL" 2> /dev/null
 }
 function nodos_lista {
-	torify rawdog -d ~/.ciboulette/novedades/ -l 2> /dev/null
+	torify rawdog -d $NOVEDADES -l 2> /dev/null
 }
 function nodos_actualizar {
-	N=$(torify rawdog -d ~/.ciboulette/novedades/ -wu | cut -d " " -f1) 2> /dev/null
+	N=$(torify rawdog -d $NOVEDADES -wu | cut -d " " -f1) 2> /dev/null
 	export DISPLAY=:0
-	[ "$N" -gt 0 ] && notify-send -t -1 "Ciboulette" "$N mensajes" -i ~/.ciboulette/imagen.png
+	[ "$N" -gt 0 ] && notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" -i "$CARPETA/imagen.png"
 }
 
 
@@ -107,9 +112,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 	case $OPCION in
                a)
 			echo "Publicando articulo"
-			TITULO=$@
-			TEXTO=`cat /dev/stdin`
-			echo -e "Title: $TITULO\n\n$TEXTO" > ~/.ciboulette/md/$(echo $TITULO |sed 's/\ /_/g;s/[^a-zA-Z0-9_]//g').md
+			# se necesita un metodo para crear un articulo
 			blogear
 			exit
                 ;;
@@ -146,7 +149,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		exit
 	;;
 	h)
-		echo "$(basename $0) $(cat ~/.ciboulette/hostname)"
+		echo "$(basename $0) $(cat $CARPETA/hostname)"
 		echo
 		echo "  -h | esta ayuda"
 		echo "  -i | instalación"
@@ -167,6 +170,10 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		# dependencias
 		TMP=$(mktemp)
 
+
+		# ---------------------  DEPENDENCIAS -----------------------------
+
+
 		# verifica el sistema operativo
 		if [ "$(which yum)" ]; then
 			aptitude="yum -y install"
@@ -181,37 +188,19 @@ while getopts a:b:n:skdlhiuw OPCION; do
 			gksu="su -c"
 		fi
 
-		# Crea el directorio local y temas
-
-		mkdir -p ~/.$NOMBRE/md 2> /dev/null
-		cp -r config ~/.$NOMBRE/
-		cp -r favicon.ico ~/.$NOMBRE/
-		FEED="$(cat ~/.$NOMBRE/novedades/config | grep "^feed ")"
-		cp -r novedades ~/.$NOMBRE/
-		echo "$FEED" >> ~/.$NOMBRE/novedades/config
-
-                # comprueba si esta instalando o actualizando
-                if [ ! "$(cat ~/.ciboulette/hostname)" ]; then
-                        # agrega tu nombre de usuario por defecto
-                        echo "blog_title = `whoami`" >> ~/.$NOMBRE/config
-                fi
-
-		echo "output = $HOME/.$NOMBRE" >> ~/.$NOMBRE/config
-		echo "input = $HOME/.$NOMBRE/md" >> ~/.$NOMBRE/config
-
-		touch ~/.$NOMBRE/hostname
-
 		echo "" > $TMP
 		# en Arch
 	        if [ "$(uname -r | grep ARCH)" ]; then
-			echo "darkhttpd tor torsocks zenity chronichle rawdog perl-text-markdown python2-feedparser" | \
-			sed 's/\ /\n/g' | while read i; do 
+			echo "darkhttpd tor torsocks zenity nanoblogger rawdog perl-text-markdown python2-feedparser" | \
+			sed 's/\ /\n/g' | while read i; do
 				[ ! "$(which $i)" ] && echo "Instalar los programas $i"
 			done
 		else
 			# en Mint, Debian, Fedora (?)
-			echo "mini-httpd tor torsocks zenity chronicle rawdog libtext-markdown-perl" | \
-			sed 's/\ /\n/g' | while read i; do echo "$aptitude $i"; done > $TMP
+			echo "mini-httpd tor torsocks zenity nanoblogger rawdog libtext-markdown-perl" | \
+			sed 's/\ /\n/g' | while read i; do
+				[ ! "$(which $i)" ] && echo "$aptitude $i"
+			done > $TMP
 	        fi
 
 		echo "echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
@@ -227,6 +216,33 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		$gksu "bash $TMP"
 		rm $TMP
 
+		# ----------------------------- INSTALACION ----------------------------------
+
+		# Crea el directorio local y temas
+
+		mkdir $CARPETA
+		mkdir $BLOG
+
+
+		FEED="$(cat $NOVEDADES/config | grep "^feed ")"
+		cp -r novedades $NOVEDADES
+		echo "$FEED" >> $NOVEDADES/config
+
+		# copia los estilos
+
+		cp -r favicon.ico $BLOG
+		cp -r dist $BLOG
+		cp -r styles $BLOG
+
+
+                # comprueba si esta instalando o actualizando
+                if [ ! "$(cat $CARPETA/hostname)" ]; then
+                        # agrega tu nombre de usuario por defecto
+			echo
+                fi
+
+		touch $CARPETA/hostname
+
 		mkdir ~/.config/autostart/ 2> /dev/null
  		echo -e "[Desktop Entry]\nName=$NOMBRE\nDescription=Red Social 100% Libre\nIcon=help-faq\nType=Application\nExec=$NOMBRE -s\nCategories=GTK;Utility;" > ~/.config/autostart/$NOMBRE.desktop
 
@@ -234,19 +250,32 @@ while getopts a:b:n:skdlhiuw OPCION; do
 
 		echo
 		echo "Tu dirección de Ciboulette es $(cat ~/.${NOMBRE}/hostname)"
-		mkdir ~/.$NOMBRE/compartir
-		cd ~/.$NOMBRE/
+		cd $CARPETA
 
 		if [ "$XDG_PUBLICSHARE_DIR" ]; then
-			ls -s "$XDG_PUBLICSHARE_DIR" compartir
+			ls -s "$XDG_PUBLICSHARE_DIR" "$COMPARTIR"
 			[ "$XDG_PUBLICSHARE_DIR" ] && echo "Compartiendo la carpeta $XDG_PUBLICSHARE_DIR"
+		else
+			# crea la carpeta compartir si esta no se puede asociar a la del sistema
+			mkdir $COMPARTIR
 		fi
+
+		# instala el blog en el directorio
+		nb -b $BLOG add weblog
+		cp -r default/* $BLOG
+
+		mkdir ~/Ciboulette
+		cd ~/Ciboulette
+		ln -s "$BLOG/data" Blog
+		ln -s "$COMPARTIR" Compartir
+		ln -s "$NOVEDADES" Novedades
+		# Deberia crear un acceso a las paginas internas y/o link a los  ejecutables
 
 		# inicia el servidor
 		$NOMBRE -s &
 		$NOMBRE -w
 		$NOMBRE -d
-		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d # Ciboulette';) | crontab -
+		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d &>/dev/null # Ciboulette';) | crontab -
 		$NOMBRE -h
 		exit
 		;;
@@ -258,40 +287,40 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Editar_perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "Ciboulette - $(cat ~/.ciboulette/hostname)"`
+MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Editar_perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "Ciboulette - $(cat $CARPETA/hostname)"`
 case $MENU in
 		0 )
 			# Publicar articulo
 			TITULO="$(titulo)"
 			mensaje | ciboulette -a "$TITULO"
-			xdg-open "http://127.0.0.1:4232"
+			xdg-open "http://localhost:4232"
 		;;
 		1 )
 			# Imagen del perfil
 			ARCHIVO=$(archivo "Imagen del perfil")
-			convert "$ARCHIVO" -resize 16x16 ~/.ciboulette/favicon.ico
-			convert "$ARCHIVO" -resize 128x128 ~/.ciboulette/avatar.png
-			qrencode "`cat ~/.ciboulette/hostname`" -o qr.png
+			convert "$ARCHIVO" -resize 16x16 $CARPETA/favicon.ico
+			convert "$ARCHIVO" -resize 128x128 $CARPETA/avatar.png
+			qrencode "`cat $CARPETA/hostname`" -o qr.png
 		;;
 		2)
 			# Configuración del perfil
-			xdg-open ~/.ciboulette/config
+			xdg-open $CARPETA/config
 		;;
 		3)
 			# Novedades
-			xdg-open "http://127.0.0.1:4232/novedades/"
+			xdg-open "http://localhost:4232/novedades/"
 		;;
 		4)
 			# Agregar nodo
 			URL=$(url)
-			ciboulette -n "$URL"
+			$NOMBRE -n "$URL"
 		;;
 		5)
 			# Inicia al servidor
-			ciboulette -s
+			$NOMBRE -s
 		;;
 		6)
 			# Mata el servidor
-			ciboulette -k
+			$NOMBRE -k
 		;;
 esac

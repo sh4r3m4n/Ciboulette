@@ -1,7 +1,7 @@
 plugindirs plugins
 splitstate false
 
-maxarticles 1000
+maxarticles 10000
 maxage 0
 
 expireage 1d

@@ -7,6 +7,13 @@ TransPort 9040" >> /etc/tor/torrc
 
 # redirecciona los DNS a Tor
 
-iptables -t nat -A OUTPUT     -p udp -m udp --dport 53 -j REDIRECT --to-ports 5300
+iptables -t nat -A OUTPUT -p udp -m udp --dport 53 -j REDIRECT --to-ports 5300
 iptables -t nat -A PREROUTING -p tcp -d 10.192.0.0/11 -j REDIRECT --to-port 9040
-iptables -t nat -A OUTPUT     -p tcp -d 10.192.0.0/11 -j REDIRECT --to-port 9040
+iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/11 -j REDIRECT --to-port 9040
+
+iptables-save > /etc/iptables.rules
+
+# Quehaceres
+#
+# - solucionar que si tor no esta activado no hay DNS :P
+# - esto funciona con la version v0.2.4.21+
