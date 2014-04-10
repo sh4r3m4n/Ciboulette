@@ -6,7 +6,7 @@
 #
 
 export NOMBRE="ciboulette"
-export CARPETA="~/.$NOMBRE/"
+export CARPETA="$NOMBRE/"
 export BLOG="${CARPETA}blog"
 export COMPARTIR="${CARPETA}compartir"
 export NOVEDADES="${CARPETA}novedades"
@@ -75,14 +75,14 @@ function progreso {
 }
 function blogear {
 	# nanoblogger construye el blog
-	nb -b $BLOG update all
+	nb -b $BLOG --template-dir $BLOG/templates update all
 }
 
 function servidor_inicio {
 	# inicia el servidor
 	rm -f /tmp/$NOMBRE.pid
 	# Si corremos arch
-	[ "$(uname -r | grep ARCH)" ] && darkhttpd $BLOG --port 4232 --pidfile /tmp/$NOMBRE.pid || \
+CARPETA	[ "$(uname -r | grep ARCH)" ] && darkhttpd $BLOG --port 4232 --pidfile /tmp/$NOMBRE.pid || \
 	/usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$BLOG" -T "UTF8" -c "cgi-bin/*"
 }
 function servidor_matar {
@@ -170,6 +170,12 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		# dependencias
 		TMP=$(mktemp)
 
+		# - instala dependencias
+		# - crea servicio oculto
+		# - genera las carpetas
+		# - copia las configuraciones de nanoblogger, rawdog
+		# - copia ciboulette
+		# - actualizar ciboulette
 
 		# ---------------------  DEPENDENCIAS -----------------------------
 
@@ -191,24 +197,28 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		echo "" > $TMP
 		# en Arch
 	        if [ "$(uname -r | grep ARCH)" ]; then
-			echo "darkhttpd tor torsocks zenity nanoblogger rawdog perl-text-markdown python2-feedparser" | \
+			echo "darkhttpd tor torsocks zenity nanoblogger rawdog python2-feedparser" | \
 			sed 's/\ /\n/g' | while read i; do
 				[ ! "$(which $i)" ] && echo "Instalar los programas $i"
 			done
 		else
 			# en Mint, Debian, Fedora (?)
-			echo "mini-httpd tor torsocks zenity nanoblogger rawdog libtext-markdown-perl" | \
+			echo "mini-httpd tor torsocks zenity nanoblogger rawdog" | \
 			sed 's/\ /\n/g' | while read i; do
 				[ ! "$(which $i)" ] && echo "$aptitude $i"
 			done > $TMP
 	        fi
+
+		# ----------------------------- TOR ----------------------------------
+
+		# Configuración en tor y reinicio del demonio
 
 		echo "echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
 		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
 		cp $NOMBRE /usr/local/bin/
 		systemctl restart tor 2> /dev/null
 		/etc/init.d/tor restart 2> /dev/null
-		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop
+		cp $NOMBRE.desktop /usr/share/applications/
 		sleep 10
 		cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname" >> $TMP
 
@@ -218,58 +228,16 @@ while getopts a:b:n:skdlhiuw OPCION; do
 
 		# ----------------------------- INSTALACION ----------------------------------
 
+
 		# Crea el directorio local y temas
-
-		mkdir $CARPETA
-		mkdir $BLOG
-
-
-		FEED="$(cat $NOVEDADES/config | grep "^feed ")"
-		cp -r novedades $NOVEDADES
-		echo "$FEED" >> $NOVEDADES/config
-
-		# copia los estilos
-
-		cp -r favicon.ico $BLOG
-		cp -r dist $BLOG
-		cp -r styles $BLOG
+		mkdir "$CARPETA" &> /dev/null
+		cp -r base/* "$CARPETA"
+		# direccion de tu ciboulette
+		echo "http://$(cat /tmp/hostname)" > $CARPETA/hostname
 
 
-                # comprueba si esta instalando o actualizando
-                if [ ! "$(cat $CARPETA/hostname)" ]; then
-                        # agrega tu nombre de usuario por defecto
-			echo
-                fi
-
-		touch $CARPETA/hostname
-
-		mkdir ~/.config/autostart/ 2> /dev/null
- 		echo -e "[Desktop Entry]\nName=$NOMBRE\nDescription=Red Social 100% Libre\nIcon=help-faq\nType=Application\nExec=$NOMBRE -s\nCategories=GTK;Utility;" > ~/.config/autostart/$NOMBRE.desktop
-
-		echo "http://$(cat /tmp/hostname)" > ~/.$NOMBRE/hostname
-
-		echo
-		echo "Tu dirección de Ciboulette es $(cat ~/.${NOMBRE}/hostname)"
-		cd $CARPETA
-
-		if [ "$XDG_PUBLICSHARE_DIR" ]; then
-			ls -s "$XDG_PUBLICSHARE_DIR" "$COMPARTIR"
-			[ "$XDG_PUBLICSHARE_DIR" ] && echo "Compartiendo la carpeta $XDG_PUBLICSHARE_DIR"
-		else
-			# crea la carpeta compartir si esta no se puede asociar a la del sistema
-			mkdir $COMPARTIR
-		fi
-
-		# instala el blog en el directorio
-		nb -b $BLOG add weblog
-		cp -r default/* $BLOG
-
-		mkdir ~/Ciboulette
-		cd ~/Ciboulette
-		ln -s "$BLOG/data" Blog
-		ln -s "$COMPARTIR" Compartir
-		ln -s "$NOVEDADES" Novedades
-		# Deberia crear un acceso a las paginas internas y/o link a los  ejecutables
+		mkdir ~/.config/autostart/ &> /dev/null
+		cp $NOMBRE.desktop  ~/.config/autostart/
 
 		# inicia el servidor
 		$NOMBRE -s &
@@ -277,6 +245,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		$NOMBRE -d
 		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d &>/dev/null # Ciboulette';) | crontab -
 		$NOMBRE -h
+
 		exit
 		;;
 	esac
@@ -324,3 +293,38 @@ case $MENU in
 			$NOMBRE -k
 		;;
 esac
+
+
+exit
+
+
+		# rawdog
+                # comprueba si esta instalando o actualizando
+
+                #if [ -f "$NOVEDADES/config" ]; then
+		#	FEED="$(cat $NOVEDADES/config | grep "^feed ")"
+		#	cp -r novedades/ "$NOVEDADES"
+		#	echo "$FEED" >> "$NOVEDADES/config"
+                #fi
+
+
+		#if [ "$XDG_PUBLICSHARE_DIR" ]; then
+		#	ls -s "$XDG_PUBLICSHARE_DIR" "$COMPARTIR"
+		#	[ "$XDG_PUBLICSHARE_DIR" ] && echo "Compartiendo la carpeta $XDG_PUBLICSHARE_DIR"
+		#else
+		#	# crea la carpeta compartir si esta no se puede asociar a la del sistema
+		#	mkdir $COMPARTIR &> /dev/null
+		#fi
+
+		# instala el blog en el directorio
+		nb -b "$BLOG" --template-dir "$BLOG/templates" add weblog
+
+
+		# mkdir ~/Ciboulette
+		# cd ~/Ciboulette
+		# ln -s "$BLOG/data" Blog
+		# ln -s "$COMPARTIR" Compartir
+		# ln -s "$NOVEDADES" Novedades
+		# Deberia crear un acceso a las paginas internas y/o link a los  ejecutables
+
+

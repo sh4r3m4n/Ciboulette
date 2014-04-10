@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=ciboulette
+Description=Red Social 100% Libre
+Icon=help-faq
+Type=Application
+Exec=ciboulette -s
+Categories=GTK;Utility;

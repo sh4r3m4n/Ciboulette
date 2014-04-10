@@ -1,0 +1,21 @@
+<!-- PAGE-BEGIN-ITEM -->
+    <div class="itemheader feed-__feed_hash__ feed-__feed_id__" id="header__hash__" onclick="toggleall('none');toggle('item__guid__')">
+        <p class="itembyline">
+        __if_date__  __date____endif__	
+	</p>
+<div class="media" id="parent__hash__" >
+  <a class="pull-left" href="#">
+       <img data-src="holder.js/96x96" alt="__if_author__ __author__ __endif__" src="../avatar.png" />
+        __if_author__ __author__ __endif__
+  </a>
+  <div class="media-body">
+    <h4 class="media-heading unread"><a href="__url__"><span class="glyphicon glyphicon-link"></span></a>__title_no_link__</h4>
+	__feed_title__
+	__if_description__<div class="itemdescription" id="item__guid__">
+	__description__
+	</div>__endif__
+  </div>
+</div>
+</div>
+<!-- PAGE-END-ITEM -->
+
