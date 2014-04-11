@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #	Ciboulette una red social 100% libre, descentralizada y entre pares
-#	version 0.2
+#	version 0.3
 #	AGPLv3+ © bazza
 #
 
@@ -84,6 +84,8 @@ function servidor_inicio {
 	# Si corremos arch
 	[ "$(uname -r | grep ARCH)" ] && darkhttpd $BLOG --port 4232 --pidfile /tmp/$NOMBRE.pid || \
 	/usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$BLOG" -T "UTF8" -c "cgi-bin/*"
+	[ "$(uname -r | grep ARCH)" ] && darkhttpd "$NOVEDADES" --port 4233 --pidfile /tmp/${NOMBRE}N.pid || \
+	/usr/sbin/mini-httpd -i /tmp/${NOMBRE}N.pid -p 4233 -d "$NOVEDADES" -T "UTF8" -c "cgi-bin/*"
 }
 function servidor_matar {
 	# matar el servidor
@@ -209,7 +211,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 			done
 		else
 			# en Mint, Debian, Fedora (?)
-			echo "mini-httpd tor torsocks zenity nanoblogger rawdog" | \
+			echo "mini-httpd tor torsocks zenity nanoblogger rawdog libnotify-bin" | \
 			sed 's/\ /\n/g' | while read i; do
 				[ ! "$(which $i)" ] && echo "$aptitude $i"
 			done > $TMP
@@ -251,6 +253,14 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		mkdir -p $CARPETA
 		cp -r base/* "$CARPETA"
 
+		if [ "$XDG_PUBLICSHARE_DIR" ]; then
+			ls -s "$XDG_PUBLICSHARE_DIR" "$COMPARTIR"
+			echo "Compartiendo la carpeta $XDG_PUBLICSHARE_DIR"
+		else
+			# crea la carpeta compartir si esta no se puede asociar a la del sistema
+			mkdir $COMPARTIR &> /dev/null
+		fi
+
 		echo "$FEED" >> "$NOVEDADES/config"
 
 		# direccion de tu ciboulette
@@ -258,6 +268,11 @@ while getopts a:b:n:skdlhiuw OPCION; do
 
 		mkdir ~/.config/autostart/ &> /dev/null
 		cp $NOMBRE.desktop  ~/.config/autostart/
+
+		[ -d "${CARPETA}data" ] && sh chronicle2nanoblogger
+
+		# instala el blog en el directorio
+		# nb -b "$BLOG" --template-dir "$BLOG/templates" add weblog
 
 		# inicia el servidor
 		$NOMBRE -s &
@@ -316,24 +331,6 @@ esac
 
 
 exit
-
-
-		# rawdog
-                # comprueba si esta instalando o actualizando
-
-
-
-		#if [ "$XDG_PUBLICSHARE_DIR" ]; then
-		#	ls -s "$XDG_PUBLICSHARE_DIR" "$COMPARTIR"
-		#	[ "$XDG_PUBLICSHARE_DIR" ] && echo "Compartiendo la carpeta $XDG_PUBLICSHARE_DIR"
-		#else
-		#	# crea la carpeta compartir si esta no se puede asociar a la del sistema
-		#	mkdir $COMPARTIR &> /dev/null
-		#fi
-
-		# instala el blog en el directorio
-		nb -b "$BLOG" --template-dir "$BLOG/templates" add weblog
-
 
 		# mkdir ~/Ciboulette
 		# cd ~/Ciboulette

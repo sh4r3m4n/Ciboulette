@@ -28,16 +28,24 @@
 <div class="container">
 <div class="header">
 <ul class="nav nav-pills pull-right">
-<li class="active"><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
-<li><a href="/novedades/">Novedades</a></li>
-<li><a href="/archives/">Tu Archivo</a></li>
-<li><a href="/articles/perfil">Perfil</a></li>
+<li ><a href="http://127.0.0.1:4232/"><span class="glyphicon glyphicon-home"></span></a></li>
+<li class="active"><a href="/">Novedades</a></li>
+<li><a href="http://127.0.0.1:4232/articles/perfil">Perfil</a></li>
 </ul>
 <h3 class="text-muted">Ciboulette</h3>
 </div>
 <div class="jumbotron">
-	<h1><img src="avatar.png" /> Nombre de usuario <span class="badge-lg pull-right">__num_items__  / __num_feeds__</span></h1>
+
+<div class="media">
+  <a class="pull-left" href="#">
+    <img class="media-object" src="avatar.png" alt="Avatar">
+  </a>
+  <div class="media-body">
+	<h3><span class="label label-default pull-right">__num_items__  / __num_feeds__</span></h3>
+	<h2> Nombre de usuario<h2> 
         <p>Ultimas noticias</p>
+  </div>
+</div>
 </div>
 <div class="row marketing">
 	<!-- contenido -->

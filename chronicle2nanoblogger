@@ -3,10 +3,7 @@
 #	chronicle2nanoblogger
 #
 
-mkdir /tmp/data/
-cd /tmp/data
-
-find ~/.ciboulette1/md/ -iname "*.md" \
+find ~/.ciboulette/md/ -iname "*.md" \
 | while read i; do
 
 (cat $i | grep "^.*: " | sed 's/Title/TITLE/g' | grep "^TITLE"
@@ -24,6 +21,8 @@ BODY:"
 	echo $NOMBRE >> ~/.ciboulette/blog/data/master.db
 
 done
+
+mv ~/.ciboulette/md/ ~/.ciboulette/md_backup/
 
 ciboulette -w
 
