@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=ciboulette
+Name=Ciboulette
 Description=Red Social 100% Libre
-Icon=help-faq
+Icon=/usr/share/pixmaps/ciboulette.png
 Type=Application
 Exec=ciboulette -s
-Categories=GTK;Utility;
+Categories=GTK;Network;

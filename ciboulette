@@ -6,7 +6,7 @@
 #
 
 export NOMBRE="ciboulette"
-export CARPETA="$NOMBRE/"
+export CARPETA=~/.${NOMBRE}/
 export BLOG="${CARPETA}blog"
 export COMPARTIR="${CARPETA}compartir"
 export NOVEDADES="${CARPETA}novedades"
@@ -82,7 +82,7 @@ function servidor_inicio {
 	# inicia el servidor
 	rm -f /tmp/$NOMBRE.pid
 	# Si corremos arch
-CARPETA	[ "$(uname -r | grep ARCH)" ] && darkhttpd $BLOG --port 4232 --pidfile /tmp/$NOMBRE.pid || \
+	[ "$(uname -r | grep ARCH)" ] && darkhttpd $BLOG --port 4232 --pidfile /tmp/$NOMBRE.pid || \
 	/usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$BLOG" -T "UTF8" -c "cgi-bin/*"
 }
 function servidor_matar {
@@ -104,7 +104,7 @@ function nodos_lista {
 function nodos_actualizar {
 	N=$(torify rawdog -d $NOVEDADES -wu | cut -d " " -f1) 2> /dev/null
 	export DISPLAY=:0
-	[ "$N" -gt 0 ] && notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" -i "$CARPETA/imagen.png"
+	[ "$N" -gt 0 ] && notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" -i "${CARPETA}imagen.png"
 }
 
 
@@ -113,6 +113,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
                a)
 			echo "Publicando articulo"
 			# se necesita un metodo para crear un articulo
+			nb -b $BLOG --template-dir $BLOG/templates add entry
 			blogear
 			exit
                 ;;
@@ -149,7 +150,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		exit
 	;;
 	h)
-		echo "$(basename $0) $(cat $CARPETA/hostname)"
+		echo "$(basename $0) $(cat ${CARPETA}hostname)"
 		echo
 		echo "  -h | esta ayuda"
 		echo "  -i | instalación"
@@ -218,6 +219,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		cp $NOMBRE /usr/local/bin/
 		systemctl restart tor 2> /dev/null
 		/etc/init.d/tor restart 2> /dev/null
+		cp $NOMBRE.png /usr/share/pixmaps/
 		cp $NOMBRE.desktop /usr/share/applications/
 		sleep 10
 		cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname" >> $TMP
@@ -230,11 +232,11 @@ while getopts a:b:n:skdlhiuw OPCION; do
 
 
 		# Crea el directorio local y temas
-		mkdir "$CARPETA" &> /dev/null
+		mkdir -p $CARPETA
 		cp -r base/* "$CARPETA"
-		# direccion de tu ciboulette
-		echo "http://$(cat /tmp/hostname)" > $CARPETA/hostname
 
+		# direccion de tu ciboulette
+		echo "http://$(cat /tmp/hostname)" > ${CARPETA}hostname
 
 		mkdir ~/.config/autostart/ &> /dev/null
 		cp $NOMBRE.desktop  ~/.config/autostart/
@@ -256,7 +258,7 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Editar_perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "Ciboulette - $(cat $CARPETA/hostname)"`
+MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Editar_perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "Ciboulette - $(cat ${CARPETA}hostname)"`
 case $MENU in
 		0 )
 			# Publicar articulo
@@ -267,13 +269,13 @@ case $MENU in
 		1 )
 			# Imagen del perfil
 			ARCHIVO=$(archivo "Imagen del perfil")
-			convert "$ARCHIVO" -resize 16x16 $CARPETA/favicon.ico
-			convert "$ARCHIVO" -resize 128x128 $CARPETA/avatar.png
-			qrencode "`cat $CARPETA/hostname`" -o qr.png
+			convert "$ARCHIVO" -resize 16x16 ${CARPETA}favicon.ico
+			convert "$ARCHIVO" -resize 128x128 ${CARPETA}avatar.png
+			qrencode "`cat {$CARPETA}hostname`" -o qr.png
 		;;
 		2)
 			# Configuración del perfil
-			xdg-open $CARPETA/config
+			xdg-open ${CARPETA}config
 		;;
 		3)
 			# Novedades
