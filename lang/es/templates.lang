@@ -5,9 +5,9 @@
 
 # weblog entry links and messages
 template_permlink="Enlace permanente"
-template_catlinks="Categorías:"
+template_catlinks="Categorías"
 template_cmtlink="Comentarios"
-template_postedby="Posteado por"
+template_postedby="Publicado por"
 
 # only here for compat. with early 3.3 rc's
 permanentlink_title="$template_permlink"
@@ -24,7 +24,7 @@ template_rentries="Entradas Recientes"
 template_syndicate="Sindicar"
 template_syndicate_main="Sitio"
 template_status="Estadísticas del Weblog"
-template_powered="powered by $EDITOR, bash, cat, grep, sed, and"
+template_powered="con el poder de $EDITOR, bash, cat, grep, sed, and"
 
 # misc. weblog links
 template_archives="Archivos"
@@ -32,9 +32,9 @@ template_main="Inicio"
 
 # dynamic template messages
 template_articles="Artículos"
-template_browsecat="Recorrer por categoría"
-template_browsedate="Recorrer por fecha"
-template_browseentry="Recorrer por posts"
+template_browsecat="Por categoría"
+template_browsedate="Por fecha"
+template_browseentry="Por entrada"
 
 # weblog status messages
 template_totalcats="Total de categorías:"
