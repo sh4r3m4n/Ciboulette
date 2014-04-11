@@ -75,7 +75,7 @@ function progreso {
 }
 function blogear {
 	# nanoblogger construye el blog
-	nb -b $BLOG --template-dir $BLOG/templates update all
+	nb -b $BLOG --template-dir $BLOG/templates update main
 }
 
 function servidor_inicio {
@@ -94,19 +94,21 @@ function servidor_matar {
 
 function nodo_agregar {
 	URL=`cat /dev/stdin`
-	torify rawdog -d $NOVEDADES -a "$URL" 2> /dev/null
+	rawdog -d $NOVEDADES -a "$URL" 2> /dev/null
 }
 function nodo_borrar {
 	URL=`cat /dev/stdin`
-	torify rawdog -d $NOVEDADES -r "$URL" 2> /dev/null
+	rawdog -d $NOVEDADES -r "$URL" 2> /dev/null
 }
 function nodos_lista {
-	torify rawdog -d $NOVEDADES -l 2> /dev/null
+	rawdog -d $NOVEDADES -l 2> /dev/null
 }
 function nodos_actualizar {
-	N=$(torify rawdog -d $NOVEDADES -wu | cut -d " " -f1) 2> /dev/null
+	N=$(rawdog -d $NOVEDADES -wu | cut -d " " -f1) 2> /dev/null
 	export DISPLAY=:0
-	[ "$N" -gt 0 ] && notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" -i "${CARPETA}imagen.png"
+	[ "$N" -gt 0 ] && \
+	notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" \
+	-i "${BLOG}/images/logo.png"
 }
 
 
@@ -115,7 +117,12 @@ while getopts a:b:n:skdlhiuw OPCION; do
                a)
 			echo "Publicando articulo"
 			# se necesita un metodo para crear un articulo
-			nb -b $BLOG --template-dir $BLOG/templates add entry
+			# nb -b $BLOG --template-dir $BLOG/templates add entry
+			#nb -b $BLOG draft somefile.txt
+			#nb -b $BLOG import entry somefile.txt
+
+			nb -b $BLOG --title "New Entry" --text "This is my message." add entry
+
 			blogear
 			exit
                 ;;
@@ -232,6 +239,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		systemctl restart tor 2> /dev/null
 		/etc/init.d/tor restart 2> /dev/null
 		cp $NOMBRE.png /usr/share/pixmaps/
+		cp -r lang /usr/share/nanoblogger/
 		cp $NOMBRE.desktop /usr/share/applications/
 		sleep 10
 		cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname" >> $TMP
@@ -261,6 +269,12 @@ while getopts a:b:n:skdlhiuw OPCION; do
 			mkdir $COMPARTIR &> /dev/null
 		fi
 
+		# si no existe la configuración
+		if [ ! -f "~/.nb.conf" ]; then
+			# agrega el idioma
+			echo 'NB_LANG="$LANG"' > ~/.nb.conf
+		fi
+
 		echo "$FEED" >> "$NOVEDADES/config"
 
 		# direccion de tu ciboulette
@@ -273,6 +287,13 @@ while getopts a:b:n:skdlhiuw OPCION; do
 
 		# instala el blog en el directorio
 		# nb -b "$BLOG" --template-dir "$BLOG/templates" add weblog
+
+		mkdir ~/Ciboulette
+		cd ~/Ciboulette
+
+		ln -s "$BLOG/data" Blog
+		ln -s "$COMPARTIR" Compartir
+		ln -s "$NOVEDADES" Novedades
 
 		# inicia el servidor
 		$NOMBRE -s &
@@ -291,12 +312,11 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Editar_perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "Ciboulette - $(cat ${CARPETA}hostname)"`
+MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Editar_tu_perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "Ciboulette - $(cat ${CARPETA}hostname)"`
 case $MENU in
 		0 )
 			# Publicar articulo
-			TITULO="$(titulo)"
-			mensaje | ciboulette -a "$TITULO"
+			ciboulette -a ""
 			xdg-open "http://localhost:4232"
 		;;
 		1 )
@@ -332,11 +352,6 @@ esac
 
 exit
 
-		# mkdir ~/Ciboulette
-		# cd ~/Ciboulette
-		# ln -s "$BLOG/data" Blog
-		# ln -s "$COMPARTIR" Compartir
-		# ln -s "$NOVEDADES" Novedades
 		# Deberia crear un acceso a las paginas internas y/o link a los  ejecutables
 
 

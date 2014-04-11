@@ -64,3 +64,4 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
   * Generar galería de las imágenes
 * Método para compartir archivos y multimedia
 * Leer [Feed centralizados y ocultos](https://github.com/jol333/veracity/blob/master/index.php) https://github.com/pabluk/NotifyAll
+* Usar una categoria estandarizada para eventos

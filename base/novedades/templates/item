@@ -4,12 +4,14 @@
         __if_date__  __date____endif__	
 	</p>
 <div class="media" id="parent__hash__" >
-  <a class="pull-left" href="#">
+  <a class="pull-left thumbnail" href="__url__">
        <img data-src="holder.js/96x96" alt="__if_author__ __author__ __endif__" src="../avatar.png" />
-        __if_author__ __author__ __endif__
+	<div class="caption">
+        	<p>__if_author__ __author__ __endif__</p>
+	</div>
   </a>
   <div class="media-body">
-    <h4 class="media-heading unread"><a href="__url__"><span class="glyphicon glyphicon-link"></span></a>__title_no_link__</h4>
+    <h4 class="media-heading unread"><a href="__url__"><span class="glyphicon glyphicon-link"></span></a> __title_no_link__</h4>
 	__feed_title__
 	__if_description__<div class="itemdescription" id="item__guid__">
 	__description__
