@@ -106,7 +106,7 @@ function nodos_lista {
 function nodos_actualizar {
 	N=$(rawdog -d $NOVEDADES -wu | cut -d " " -f1) 2> /dev/null
 	export DISPLAY=:0
-	[ "$N" -gt 0 ] && \
+	[ ! "$N" == "0" ] && \
 	notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" \
 	-i "${BLOG}/images/logo.png"
 }
@@ -272,7 +272,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		# si no existe la configuración
 		if [ ! -f "~/.nb.conf" ]; then
 			# agrega el idioma
-			echo 'NB_LANG="$LANG"' > ~/.nb.conf
+			echo "NB_LANG="$LANG"" > ~/.nb.conf
 		fi
 
 		echo "$FEED" >> "$NOVEDADES/config"
