@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+#	chronicle2nanoblogger
+#
+
+mkdir /tmp/data/
+cd /tmp/data
+
+find ~/.ciboulette1/md/ -iname "*.md" \
+| while read i; do
+
+(cat $i | grep "^.*: " | sed 's/Title/TITLE/g' | grep "^TITLE"
+echo "AUTHOR: `whoami`
+DATE: 
+DESC: 
+FORMAT: markdown
+-----
+BODY:"
+	cat $i | grep -v "^.*: "
+	echo "END-----") > $(basename "$i" | sed 's/md$/txt/g')
+
+	NOMBRE="$(basename "$i" | sed 's/md$/txt/g')"
+	cp $NOMBRE ~/.ciboulette/blog/data/$NOMBRE
+	echo $NOMBRE >> ~/.ciboulette/blog/data/master.db
+
+done
+
+ciboulette -w
+

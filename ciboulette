@@ -29,7 +29,7 @@ function opciones {
 		N=$(($N+1))
 	done
 	# genera el menu
-	eval "zenity --title \"$TITULO\" --text \"$MENSAJE\" --list --height=250 --column \"\" --column \"\" --hide-column 1  --hide-header $C"
+	eval "zenity --title \"$TITULO\" --window-icon /usr/share/pixmaps/$NOMBRE.png --text \"$MENSAJE\" --list --height=250 --column \"\" --column \"\" --hide-column 1  --hide-header $C"
 }
 
 function error {
@@ -181,6 +181,11 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		# ---------------------  DEPENDENCIAS -----------------------------
 
 
+		echo
+		echo "Instalando dependencias"
+		echo "-----------------------"
+		echo
+
 		# verifica el sistema operativo
 		if [ "$(which yum)" ]; then
 			aptitude="yum -y install"
@@ -196,8 +201,8 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		fi
 
 		echo "" > $TMP
-		# en Arch
 	        if [ "$(uname -r | grep ARCH)" ]; then
+			# en Arch
 			echo "darkhttpd tor torsocks zenity nanoblogger rawdog python2-feedparser" | \
 			sed 's/\ /\n/g' | while read i; do
 				[ ! "$(which $i)" ] && echo "Instalar los programas $i"
@@ -211,6 +216,11 @@ while getopts a:b:n:skdlhiuw OPCION; do
 	        fi
 
 		# ----------------------------- TOR ----------------------------------
+
+		echo
+		echo "Configuración de TOR y lanzadores"
+		echo "---------------------------------"
+		echo
 
 		# Configuración en tor y reinicio del demonio
 
@@ -230,10 +240,18 @@ while getopts a:b:n:skdlhiuw OPCION; do
 
 		# ----------------------------- INSTALACION ----------------------------------
 
+		echo
+		echo "Instalando archivos de $NOMBRE"
+		echo "------------------------------"
+		echo
+
+                [ -f "$NOVEDADES/config" ] && FEED="$(cat $NOVEDADES/config | grep "^feed ")"
 
 		# Crea el directorio local y temas
 		mkdir -p $CARPETA
 		cp -r base/* "$CARPETA"
+
+		echo "$FEED" >> "$NOVEDADES/config"
 
 		# direccion de tu ciboulette
 		echo "http://$(cat /tmp/hostname)" > ${CARPETA}hostname
@@ -303,11 +321,6 @@ exit
 		# rawdog
                 # comprueba si esta instalando o actualizando
 
-                #if [ -f "$NOVEDADES/config" ]; then
-		#	FEED="$(cat $NOVEDADES/config | grep "^feed ")"
-		#	cp -r novedades/ "$NOVEDADES"
-		#	echo "$FEED" >> "$NOVEDADES/config"
-                #fi
 
 
 		#if [ "$XDG_PUBLICSHARE_DIR" ]; then
