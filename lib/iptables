@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Actualizar tor a la ultima version o instalarlo
+
+if [ "$(which apt-get)" ]; then
+ tor --version | sed 's/(.*$//g; s/[^0-9.]//g'
+
+	# comprobar que es un debian
+	apt-get purge tor
+
+	DISTRIBUCION=""
+	echo "deb http://deb.torproject.org/torproject.org $DISTRIBUCION main" >> /etc/apt/source.list
+
+	gpg --keyserver keys.gnupg.net --recv 886DDD89
+	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
+	apt-get update
+	apt-get install deb.torproject.org-keyring
+	apt-get install tor
+fi
+
+# agrega el soporte para DNS de Tor
+
+echo "DNSPort 127.0.0.1:5300
+VirtualAddrNetworkIPv4 10.192.0.0/11
+AutomapHostsOnResolve 1
+TransPort 9040" >> /etc/tor/torrc
+
+# redirecciona los DNS a Tor
+
+echo "
+/usr/local/bin/ciboulette iptables
+exit 0
+" >> /etc/rc.local
+
+# Quehaceres
+#
+# - solucionar que si tor no esta activado no hay DNS :P
+# - esto funciona con la version v0.2.4.21+
