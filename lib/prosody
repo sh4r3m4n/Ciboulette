@@ -16,7 +16,7 @@ echo "Host "$HOST"" > "$HOST.cfg.lua"
 echo "VirtualHost "$HOST"" >> "$HOST.cfg.lua"
 
 cd ../conf.d
-ln -s ../conf.avail .
+ln -s ../conf.avail/$HOST.cfg.lua .
 
 # reiniciar prosody
 
