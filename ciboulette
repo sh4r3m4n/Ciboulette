@@ -206,6 +206,7 @@ case $MENU in
 			convert "$ARCHIVO" -resize 16x16 ${CARPETA}favicon.ico
 			convert "$ARCHIVO" -resize 128x128 ${CARPETA}avatar.png
 			qrencode "`cat {$CARPETA}hostname`" -o qr.png
+			# generar respuesta
 		;;
 		2)
 			# Configuración del perfil
@@ -229,7 +230,6 @@ case $MENU in
 			$NOMBRE -k
 		;;
 esac
-
 
 exit
 
