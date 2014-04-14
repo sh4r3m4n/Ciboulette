@@ -1,10 +1,14 @@
 #!/bin/bash
 #
 # Actualizar tor a la ultima version o instalarlo
+# AGPLv3
 
-if [ "$(which apt-get)" ]; then
+VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
+
+if [ "$(which apt-get)" ] && [ "$VERSION" -lt "24" ]; then
 	sh /etc/lsb-release
 
+	echo "tu version de tor es muy vieja... actualizando"
 	# comprobar que es un debian
 	apt-get purge tor
 
@@ -14,8 +18,10 @@ if [ "$(which apt-get)" ]; then
 	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
 	apt-get update
 	apt-get install deb.torproject.org-keyring
-	apt-get install tor
+	apt-get install -y tor
 fi
+
+exit
 
 # agrega el soporte para DNS de Tor
 
