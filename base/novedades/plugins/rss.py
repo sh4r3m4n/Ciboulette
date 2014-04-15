@@ -60,15 +60,15 @@ def rfc822_date(tm):
 class RSS_Feed:
     def __init__(self):
         self.options = {
-            "outputxml": "rss20.xml",
+            "outputxml": "rss.xml",
             "outputfoaf": "foafroll.xml",
-            "outputopml": "opml.xml",
-            "xmltitle": "Planet KDE",
+            "outputopml": "contactos.opml",
+            "xmltitle": "Ciboulette",
             "xmllink": "http://planetKDE.org/",
-            "xmllanguage": "en",
-            "xmlurl": "http://planetKDE.org/rss20.xml",
-            "xmldescription": "Planet KDE - http://planetKDE.org/",
-            "xmlownername": "Jonathan Riddell",
+            "xmllanguage": "es",
+            "xmlurl": "",
+            "xmldescription": "Una red social 100% libre y distribuida",
+            "xmlownername": "",
             "xmlowneremail": "",
             "xmlmaxarticles": "",
             }

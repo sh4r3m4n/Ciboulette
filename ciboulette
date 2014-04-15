@@ -169,16 +169,18 @@ while getopts a:b:n:skdlhiuw OPCION; do
 	h)
 		echo "$(basename $0) $(cat ${CARPETA}hostname)"
 		echo
-		echo "  -h | esta ayuda"
-		echo "  -w | actualizar tu ciboulette"
-		echo "  -s | iniciar el servidor"
-		echo "  -k | matar el servidor"
-		echo "  -a [titulo texto] | agregar articulo"
-		echo "  -n [url del nodo] | agregar nodo"
-		echo "  -d | actualizar noticias"
-		echo "  -b [url del nodo] | borrar nodo"
-		echo "  -l | lisa de nodos "
+		echo "  -h  esta ayuda"
+		echo "  -s  iniciar el servidor"
+		echo "  -k  matar el servidor"
 		echo "  -u Actualizar la aplicación"
+		echo
+		echo "  -a \"Titulo de tu articulo\"		agregar articulo"
+		echo "  -n http://nodociboulette.onion	agregar un nodo amigo"
+		echo "  -b http://nodociboulette.onion	borrar un nodo"
+		echo "  -l lisa de nodos amigos"
+		echo "  -d actualizar noticias de otros nodos"
+		echo "  -w forzar a actualizar tus noticias"
+		echo
 		exit
 	;;
 	i)
@@ -205,16 +207,17 @@ case $MENU in
 			ARCHIVO=$(archivo "Imagen del perfil")
 			convert "$ARCHIVO" -resize 16x16 ${CARPETA}favicon.ico
 			convert "$ARCHIVO" -resize 128x128 ${CARPETA}avatar.png
-			qrencode "`cat {$CARPETA}hostname`" -o qr.png
+			qrencode "`cat {$CARPETA}hostname`" -o ${CARPETA}qr.png
 			# generar respuesta
+			echo "avatar actualizado" | alerta
 		;;
 		2)
 			# Configuración del perfil
-			xdg-open ${CARPETA}config
+			xdg-open "${BLOG}/articles/perfil.txt"
 		;;
 		3)
 			# Novedades
-			xdg-open "http://localhost:4232/novedades/"
+			xdg-open "${NOVEDADES}/index.html"
 		;;
 		4)
 			# Agregar nodo
@@ -230,9 +233,3 @@ case $MENU in
 			$NOMBRE -k
 		;;
 esac
-
-exit
-
-		# Deberia crear un acceso a las paginas internas y/o link a los  ejecutables
-
-

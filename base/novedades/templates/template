@@ -22,7 +22,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-	<script src="js/script.js"></script>
+<!--	<script src="js/script.js"></script> -->
 </head>
 <body onload="readReadColor()">
 <div class="container">
@@ -32,27 +32,17 @@
 <li class="active"><a href="/">Novedades</a></li>
 <li><a href="http://127.0.0.1:4232/articles/perfil">Perfil</a></li>
 </ul>
-<h3 class="text-muted">Ciboulette</h3>
+<h3 class="text-muted"><img src="images/logo.png"> Ciboulette</h3>
 </div>
 <div class="jumbotron">
-
-<div class="media">
-  <a class="pull-left" href="#">
-    <img class="media-object" src="avatar.png" alt="Avatar">
-  </a>
-  <div class="media-body">
-	<h3><span class="label label-default pull-right">__num_items__  / __num_feeds__</span></h3>
-	<h2> Nombre de usuario<h2> 
-        <p>Ultimas noticias</p>
-  </div>
-</div>
+<h1>Novedades</h1>
 </div>
 <div class="row marketing">
 	<!-- contenido -->
 	<div class="col-lg-5">
-  	    <div class="alert alert-info" id=beggining>
+  	    <!-- <div class="alert alert-info" id=beggining>
                 Llegaste al inicio
-            </div>
+            </div> -->
             <div class="pages">
                 __paged_output_pages__
             </div>
@@ -64,7 +54,7 @@
             </div>
 	    <a id="toTopButton" href="#">&uarr;</a>
 	</div>
-	<!-- menu -->
+	<!-- menu 
 	<div class="col-lg-1">
 		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu3">
 			<li role="presentation"><a onclick="toggleall('block')"><span class="glyphicon glyphicon-eye-open"></span>Ver todos</a></li> 
@@ -75,6 +65,7 @@
 			<li role="presentation"><a id="markStatus" onclick="nextPrev('previous')"><span class="glyphicon glyphicon-flash"></span> Próximo sin leer</a></li>
 		</ul>
 	</div>
+	-->
 </div>
 
 <div class="footer">
