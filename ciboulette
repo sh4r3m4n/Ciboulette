@@ -5,11 +5,16 @@
 #	AGPLv3+ © bazza
 #
 
+# eso se usa para correrlo en rc.local
 if [ "$1" == "iptables" ]; then
+	VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
+	# si la version de tor es vieja
+	[ "$VERSION" -lt "24" ] && exit
+
 	iptables -t nat -A OUTPUT -p udp -m udp --dport 53 -j REDIRECT --to-ports 5300
 	iptables -t nat -A PREROUTING -p tcp -d 10.192.0.0/11 -j REDIRECT --to-port 9040
 	iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/11 -j REDIRECT --to-port 9040
-	exit 0
+	exit
 fi
 
 export NOMBRE="ciboulette"
@@ -36,7 +41,7 @@ function opciones {
 		N=$(($N+1))
 	done
 	# genera el menu
-	eval "zenity --title \"$TITULO\" --window-icon /usr/share/pixmaps/$NOMBRE.png --text \"$MENSAJE\" --list --height=250 --column \"\" --column \"\" --hide-column 1  --hide-header $C"
+	eval "zenity --title \"$TITULO\" --window-icon /usr/share/pixmaps/$NOMBRE.png --text \"$MENSAJE\" --list --height=300 --column \"\" --column \"\" --hide-column 1  --hide-header $C"
 }
 
 function error {
@@ -172,7 +177,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		echo "  -h  esta ayuda"
 		echo "  -s  iniciar el servidor"
 		echo "  -k  matar el servidor"
-		echo "  -u Actualizar la aplicación"
+		echo "  -u  actualizar el programa"
 		echo
 		echo "  -a \"Titulo de tu articulo\"		agregar articulo"
 		echo "  -n http://nodociboulette.onion	agregar un nodo amigo"
@@ -195,7 +200,7 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Editar_tu_perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "Ciboulette - $(cat ${CARPETA}hostname)"`
+MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Editar_tu_perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Ciboulette - $(cat ${CARPETA}hostname)"`
 case $MENU in
 		0 )
 			# Publicar articulo
@@ -214,6 +219,7 @@ case $MENU in
 		2)
 			# Configuración del perfil
 			xdg-open "${BLOG}/articles/perfil.txt"
+			# falta actualizar la pagina
 		;;
 		3)
 			# Novedades
@@ -231,5 +237,9 @@ case $MENU in
 		6)
 			# Mata el servidor
 			$NOMBRE -k
+		;;
+		7)
+			# Mata el servidor
+			$NOMBRE -u
 		;;
 esac

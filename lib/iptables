@@ -21,8 +21,6 @@ if [ "$(which apt-get)" ] && [ "$VERSION" -lt "24" ]; then
 	apt-get install -y tor
 fi
 
-exit
-
 # agrega el soporte para DNS de Tor
 
 echo "DNSPort 127.0.0.1:5300
@@ -32,7 +30,7 @@ TransPort 9040" >> /etc/tor/torrc
 
 # redirecciona los DNS a Tor
 
-echo "
+echo " cat /etc/rc.local | grep -v "^exit"
 /usr/local/bin/ciboulette iptables
 exit 0
 " >> /etc/rc.local
