@@ -53,19 +53,20 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 * ~~[Acceso transparente a los servicios ocultos](https://grepular.com/Transparent_Access_to_Tor_Hidden_Services) y [DNS](http://security-world.blogspot.com.ar/2013/04/postfix-through-tor-dns.html)~~
 * ~~Lector local y estatico de feed ([rawdog](http://offog.org/code/rawdog/) + https://github.com/roop/ngoplanet_org/)~~
  * mover el la pagina estatica dentro de nanoblogger
- * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
  * Publicador, editor de perfil y agregador de amigos con CGI (solo para la red local)
+  * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
 * ~~Sacar el nombre del usuario de `whoami`~~
  * Poner datos de `finger` guardados en los archivos `.plan`, `.project` y `.pgpkey`
  * [xfaces](https://en.wikipedia.org/wiki/X-Face) y/o [picons](http://www.cs.indiana.edu/picons/ftp/index.html) 
- * Generar QR del dns
+ * ~~Generar QR del dns~~
 * ~~[Chat para ciboulette](chat.png) prosody + [mod_onions](https://blog.thijsalkema.de/blog/2013/06/11/xmpp-federation-over-tor-hidden-services/)~~
- * Hacer instalador
+ * ~~Hacer instalador~~ (probarlo)
 * Mail local
 * Método para compartir archivos y multimedia (carpeta XDG_PUBLICSHARE_DIR)
  * Al usar imágenes en un articulo se copien en una carpeta y cree miniaturas
   * Generar galería de las imágenes
 * Método para compartir archivos y multimedia
 * Leer [Feed centralizados y ocultos](https://github.com/jol333/veracity/blob/master/index.php) https://github.com/pabluk/NotifyAll
-* Usar una categoria estandarizada para eventos
-* aviso de que el avatar cambio
+* ~~Usar una categoria estandarizada para eventos~~
+ * hacer publicador
+* ~~aviso de que el avatar cambio~~
