@@ -8,7 +8,7 @@
 # eso se usa para correrlo en rc.local
 if [ "$1" == "iptables" ]; then
 	VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
-	# si la version de tor es vieja
+	# no lo usa, si la version de tor es vieja
 	[ "$VERSION" -lt "24" ] && exit
 
 	iptables -t nat -A OUTPUT -p udp -m udp --dport 53 -j REDIRECT --to-ports 5300
@@ -117,6 +117,7 @@ function nodos_lista {
 }
 function nodos_actualizar {
 	N=$(rawdog -d $NOVEDADES -wu | cut -d " " -f1) 2> /dev/null
+	nb -b $BLOG --template-dir $BLOG/templates update articles
 	export DISPLAY=:0
 	[ ! "$N" == "0" ] && \
 	notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" \

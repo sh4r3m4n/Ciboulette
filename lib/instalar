@@ -28,11 +28,8 @@ elif [ "$(which pacman)" ]; then
 else
 	aptitude="apt-get -y install"
 fi
-if [ "$(which gksu)" ]; then
-	gksu="gksu"
-else
-	gksu="su -c"
-fi
+
+[ "$(which gksu)" ] && gksu="gksu" || gksu="su -c"
 
 echo "" > $TMP
 	        if [ "$(uname -r | grep ARCH)" ]; then

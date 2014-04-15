@@ -8,7 +8,6 @@ sudo aptitude install prosody
 HOST=$(cat ~/.ciboulette/hostname | sed 's/^.*\/\///g')
 
 # esto va como sudo
-
 cd /etc/prosody/conf.avail
 
 # Todavia no se como hacer para separar las versiones
@@ -27,12 +26,7 @@ sudo /etc/init.d/prosody restart
 # Instalacion de prosody para chatear con ciboulette
 XMPP="${USER}@${HOST}"
 
-CLAVE=$(clave)
-
-echo "XMPP:  $XMPP"
-echo "CLAVE: $CLAVE"
-echo "-------------------"
-echo
+CLAVE=$(clave "Clave para el chat")
 
 echo "$CLAVE
 $CLAVE

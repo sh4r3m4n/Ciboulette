@@ -1,43 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta name="generator" content="rawdog + ciboulette">
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="news, diary, journal, whatever">
-<meta name="author" content="haansgruber">
-<link rel="shortcut icon" href="favicon.ico">
-<title>Novedades</title>
-<!-- Bootstrap core CSS -->
-<link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"><!-- Custom styles for this template -->
-<link href="styles/jumbotron-narrow.css" rel="stylesheet" type="text/css">
-<link rel="alternate" type="text/x-opml" title="Atom 1.0" href="contactos.opml">
-<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="rss.xml">
-<!-- Just for debugging purposes. Don't actually copy this line! -->
-<!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-<!--	<script src="js/script.js"></script> -->
-</head>
-<body onload="readReadColor()">
-<div class="container">
-<div class="header">
-<ul class="nav nav-pills pull-right">
-<li ><a href="http://127.0.0.1:4232/"><span class="glyphicon glyphicon-home"></span></a></li>
-<li class="active"><a href="/">Novedades</a></li>
-<li><a href="http://127.0.0.1:4232/articles/perfil">Perfil</a></li>
-</ul>
-<h3 class="text-muted"><img src="images/logo.png"> Ciboulette</h3>
-</div>
-<div class="jumbotron">
-<h1>Novedades</h1>
-</div>
-<div class="row marketing">
+TITLE: Novedades
+AUTHOR: Ciboulette
+DATE:
+DESC: Novedades de tus amigxs
+FORMAT: html
+-----
+BODY:
+
 	<!-- contenido -->
 	<div class="col-lg-5">
   	    <!-- <div class="alert alert-info" id=beggining>
@@ -66,15 +34,4 @@
 		</ul>
 	</div>
 	-->
-</div>
-
-<div class="footer">
-</div>
-
-</div>
-<!-- /container -->
-<!-- Bootstrap core JavaScript
-    ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-</body>
-</html>
+END-----

@@ -61,12 +61,14 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
  * ~~Generar QR del dns~~
 * ~~[Chat para ciboulette](chat.png) prosody + [mod_onions](https://blog.thijsalkema.de/blog/2013/06/11/xmpp-federation-over-tor-hidden-services/)~~
  * ~~Hacer instalador~~ (probarlo)
-* Mail local
+* [Mail sobre tor](http://www.groovy.net/ww/2012/01/torfixbis) - hice multiples pruebas pero no pude salir de mi nodo
 * Método para compartir archivos y multimedia (carpeta XDG_PUBLICSHARE_DIR)
  * Al usar imágenes en un articulo se copien en una carpeta y cree miniaturas
   * Generar galería de las imágenes
 * Método para compartir archivos y multimedia
+ * Documentar como hacerlo desde la terminal
 * Leer [Feed centralizados y ocultos](https://github.com/jol333/veracity/blob/master/index.php) https://github.com/pabluk/NotifyAll
 * ~~Usar una categoria estandarizada para eventos~~
  * hacer publicador
 * ~~aviso de que el avatar cambio~~
+* hacer que las configuraciones de la instalación solo se agregen si no existen

@@ -17,16 +17,22 @@ if [ "$(which apt-get)" ] && [ "$VERSION" -lt "24" ]; then
 	gpg --keyserver keys.gnupg.net --recv 886DDD89
 	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
 	apt-get update
-	apt-get install deb.torproject.org-keyring
+	apt-get install -y deb.torproject.org-keyring
 	apt-get install -y tor
 fi
 
-# agrega el soporte para DNS de Tor
+VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
+
+if [ "$VERSION" -lt "24" ]; then
+
+	# agrega el soporte para DNS de Tor
 
 echo "DNSPort 127.0.0.1:5300
 VirtualAddrNetworkIPv4 10.192.0.0/11
 AutomapHostsOnResolve 1
 TransPort 9040" >> /etc/tor/torrc
+
+fi
 
 # redirecciona los DNS a Tor
 
