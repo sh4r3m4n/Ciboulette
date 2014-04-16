@@ -22,6 +22,7 @@ export CARPETA=~/.${NOMBRE}/
 export BLOG="${CARPETA}blog"
 export COMPARTIR="${CARPETA}compartir"
 export NOVEDADES="${CARPETA}novedades"
+export NB="nb -b $BLOG --template-dir $BLOG/templates"
 
 #---------------------- funciones graficas -----------------
 function opciones {
@@ -87,7 +88,7 @@ function progreso {
 }
 function blogear {
 	# nanoblogger construye el blog
-	nb -b $BLOG --template-dir $BLOG/templates update all
+	$NB update all
 }
 
 function servidor_inicio {
@@ -95,9 +96,7 @@ function servidor_inicio {
 	rm -f /tmp/$NOMBRE.pid
 	# Si corremos arch
 	[ "$(uname -r | grep ARCH)" ] && darkhttpd $BLOG --port 4232 --pidfile /tmp/$NOMBRE.pid || \
-	/usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$BLOG" -T "UTF8" -c "cgi-bin/*"
-	[ "$(uname -r | grep ARCH)" ] && darkhttpd "$NOVEDADES" --port 4233 --pidfile /tmp/${NOMBRE}N.pid || \
-	/usr/sbin/mini-httpd -i /tmp/${NOMBRE}N.pid -p 4233 -d "$NOVEDADES" -T "UTF8" -c "cgi-bin/*"
+	/usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$WWW" -T "UTF8" -c "cgi-bin/*"
 }
 function servidor_matar {
 	# matar el servidor
@@ -117,7 +116,7 @@ function nodos_lista {
 }
 function nodos_actualizar {
 	N=$(rawdog -d $NOVEDADES -wu | cut -d " " -f1) 2> /dev/null
-	nb -b $BLOG --template-dir $BLOG/templates update articles
+	$NB update articles
 	export DISPLAY=:0
 	[ ! "$N" == "0" ] && \
 	notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" \
@@ -134,8 +133,8 @@ while getopts a:b:n:skdlhiuw OPCION; do
 			ARTICULO="`cat /dev/stdin`"
 			echo "Publicando articulo"
 			TMP=$(mktemp -d)
-			nb -b $BLOG --title "$TITULO" --text "$ARTICULO" make-file $TMP/articulo.txt
-			nb -b $BLOG import entry $TMP/articulo.txt
+			$NB --title "$TITULO" --text "$ARTICULO" make-file $TMP/articulo.txt
+			$NB import entry $TMP/articulo.txt
 
 			blogear
 			exit
@@ -190,7 +189,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		exit
 	;;
 	i)
-		sh lib/instalar
+		sh instalar
 		exit
 		;;
 	esac
