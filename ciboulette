@@ -206,50 +206,14 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		# - copia ciboulette
 		# - actualizar ciboulette
 
-		# ---------------------  DEPENDENCIAS -----------------------------
-
-
-		echo
-		echo "Instalando dependencias"
-		echo "-----------------------"
-		echo
-
-		# verifica el sistema operativo
-		if [ "$(which yum)" ]; then
-			aptitude="yum -y install"
-		elif [ "$(which pacman)" ]; then
-			aptitude="yaourt -S"
-		else
-			aptitude="apt-get -y install"
-		fi
-
-		[ "$(which gksu)" ] && gksu="gksu" || gksu="su -c"
-
-		echo "" > $TMP
-				if [ "$(uname -r | grep ARCH)" ]; then
-			# en Arch
-			echo "darkhttpd tor torsocks zenity nanoblogger rawdog python2-feedparser prosody" | \
-			sed 's/\ /\n/g' | while read i; do
-		[ ! "$(which $i)" ] && echo "Instalar los programas $i"
-			done
-		else
-			# en Mint, Debian, Fedora (?)
-			echo "mini-httpd tor torsocks zenity nanoblogger rawdog libnotify-bin prosody" | \
-			sed 's/\ /\n/g' | while read i; do
-		[ ! "$(which $i)" ] && echo "$aptitude $i"
-			done > $TMP
-				fi
-
-		# ----------------------------- TOR ----------------------------------
-
-
-
 		[ -f "$NOVEDADES/config" ] && FEED="$(cat $NOVEDADES/config | grep "^feed ")"
 
-		echo
-		echo "Se necesita autenticación como superusuario para instalar los paquetes. Debe proporcionar la contraseña de root"
+		echo "instalando ciboulette"
+		# como pedir permiso
+		[ "$(which gksu)" ] && gksu="gksu" || gksu="su -c"
 
-		$gksu ./instalar $NOMBRE "$(clave 'Clave para el chat')"
+		echo instalar $NOMBRE $USER "$(clave 'Clave para el XMPP (Chat)')" > $TMP
+		$gksu $TMP
 
 		# ----------------------------- INSTALACION ----------------------------------
 

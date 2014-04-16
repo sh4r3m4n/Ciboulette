@@ -1,30 +1,57 @@
 #!/bin/bash
 
 NOMBRE=$1
-CLAVE=$2
+USUARIO=$2
+CLAVE=$3
 
-VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
+echo
+echo "Instalando dependencias"
+echo "-----------------------"
+echo
 
-if [ "$(which apt-get)" ] && [ "$VERSION" -gt "23" ]; then
-	echo "------- Actualizando Tor --------"
-	echo "tu version de tor es muy vieja... actualizando"
-	echo
-	# necesita comproba si existe
-	[ ! "$(grep 'deb.torproject.org' /etc/apt/sources.list)" ] && \
-	echo "deb http://deb.torproject.org/torproject.org $(grep DISTRIB_CODENAME  /etc/lsb-release | cut -d= -f2) main" >> /etc/apt/sources.list
+# verifica el sistema operativo
 
-	gpg --keyserver keys.gnupg.net --recv 886DDD89
-	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
-	apt-get update
-	apt-get install -y deb.torproject.org-keyring
-	apt-get purge tor
-	apt-get install tor
+[ "$(which yum)" ] && aptitude="yum -y install"
+[ "$(which yaourt)" ] && aptitude="yaourt -S"
+[ "$(which apt-get)" ] && aptitude="apt-get -y install"
+
+
+echo
+echo "Se necesita autenticación como superusuario para instalar los paquetes. Debe proporcionar la contraseña de root"
+
+if [ "$(which yaourt)" ]; then
+	# en Arch
+	echo "darkhttpd tor torsocks zenity nanoblogger rawdog python2-feedparser prosody" | \
+	sed 's/\ /\n/g' | while read i; do
+		[ ! "$(which $i)" ] && echo "Instalar los programas $i"
+	done
+else
+	[ -d "/var/lib/tor/${NOMBRE}/" ] && cp -r /var/lib/tor/${NOMBRE}/ /tmp/${NOMBRE}-dir
+
+	VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
+	if [ "$VERSION" -lt "24" ] && [ "$(which apt-get)" ]; then
+		echo "------- Actualizando Tor --------"
+		echo "tu version de tor es muy vieja... actualizando"
+		echo
+		# necesita comproba si existe
+		[ ! "$(grep 'deb.torproject.org' /etc/apt/sources.list)" ] && \
+		echo "deb http://deb.torproject.org/torproject.org $(grep DISTRIB_CODENAME  /etc/lsb-release | cut -d= -f2) main" >> /etc/apt/sources.list
+		gpg --keyserver keys.gnupg.net --recv 886DDD89
+		gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
+		apt-get update &> /dev/null
+		apt-get install -y deb.torproject.org-keyring
+	fi
+	# en Mint, Debian, Fedora (?)
+	echo "mini-httpd tor torsocks zenity nanoblogger rawdog libnotify-bin prosody" | \
+	sed 's/\ /\n/g' | while read i; do
+		[ ! "$(which $i)" ] && $aptitude $i
+	done
 
 fi
 
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 
-if [ "$VERSION" -lt "24" ]; then
+if [ ! "$VERSION" -lt "24" ] && [ ! "$(grep ^DNSPort /etc/tor/torrc)" ]; then
 
 	# agrega el soporte para DNS de Tor
 	echo 'DNSPort 127.0.0.1:5300'  >> /etc/tor/torrc
@@ -32,18 +59,21 @@ if [ "$VERSION" -lt "24" ]; then
 	echo 'AutomapHostsOnResolve 1' >> /etc/tor/torrc
 	echo 'TransPort 9040' >> /etc/tor/torrc
 	# Agregar la linea solo si no existe
-fi
 
+fi
 # quita las viejas versiones
 cat /etc/tor/torrc | grep -v '#ciboulette' > /tmp/torrc
 cp /tmp/torrc /etc/tor/torrc
 
 # incio del servicio oculto
-echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/ #ciboulette' >> /etc/tor/torrc
+echo "HiddenServiceDir /var/lib/tor/${NOMBRE}/ #ciboulette" >> /etc/tor/torrc
 echo 'HiddenServicePort 80 127.0.0.1:4232   #ciboulette' >> /etc/tor/torrc
 echo 'HiddenServicePort 5222 127.0.0.1:5222 #ciboulette' >> /etc/tor/torrc
 echo 'HiddenServicePort 5269 127.0.0.1:5269 #ciboulette' >> /etc/tor/torrc
 
+# backup del tu ciboulette
+
+[ -d "/tmp/${NOMBRE}-dir" ] && mv /tmp/${NOMBRE}-dir/ /var/lib/tor/${NOMBRE}/
 
 # reincia tor
 
@@ -65,32 +95,31 @@ fi
 
 # ------------------- prosody ---------------------------
 
+cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname
 HOST=$(cat /tmp/hostname)
-
-echo '------ Prosody ------'
-echo
-
-cd /etc/prosody/conf.avail
-echo "Host "$HOST"" > "$HOST.cfg.lua"
-echo "VirtualHost "$HOST"" >> "$HOST.cfg.lua"
-cd ../conf.d
-ln -s ../conf.avail/$HOST.cfg.lua .
-
-sudo /etc/init.d/prosody restart 2> /dev/null
-systemctl restart prosody 2> /dev/null
-
-XMPP="${USER}@${HOST}"
-echo "$CLAVE
-$CLAVE
-" | sudo prosodyctl adduser $XMPP 2> /dev/null
 
 
 # instala ciboulette
 
-cp $NOMBRE /usr/local/bin/
+cp $NOMBRE /usr/local/bin/ 2> /dev/null
 
 echo '------- Inicio -----'
-cp $NOMBRE.png /usr/share/pixmaps/
-cp -r lang /usr/share/nanoblogger/
-cp $NOMBRE.desktop /usr/share/applications/
-cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname"
+
+cp $NOMBRE.png /usr/share/pixmaps/ 2> /dev/null
+cp -r lang /usr/share/nanoblogger/ 2> /dev/null
+cp $NOMBRE.desktop /usr/share/applications/ 2> /dev/null
+
+echo "Host \"$HOST\"
+VirtualHost \"$HOST\"" > /etc/prosody/conf.avail/$HOST.cfg.lua
+cp /etc/prosody/conf.avail/$HOST.cfg.lua /etc/prosody/conf.d/$HOST.cfg.lua
+
+/etc/init.d/prosody restart 2> /dev/null
+systemctl restart prosody 2> /dev/null
+
+XMPP="${USUARIO}@${HOST}"
+echo "$CLAVE
+$CLAVE
+" | prosodyctl adduser $XMPP $CLAVE 2> /dev/null
+
+echo
+echo "tu cuenta de XMPP ya fue creada $XMPP"
