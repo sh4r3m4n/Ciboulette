@@ -137,7 +137,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 			$NB --title "$TITULO" --text "$ARTICULO" make-file $TMP/articulo.txt
 			$NB import entry $TMP/articulo.txt
 
-			blogear
+			#blogear
 			exit
                 ;;
                 w) blogear; exit
@@ -190,6 +190,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		exit
 	;;
 	i)
+		[ "$(id -u)" == "0" ] && echo "No correr esto como root" && exit
 
 		NOMBRE=`basename $0`
 
@@ -248,7 +249,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		echo
 		echo "Se necesita autenticación como superusuario para instalar los paquetes. Debe proporcionar la contraseña de root"
 
-		$gksu sh instalar $NOMBRE "$(clave 'Clave para el chat')"
+		$gksu ./instalar $NOMBRE "$(clave 'Clave para el chat')"
 
 		# ----------------------------- INSTALACION ----------------------------------
 
@@ -328,7 +329,7 @@ case $MENU in
 		2)
 			# Configuración del perfil
 			xdg-open "${BLOG}/articles/perfil.txt"
-			# falta actualizar la pagina
+			blogear
 		;;
 		3)
 			# Novedades
