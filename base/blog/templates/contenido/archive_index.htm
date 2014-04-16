@@ -1,0 +1,8 @@
+<div class="col-lg-6">
+	$NB_MetaBody
+</div>
+<ul class="pager">
+	<li class="previous" >$([ ! -z "$prev_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_PrevEntryPermalink'">'$NB_PrevPage'</a>')</li>
+	<li class="next" >$([ ! -z "$next_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_NextEntryPermalink'">'$NB_NextPage'</a>')</li>
+</ul>
+

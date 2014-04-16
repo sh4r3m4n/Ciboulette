@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="$BLOG_MIMETYPE; charset=$BLOG_CHARSET">
-    <meta name="description" content="$BLOG_DESCRIPTION">
-    <meta name="author" content="$BLOG_AUTHOR">
-    <link rel="shortcut icon" href="${BASE_URL}$BLOG_ICON">
-    <title>${BLOG_TITLE}</title>
-
+archive_index.htm.save<!DOCTYPE html> <html lang="es"> category_archive.htm <head> day_archive.htm <meta charset="utf-8"> footer.html 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> header.html <meta name="viewport" content="width=device-width, initial-scale=1"> 
+main_index.htm <meta http-equiv="Content-Type" content="$BLOG_MIMETYPE; charset=$BLOG_CHARSET"> main_links.htm <meta name="description" 
+content="$BLOG_DESCRIPTION"> makepage.htm <meta name="author" content="$BLOG_AUTHOR"> month_archive.htm <link rel="shortcut icon" 
+href="${BASE_URL}$BLOG_ICON"> permalink.htm <title>${BLOG_TITLE}</title> year_archive.htm
     <!-- Bootstrap core CSS -->
     <link href="${BASE_URL}dist/css/bootstrap.min.css" rel="stylesheet">
 

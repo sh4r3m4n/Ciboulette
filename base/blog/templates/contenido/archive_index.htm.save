@@ -1,0 +1,5 @@
+category_archive.htm<div class="col-lg-6"> day_archive.htm	$NB_MetaBody </div> <ul class="pager"> footer.html	<li 
+class="previous" >$([ ! -z "$prev_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_PrevEntryPermalink'">'$NB_PrevPage'</a>')</li> 
+header.html	<li class="next" >$([ ! -z "$next_entry" ] && echo '<a 
+href="'${ARCHIVES_PATH}$NB_NextEntryPermalink'">'$NB_NextPage'</a>')</li> </ul> main_index.htm main_links.htm makepage.htm 
+month_archive.htm permalink.htm year_archive.htm
