@@ -8,24 +8,23 @@
 <div class="row">
   <div class="col-xs-4 col-md-4">
     <div>
-	<a href="__url__">
-          <img data-src="holder.js/96x96" alt="__if_author__ __author__ __endif__" src="../avatar.png" >
+	<a href="__url__" >
+          <img data-src="holder.js/96x96" alt="__if_author__ __author__ __endif__" src="__feed_url__/avatar.png"  />
+	  <!-- si no tiene avatar tiene que crearlo o marcar que estan offline -->
         </a>
  	<p>
-	__if_author__ <span class="label label-info">__author__</span> __endif__
-	<span class="label label-primary"> __feed_title__</span>
+	__if_author__ <span class="label label-info">__author__</span> __else__ <span class="label label-info"> __feed_title__</span> __endif__
 	<!-- aca podrian ir las etiqeutas --> 
 	</p>
     </div>
   </div>
   <div class="col-sm-8">
-    <h4 class="media-heading unread"><a href="__url__"><span class="glyphicon glyphicon-link"></span></a> __title_no_link__</h4>
+    <h4 class="media-heading unread"><a href="__url__"><span class="glyphicon glyphicon-link"><!-- enlace --></span></a> __title_no_link__</h4>
 	__if_description__<div class="itemdescription" id="item__guid__">
 	__description__
 	</div>__endif__
   </div>
 </div>
 </div>
-
 <!-- PAGE-END-ITEM -->
 

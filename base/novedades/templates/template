@@ -7,7 +7,7 @@ FORMAT: html
 BODY:
 
 	<!-- contenido -->
-	<div class="col-lg-5">
+	<div class="col-lg-6">
   	    <!-- <div class="alert alert-info" id=beggining>
                 Llegaste al inicio
             </div> -->
@@ -20,8 +20,18 @@ BODY:
             <div class="pages">
                 __paged_output_pages__
             </div>
-	    <a id="toTopButton" href="#">&uarr;</a>
+	    	<a id="toTopButton" href="#" class="btn btn-default btn-lg pull-right">
+			<span class="glyphicon glyphicon-chevron-up"><!-- ^ --></span>
+		</a>
 	</div>
+	<style>
+	        .label a, .label a:hover, .label a:link, .label:visited {
+	                text-decoration: none;
+	                color: #fff;
+	        }
+	        /* luego mover al tema general */
+	</style>
+
 	<!-- menu 
 	<div class="col-lg-1">
 		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu3">

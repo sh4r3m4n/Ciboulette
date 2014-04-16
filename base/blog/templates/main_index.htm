@@ -1,68 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="$BLOG_MIMETYPE; charset=$BLOG_CHARSET">
-    <meta name="description" content="$BLOG_DESCRIPTION">
-    <meta name="author" content="$BLOG_AUTHOR">
-    <link rel="shortcut icon" href="${BASE_URL}$BLOG_ICON">
-    <title>${BLOG_TITLE}</title>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="$BLOG_MIMETYPE; charset=$BLOG_CHARSET">
+	<meta name="description" content="$BLOG_DESCRIPTION">
+	<meta name="author" content="$BLOG_AUTHOR">
+	<link rel="shortcut icon" href="${BASE_URL}$BLOG_ICON">
+	<title>${BLOG_TITLE}</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="${BASE_URL}dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Bootstrap core CSS -->
+	<link href="${BASE_URL}dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="${BASE_URL}$BLOG_CSS" rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link href="${BASE_URL}$BLOG_CSS" rel="stylesheet">
     
-${NB_AtomAltLink}
-${NB_RSS2AltLink}
-${NB_RSSAltLink}
+	${NB_AtomAltLink}
+	${NB_RSS2AltLink}
+	${NB_RSSAltLink}
 
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+	<!-- Just for debugging purposes. Don't actually copy this line! -->
+	<!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
-   <div class="container">
-      <div class="header">
-	<ul class="nav nav-pills pull-right">
-		<li class="active" ><a href="/"><span class="glyphicon glyphicon-home"><!-- para tidy --></span></a></li>
-		<li><a href="http://127.0.0.1:4233/">Novedades</a></li>
-		<li><a href="/articles/perfil">Perfil</a></li>
-	</ul>
-        <h3 class="text-muted"><img src="images/logo.png" /> Ciboulette</h3>
-      </div>
-      <div class="jumbotron">
-        <h1><a href="${BASE_URL}$NB_INDEX" accesskey="1">${BLOG_TITLE}</a></h1>
-        <p class="lead">${BLOG_DESCRIPTION}</p>
-      </div>
-      <div class="row marketing">
-	        <div class="col-lg-6">
-					$NB_MetaBody
-		    </div>
-		    <ul class="pager">
-		    	 <li class="previous" >$([ ! -z "$prev_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_PrevEntryPermalink'">'$NB_PrevPage'</a>')</li>
-		    	 <li class="next" >$([ ! -z "$next_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_NextEntryPermalink'">'$NB_NextPage'</a>')</li>
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<ul class="nav nav-pills pull-right">
+				<li><a href="${BASE_URL}$NB_INDEX"><span class="glyphicon glyphicon-home"><!-- ${template_main} --></span></a></li>
+				<li><a href="${BASE_URL}articles/novedades/">Novedades</a></li>
+				<li><a href="${BASE_URL}archives/cat_1/">Eventos</a></li>
+				<li><a href="${BASE_URL}articles/perfil/">Perfil</a></li>
 			</ul>
+			<h3 class="text-muted"><img src="${BASE_URL}images/logo.png" /> Ciboulette</h3>
 	</div>
- 	  <div class="footer">
-  		<p>&copy; Ciboulette 2014 - Liberado bajo licencia AGPLv3</p>
-  		<!-- <p>$NB_CategoryLinks</p> -->
-      </div>
+	<div class="jumbotron">
+		<!-- falta el avatar del usuario -->
+		<img src="${BASE_URL}avatar.png" class="pull-left" />
+		<h1><a href="${BASE_URL}articles/perfil" accesskey="1">${BLOG_AUTHOR}</a></h1>
+		<!-- esto no deberia estar si no hay BLOG_TITLE -->
+		<p class="lead">${BLOG_DESCRIPTION}</p>
+		<!-- falta el metodo para postear si esta en localhost -->
+	</div>
+	<div class="row marketing">
+<div class="col-lg-6">
+	$NB_MetaBody
+</div>
+<ul class="pager">
+	<li class="previous" >$([ ! -z "$prev_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_PrevEntryPermalink'">'$NB_PrevPage'</a>')</li>
+	<li class="next" >$([ ! -z "$next_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_NextEntryPermalink'">'$NB_NextPage'</a>')</li>
+</ul>
+	</div>
+	<div class="footer">
+		<p>$BLOG_AUTHOR con <a href="http://wiki.hackcoop.com.ar/Ciboulette">Ciboulette</a> &copy; $LAST_UPDATED - Liberado bajo licencia AGPLv3</p>
+	</div>
+</div> <!-- /container -->
 
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-  </body>
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	</body>
 </html>
