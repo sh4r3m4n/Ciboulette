@@ -7,17 +7,19 @@ VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g'
 
 if [ "$(which apt-get)" ] && [ "$VERSION" -gt "23" ]; then
 	echo "------- Actualizando Tor --------"
-
 	echo "tu version de tor es muy vieja... actualizando"
-
+	echo
 	# necesita comproba si existe
-	[ ! "$(cat /etc/apt/source.list | grep 'deb.torproject.org')" ] && \
-	echo "deb http://deb.torproject.org/torproject.org $(grep DISTRIB_CODENAME  /etc/lsb-release | cut -d= -f2) main" >> /etc/apt/source.list
+	[ ! "$(grep 'deb.torproject.org' /etc/apt/sources.list)" ] && \
+	echo "deb http://deb.torproject.org/torproject.org $(grep DISTRIB_CODENAME  /etc/lsb-release | cut -d= -f2) main" >> /etc/apt/sources.list
 
-	echo "gpg --keyserver keys.gnupg.net --recv 886DDD89
+	gpg --keyserver keys.gnupg.net --recv 886DDD89
 	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
 	apt-get update
-	apt-get install -y deb.torproject.org-keyring" >> $TMP
+	apt-get install -y deb.torproject.org-keyring
+	apt-get purge tor
+	apt-get install tor
+
 fi
 
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
@@ -33,7 +35,8 @@ if [ "$VERSION" -lt "24" ]; then
 fi
 
 # quita las viejas versiones
-cat /etc/tor/torrc | grep '#ciboulette' > /etc/tor/torrc
+cat /etc/tor/torrc | grep -v '#ciboulette' > /tmp/torrc
+cp /tmp/torrc /etc/tor/torrc
 
 # incio del servicio oculto
 echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/ #ciboulette' >> /etc/tor/torrc
@@ -65,6 +68,7 @@ fi
 HOST=$(cat /tmp/hostname)
 
 echo '------ Prosody ------'
+echo
 
 cd /etc/prosody/conf.avail
 echo "Host "$HOST"" > "$HOST.cfg.lua"
