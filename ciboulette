@@ -258,6 +258,8 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		ln -s "$COMPARTIR/" Compartir/
 		ln -s "$NOVEDADES/" Novedades/
 
+		qrencode "`cat {$CARPETA}hostname`" -o ${CARPETA}qr.png
+
 		# inicia el servidor
 		$NOMBRE -s &
 		$NOMBRE -w
