@@ -59,7 +59,7 @@ function url {
 	zenity --title "URL" --text "Dirección" --entry --entry-text="$*"
 }
 function titulo {
-	zenity --title "Titulo" --text "¿Sobre que vas a hablar?" --entry --entry-text="$*"
+	zenity --title "Titulo" --text "$*" --entry
 }
 function archivo {
 	zenity --title "Elije el archivo" --file-selection
@@ -267,7 +267,7 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Editar_tu_perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Ciboulette - $(cat ${CARPETA}hostname)"`
+MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Tu_plan Editar_tu_perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Ciboulette - $(cat ${CARPETA}hostname)"`
 case $MENU in
 		0 )
 			# Publicar articulo
@@ -284,28 +284,33 @@ case $MENU in
 			echo "avatar actualizado" | alerta
 		;;
 		2)
+			titulo "¿Cual es tu plan?" > ~/.plan
+			echo "plan actualizado" | alerta
+			blogear
+		;;
+		3)
 			# Configuración del perfil
 			xdg-open "${BLOG}/articles/perfil.txt"
 			blogear
 		;;
-		3)
+		4)
 			# Novedades
 			xdg-open "${NOVEDADES}/index.html"
 		;;
-		4)
+		5)
 			# Agregar nodo
 			URL=$(url)
 			$NOMBRE -n "$URL"
 		;;
-		5)
+		6)
 			# Inicia al servidor
 			$NOMBRE -s
 		;;
-		6)
+		7)
 			# Mata el servidor
 			$NOMBRE -k
 		;;
-		7)
+		8)
 			# Mata el servidor
 			$NOMBRE -u
 		;;
