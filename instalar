@@ -32,7 +32,7 @@ if [ "$(which yaourt)" ]; then
 	# en Arch
 	echo "darkhttpd tor torsocks zenity nanoblogger rawdog python2-feedparser prosody" | \
 	sed 's/\ /\n/g' | while read i; do
-		[ ! "$(which $i)" ] && echo "Instalar los programas $i"
+		[ ! "$(which $i)" ] && $aptitude $i
 	done
 else
 	[ -d "/var/lib/tor/ciboulette/" ] && cp -r /var/lib/tor/ciboulette/ /tmp/ciboulette-dir
