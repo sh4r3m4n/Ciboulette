@@ -1,0 +1,92 @@
+#!/bin/bash
+
+NOMBRE=$1
+CLAVE=$2
+
+VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
+
+if [ "$(which apt-get)" ] && [ "$VERSION" -gt "23" ]; then
+	echo "------- Actualizando Tor --------"
+
+	echo "tu version de tor es muy vieja... actualizando"
+
+	# necesita comproba si existe
+	[ ! "$(cat /etc/apt/source.list | grep 'deb.torproject.org')" ] && \
+	echo "deb http://deb.torproject.org/torproject.org $(grep DISTRIB_CODENAME  /etc/lsb-release | cut -d= -f2) main" >> /etc/apt/source.list
+
+	echo "gpg --keyserver keys.gnupg.net --recv 886DDD89
+	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
+	apt-get update
+	apt-get install -y deb.torproject.org-keyring" >> $TMP
+fi
+
+VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
+
+if [ "$VERSION" -lt "24" ]; then
+
+	# agrega el soporte para DNS de Tor
+	echo 'DNSPort 127.0.0.1:5300'  >> /etc/tor/torrc
+	echo 'VirtualAddrNetworkIPv4 10.192.0.0/11'  >> /etc/tor/torrc
+	echo 'AutomapHostsOnResolve 1' >> /etc/tor/torrc
+	echo 'TransPort 9040' >> /etc/tor/torrc
+	# Agregar la linea solo si no existe
+fi
+
+# quita las viejas versiones
+cat /etc/tor/torrc | grep '#ciboulette' > /etc/tor/torrc
+
+# incio del servicio oculto
+echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/ #ciboulette' >> /etc/tor/torrc
+echo 'HiddenServicePort 80 127.0.0.1:4232   #ciboulette' >> /etc/tor/torrc
+echo 'HiddenServicePort 5222 127.0.0.1:5222 #ciboulette' >> /etc/tor/torrc
+echo 'HiddenServicePort 5269 127.0.0.1:5269 #ciboulette' >> /etc/tor/torrc
+
+
+# reincia tor
+
+systemctl restart tor 2> /dev/null
+/etc/init.d/tor restart 2> /dev/null
+
+sleep 10
+
+
+# redirecciona los DNS a Tor
+
+if [ "$(cat /etc/rc.local | grep -v 'ciboulette')" ]; then
+
+echo "$(cat /etc/rc.local | grep -v "^exit")
+/usr/local/bin/ciboulette iptables
+exit 0" > /etc/rc.local
+
+fi
+
+# ------------------- prosody ---------------------------
+
+HOST=$(cat /tmp/hostname)
+
+echo '------ Prosody ------'
+
+cd /etc/prosody/conf.avail
+echo "Host "$HOST"" > "$HOST.cfg.lua"
+echo "VirtualHost "$HOST"" >> "$HOST.cfg.lua"
+cd ../conf.d
+ln -s ../conf.avail/$HOST.cfg.lua .
+
+sudo /etc/init.d/prosody restart 2> /dev/null
+systemctl restart prosody 2> /dev/null
+
+XMPP="${USER}@${HOST}"
+echo "$CLAVE
+$CLAVE
+" | sudo prosodyctl adduser $XMPP 2> /dev/null
+
+
+# instala ciboulette
+
+cp $NOMBRE /usr/local/bin/
+
+echo '------- Inicio -----'
+cp $NOMBRE.png /usr/share/pixmaps/
+cp -r lang /usr/share/nanoblogger/
+cp $NOMBRE.desktop /usr/share/applications/
+cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname"

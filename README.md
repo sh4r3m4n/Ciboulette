@@ -52,7 +52,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 * Adaptar tema al lector y posteo
 * ~~[Acceso transparente a los servicios ocultos](https://grepular.com/Transparent_Access_to_Tor_Hidden_Services) y [DNS](http://security-world.blogspot.com.ar/2013/04/postfix-through-tor-dns.html)~~
 * ~~Lector local y estatico de feed ([rawdog](http://offog.org/code/rawdog/) + https://github.com/roop/ngoplanet_org/)~~
- * mover el la pagina estatica dentro de nanoblogger
+ * mover estatica dentro de nanoblogger
  * Publicador, editor de perfil y agregador de amigos con CGI (solo para la red local)
   * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
 * ~~Sacar el nombre del usuario de `whoami`~~
@@ -72,3 +72,4 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
  * hacer publicador
 * ~~aviso de que el avatar cambio~~
 * hacer que las configuraciones de la instalación solo se agregen si no existen
+* Falta modificar el template :P
