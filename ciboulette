@@ -239,7 +239,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		echo "http://$(cat /tmp/hostname)" > ${CARPETA}hostname
 
 		mkdir ~/.config/autostart/ &> /dev/null
-		cp $NOMBRE.desktop  ~/.config/autostart/
+		cp ${NOMBRE}-s.desktop  ~/.config/autostart/
 
 		[ -d "${CARPETA}data" ] && sh chronicle2nanoblogger
 
