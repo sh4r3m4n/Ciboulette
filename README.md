@@ -74,7 +74,8 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
  * Publicador, editor de perfil y agregador de amigos con CGI (solo para la red local)
   * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
 * ~~Sacar el nombre del usuario de `whoami`~~
- * Poner datos de `finger` guardados en los archivos ~~ `.plan` ~~ , `.project` y ~~ `.pgpkey` ~~
+ * ~~Poner datos de `finger` guardados en los archivos `.plan`, `.project` y `.pgpkey`~~
+  * Manual de como usarlo
  * [xfaces](https://en.wikipedia.org/wiki/X-Face) y/o [picons](http://www.cs.indiana.edu/picons/ftp/index.html) 
  * ~~Generar QR del dns~~
 * ~~[Chat para ciboulette](chat.png) prosody + [mod_onions](https://blog.thijsalkema.de/blog/2013/06/11/xmpp-federation-over-tor-hidden-services/)~~
