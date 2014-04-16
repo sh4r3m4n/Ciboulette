@@ -2,6 +2,7 @@
 
 Es una red social 100% libre, entre pares, descentralizada y distribuida
 
+![pantalla de novedades](captura.png)
  
 Con simple blog y lectores de Noticias (RSS, Atom, RDF) se crea una red 
 social libre en la que cada persona publica novedades directamente desde 
@@ -16,7 +17,7 @@ wget https://raw.github.com/b4zz4/Ciboulette/master/ciboulette
 bash ciboulette -u
 ~~~
 
-Luego de instalarlo se puede usar desde la terminal [ciboulette -h](ayuda.md) o desde su [interfaz gráfica](captura.png).
+Luego de instalarlo se puede usar desde la terminal `ciboulette -h` o desde su **interfaz gráfica**
 
 * [Wiki del proyecto](http://wiki.hackcoop.com.ar/Ciboulette)
 
@@ -45,6 +46,24 @@ Es una red totalmente distribuida por no tener un centro, ni muchos de ellos.
 
 Que no existen servidores centrales. Los datos van de una computadora a otro directamente, pasando entre pares iguales.
 
+## ¿Que se puede hacer con ciboulette?
+
+### Publicar notas
+
+### Ver las novedades de tus amig@s
+
+![pantalla de novedades](captura.png)
+
+### Chatear
+
+![Chatear](jabber_con_ciboulette.png)
+> Gracias a prosody se puede chatear
+
+#### Compartir archivos
+
+![Chatear](capturas/transferencia_de_archivos.png)
+> Gracias a prosody se puede chatear
+
 
 ## Quehaceres
 
@@ -72,4 +91,4 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
  * hacer publicador
 * ~~aviso de que el avatar cambio~~
 * hacer que las configuraciones de la instalación solo se agregen si no existen
-* Falta modificar el template :P
+* ~~Falta modificar el template :P~~
