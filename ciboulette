@@ -27,6 +27,9 @@ export WWW="${CARPETA}www"
 export NB="nb -b $BLOG --template-dir $BLOG/templates"
 export RAWDOG="torify rawdog -d $NOVEDADES"
 
+# Renueva la llave gpg en el sitio
+ln -s ~/.pgpkey "$WWW/gpg.asc"
+
 #---------------------- funciones graficas -----------------
 function opciones {
 	while getopts t:m: OPCION; do
@@ -251,9 +254,9 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		mkdir ~/Ciboulette
 		cd ~/Ciboulette
 
-		ln -s "$BLOG/data" Blog/
-		ln -s "$COMPARTIR" Compartir/
-		ln -s "$NOVEDADES" Novedades/
+		ln -s "$BLOG/data/" Blog/
+		ln -s "$COMPARTIR/" Compartir/
+		ln -s "$NOVEDADES/" Novedades/
 
 		# inicia el servidor
 		$NOMBRE -s &

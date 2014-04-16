@@ -2,7 +2,7 @@
 
 Es una red social 100% libre, entre pares, descentralizada y distribuida
 
-Con simple blog y lectores de Noticias (RSS, Atom, RDF) se crea una red 
+Con un simple blog y lectores de Noticias (RSS, Atom, RDF) se crea una red 
 social libre en la que cada persona publica novedades directamente desde 
 su computadora. Y es accesible desde cualquier computadora con 
 [Tor](https://www.torproject.org/) gracias a sus servicios ocultos,
@@ -70,11 +70,11 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 * ~~Adaptar tema al lector y posteo~~
 * ~~[Acceso transparente a los servicios ocultos](https://grepular.com/Transparent_Access_to_Tor_Hidden_Services) y [DNS](http://security-world.blogspot.com.ar/2013/04/postfix-through-tor-dns.html)~~
 * ~~Lector local y estatico de feed ([rawdog](http://offog.org/code/rawdog/) + https://github.com/roop/ngoplanet_org/)~~
- * ~~mover estatica dentro de nanoblogger~~
+ * ~~mover estática dentro de nanoblogger~~
  * Publicador, editor de perfil y agregador de amigos con CGI (solo para la red local)
   * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
 * ~~Sacar el nombre del usuario de `whoami`~~
- * Poner datos de `finger` guardados en los archivos ~~ `.plan` ~~, `.project` y `.pgpkey`
+ * Poner datos de `finger` guardados en los archivos ~~ `.plan` ~~ , `.project` y ~~ `.pgpkey` ~~
  * [xfaces](https://en.wikipedia.org/wiki/X-Face) y/o [picons](http://www.cs.indiana.edu/picons/ftp/index.html) 
  * ~~Generar QR del dns~~
 * ~~[Chat para ciboulette](chat.png) prosody + [mod_onions](https://blog.thijsalkema.de/blog/2013/06/11/xmpp-federation-over-tor-hidden-services/)~~
@@ -85,8 +85,8 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
  * Al usar imágenes en un articulo se copien en una carpeta y cree miniaturas
   * Generar galería de las imágenes
 * Leer [Feed centralizados y ocultos](https://github.com/jol333/veracity/blob/master/index.php) https://github.com/pabluk/NotifyAll
-* ~~Usar una categoria estandarizada para eventos~~
+* ~~Usar una categoría estandarizada para eventos~~
  * hacer publicador (de eventos)
 * ~~aviso de que el avatar cambio~~
-* hacer que las configuraciones de la instalación solo se agregen si no existen
+* hacer que las configuraciones de la instalación solo se agreguen si no existen
 * ~~Falta modificar el template :P~~
