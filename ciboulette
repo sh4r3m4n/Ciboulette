@@ -197,23 +197,16 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		# dependencias
 		TMP=$(mktemp)
 
-		# - instala dependencias
-		# - verificar version de tor
-		# - cargar iptables en rc.local
-		# - crea servicio oculto
-		# - genera las carpetas
-		# - copia las configuraciones de nanoblogger, rawdog
-		# - copia ciboulette
-		# - actualizar ciboulette
-
+		# backups de tus amigxs
 		[ -f "$NOVEDADES/config" ] && FEED="$(cat $NOVEDADES/config | grep "^feed ")"
 
 		echo "instalando ciboulette"
 		# como pedir permiso
-		[ "$(which gksu)" ] && gksu="gksu" || gksu="su -c"
+		# [ "$(which sudo)" ] && gksu="gksu" || gksu="su -c"
 
-		echo instalar $NOMBRE $USER "$(clave 'Clave para el XMPP (Chat)')" > $TMP
-		$gksu $TMP
+		echo "Escribir tu clave para XMPP y presionar entrada"
+		CLAVE=$(read)
+		gksu "./instalar $USER \"$CLAVE\""
 
 		# ----------------------------- INSTALACION ----------------------------------
 
