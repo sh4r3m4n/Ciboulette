@@ -72,19 +72,19 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 * ~~Lector local y estatico de feed ([rawdog](http://offog.org/code/rawdog/) + https://github.com/roop/ngoplanet_org/)~~
  * ~~mover estática dentro de nanoblogger~~
  * Publicador, editor de perfil y agregador de amigos con CGI (solo para la red local)
-  * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
+   * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
 * ~~Sacar el nombre del usuario de `whoami`~~
  * ~~Poner datos de `finger` guardados en los archivos `.plan`, `.project` y `.pgpkey`~~
-  * Manual de como usarlo
+   * Manual de como usarlo
  * [xfaces](https://en.wikipedia.org/wiki/X-Face) y/o [picons](http://www.cs.indiana.edu/picons/ftp/index.html) 
- * ~~Generar QR del dns~~
+ * ~~Generar QR del hostname~~
 * ~~[Chat para ciboulette](chat.png) prosody + [mod_onions](https://blog.thijsalkema.de/blog/2013/06/11/xmpp-federation-over-tor-hidden-services/)~~
  * ~~Hacer instalador~~ (probarlo)
 * [Mail sobre tor](http://www.groovy.net/ww/2012/01/torfixbis) - hice multiples pruebas pero no pude salir de mi nodo
 * Método para compartir archivos y multimedia (carpeta XDG_PUBLICSHARE_DIR)
  * Documentar como hacerlo desde la terminal
  * Al usar imágenes en un articulo se copien en una carpeta y cree miniaturas
-  * Generar galería de las imágenes
+   * Generar galería de las imágenes
 * Leer [Feed centralizados y ocultos](https://github.com/jol333/veracity/blob/master/index.php) https://github.com/pabluk/NotifyAll
 * ~~Usar una categoría estandarizada para eventos~~
  * hacer publicador (de eventos)

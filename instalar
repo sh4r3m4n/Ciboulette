@@ -30,7 +30,7 @@ echo "Se necesita autenticación como superusuario para instalar los paquetes. D
 
 if [ "$(which yaourt)" ]; then
 	# en Arch
-	echo "darkhttpd tor torsocks zenity nanoblogger rawdog python2-feedparser prosody" | \
+	echo "darkhttpd tor torsocks zenity nanoblogger rawdog python2-feedparser prosody qrencode" | \
 	sed 's/\ /\n/g' | while read i; do
 		[ ! "$(which $i)" ] && $aptitude $i
 	done
@@ -51,7 +51,7 @@ else
 		apt-get install -y deb.torproject.org-keyring
 	fi
 	# en Mint, Debian, Fedora (?)
-	echo "mini-httpd tor torsocks zenity nanoblogger rawdog libnotify-bin prosody" | \
+	echo "mini-httpd tor torsocks zenity nanoblogger rawdog libnotify-bin prosody qrencode" | \
 	sed 's/\ /\n/g' | while read i; do
 		[ ! "$(which $i)" ] && $aptitude $i
 	done
