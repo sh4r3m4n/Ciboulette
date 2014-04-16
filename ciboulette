@@ -22,8 +22,10 @@ export CARPETA=~/.${NOMBRE}/
 export BLOG="${CARPETA}blog"
 export COMPARTIR="${CARPETA}compartir"
 export NOVEDADES="${CARPETA}novedades"
-export NB="nb -b $BLOG --template-dir $BLOG/templates"
 export WWW="${CARPETA}www"
+# programas
+export NB="nb -b $BLOG --template-dir $BLOG/templates"
+export RAWDOG="torify rawdog -d $NOVEDADES"
 
 #---------------------- funciones graficas -----------------
 function opciones {
@@ -105,18 +107,21 @@ function servidor_matar {
 }
 
 function nodo_agregar {
-	URL=`cat /dev/stdin`
-	rawdog -d $NOVEDADES -a "$URL" 2> /dev/null
+	cat /dev/stdin | sed 's/\ /\n/g' | while read URL; do
+		# falta poner que si no tiene http:// lo agrege
+		$RAWDOG -a "$URL" 2> /dev/null
+	done
 }
 function nodo_borrar {
-	URL=`cat /dev/stdin`
-	rawdog -d $NOVEDADES -r "$URL" 2> /dev/null
+	cat /dev/stdin | sed 's/\ /\n/g' | while read URL; do
+		$RAWDOG -r "$URL" 2> /dev/null
+	done
 }
 function nodos_lista {
-	rawdog -d $NOVEDADES -l 2> /dev/null
+	$RAWDOG -l 2> /dev/null
 }
 function nodos_actualizar {
-	N=$(rawdog -d $NOVEDADES -wu | cut -d " " -f1) 2> /dev/null
+	N=$($RAWDOG -wu | cut -d " " -f1) 2> /dev/null
 	$NB update articles
 	export DISPLAY=:0
 	[ ! "$N" == "0" ] && \
@@ -205,7 +210,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		# [ "$(which sudo)" ] && gksu="gksu" || gksu="su -c"
 
 		echo "Escribir tu clave para XMPP y presionar entrada"
-		CLAVE=$(read)
+		CLAVE=$(clave "una clave para tu chat (XMPP)")
 		gksu "./instalar $USER \"$CLAVE\""
 
 		# ----------------------------- INSTALACION ----------------------------------
