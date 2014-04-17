@@ -28,7 +28,7 @@ export NB="nb -b $BLOG --template-dir $BLOG/templates"
 export RAWDOG="torify rawdog -d $NOVEDADES"
 
 # Renueva la llave gpg en el sitio
-ln -s ~/.pgpkey "$WWW/gpg.asc"
+ln -s ~/.pgpkey "$WWW/gpg.asc" &> /dev/null
 
 #---------------------- funciones graficas -----------------
 function opciones {
@@ -261,6 +261,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		qrencode "`cat {$CARPETA}hostname`" -o ${CARPETA}qr.png
 
 		# inicia el servidor
+		$NOMBRE -k
 		$NOMBRE -s &
 		$NOMBRE -w
 		$NOMBRE -d
