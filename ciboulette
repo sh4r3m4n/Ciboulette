@@ -305,7 +305,7 @@ case $MENU in
 		;;
 		4)
 			# Novedades
-			xdg-open "${NOVEDADES}/index.html"
+			xdg-open "http://127.0.0.1:4232/articles/novedades/"
 		;;
 		5)
 			# Agregar nodo
