@@ -48,7 +48,7 @@ function opciones {
 		N=$(($N+1))
 	done
 	# genera el menu
-	eval "zenity --title \"$TITULO\" --window-icon /usr/share/pixmaps/$NOMBRE.png --text \"$MENSAJE\" --list --height=300 --column \"\" --column \"\" --hide-column 1  --hide-header $C"
+	eval "zenity --title \"$TITULO\" --window-icon /usr/share/pixmaps/$NOMBRE.png --text \"$MENSAJE\" --list --height=350 --column \"\" --column \"\" --hide-column 1  --hide-header $C"
 }
 
 function error {
@@ -99,11 +99,12 @@ function blogear {
 
 function servidor_inicio {
 	# inicia el servidor
-	rm -f /tmp/$NOMBRE.pid
+	rm -f /tmp/$NOMBRE.pid && servidor_matar
 	# Si corremos arch
-	[ "$(uname -r | grep ARCH)" ] && darkhttpd $WWW --port 4232 --pidfile /tmp/$NOMBRE.pid || \
-	/usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$WWW" -T "UTF8" -c "cgi-bin/*"
+	[ "$(which mini-httpd)" ] && /usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$WWW" -T "UTF8" -c "cgi-bin/*" || \
+	darkhttpd $WWW --port 4232 --pidfile /tmp/$NOMBRE.pid
 }
+
 function servidor_matar {
 	# matar el servidor
 	[ -f /tmp/$NOMBRE.pid ] && kill "$(cat /tmp/$NOMBRE.pid)" 2> /dev/null
@@ -252,12 +253,12 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		# solo para esta version
 		[ -d "${CARPETA}data" ] && sh chronicle2nanoblogger
 
-		mkdir ~/Ciboulette
-		cd ~/Ciboulette
-
-		ln -s "$BLOG/data/" Blog/
-		ln -s "$COMPARTIR/" Compartir/
-		ln -s "$NOVEDADES/" Novedades/
+		# la idea de esto es compartir archivos
+		# mkdir ~/Ciboulette
+		# cd ~/Ciboulette
+		# ln -s "$BLOG/data/" Blog/
+		# ln -s "$COMPARTIR/" Compartir/
+		# ln -s "$NOVEDADES/" Novedades/
 
 		qrencode "`cat {$CARPETA}hostname`" -o ${CARPETA}qr.png
 
@@ -279,7 +280,7 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Tu_plan Editar_tu_perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Ciboulette - $(cat ${CARPETA}hostname)"`
+MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Tu_plan Editar_tu_perfil Leer_novedades Agrega_nodo_amigo Quitar_nodos Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Tu nodo: $(cat ${CARPETA}hostname)"`
 case $MENU in
 		0 )
 			# Publicar articulo
@@ -315,14 +316,20 @@ case $MENU in
 			$NOMBRE -n "$URL"
 		;;
 		6)
+			$NOMBRE -b $(ciboulette -l | grep "\(Title\|Link\)" \
+			| sed 's/^.*:\ //g' \
+			| zenity --list --column "Nodo" --column "URL" --hide-header \
+			--multiple --print-column 2 --title "Elija los nodos a borrar" --separator " ")
+		;;
+		7)
 			# Inicia al servidor
 			$NOMBRE -s
 		;;
-		7)
+		8)
 			# Mata el servidor
 			$NOMBRE -k
 		;;
-		8)
+		9)
 			# Mata el servidor
 			$NOMBRE -u
 		;;

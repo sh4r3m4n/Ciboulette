@@ -26,37 +26,29 @@ echo
 
 
 echo
-echo "Se necesita autenticación como superusuario para instalar los paquetes. Debe proporcionar la contraseña de root"
 
-if [ "$(which yaourt)" ]; then
-	# en Arch
-	echo "darkhttpd tor torsocks zenity nanoblogger rawdog python2-feedparser prosody qrencode" | \
-	sed 's/\ /\n/g' | while read i; do
-		[ ! "$(which $i)" ] && $aptitude $i
-	done
-else
-	[ -d "/var/lib/tor/ciboulette/" ] && cp -r /var/lib/tor/ciboulette/ /tmp/ciboulette-dir
+DEPENENCIAS="mini-httpd tor torsocks zenity nanoblogger rawdog libnotify-bin prosody qrencode tidy markdown zenity python2-feedparser"
 
-	VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
-	if [ "$VERSION" -lt "24" ] && [ "$(which apt-get)" ]; then
-		echo "------- Actualizando Tor --------"
-		echo "tu version de tor es muy vieja... actualizando"
-		echo
-		# necesita comproba si existe
-		[ ! "$(grep 'deb.torproject.org' /etc/apt/sources.list)" ] && \
+[ -d "/var/lib/tor/ciboulette/" ] && cp -r /var/lib/tor/ciboulette/ /tmp/ciboulette-dir/
+VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
+
+if [ "$VERSION" -lt "24" ] && [ "$(which apt-get)" ]; then
+	echo "------- Actualizando Tor --------"
+	echo "tu version de tor es muy vieja... actualizando"
+	echo
+	# necesita comproba si existe
+	[ ! "$(grep 'deb.torproject.org' /etc/apt/sources.list)" ] && \
 		echo "deb http://deb.torproject.org/torproject.org $(grep DISTRIB_CODENAME  /etc/lsb-release | cut -d= -f2) main" >> /etc/apt/sources.list
-		gpg --keyserver keys.gnupg.net --recv 886DDD89
-		gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
-		apt-get update &> /dev/null
-		apt-get install -y deb.torproject.org-keyring
-	fi
-	# en Mint, Debian, Fedora (?)
-	echo "mini-httpd tor torsocks zenity nanoblogger rawdog libnotify-bin prosody qrencode" | \
-	sed 's/\ /\n/g' | while read i; do
-		[ ! "$(which $i)" ] && $aptitude $i
-	done
-
+	gpg --keyserver keys.gnupg.net --recv 886DDD89
+	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
+	apt-get update &> /dev/null
+	apt-get install -y deb.torproject.org-keyring
 fi
+
+echo "$DEPENENCIAS" | sed 's/\ /\n/g' | while read i; do
+	[ ! "$(which $i)" ] && $aptitude $i
+done
+[ ! "$(which mini-httpd)" ] && $aptitude darkhttpd
 
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 
@@ -80,7 +72,7 @@ echo 'HiddenServicePort 80 127.0.0.1:4232   #ciboulette' >> /etc/tor/torrc
 echo 'HiddenServicePort 5222 127.0.0.1:5222 #ciboulette' >> /etc/tor/torrc
 echo 'HiddenServicePort 5269 127.0.0.1:5269 #ciboulette' >> /etc/tor/torrc
 
-# backup del tu ciboulette
+# recupera el backup del tu ciboulette
 
 [ -d "/tmp/ciboulette-dir" ] && mv /tmp/ciboulette-dir/ /var/lib/tor/ciboulette/
 
