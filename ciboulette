@@ -249,6 +249,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		mkdir ~/.config/autostart/ &> /dev/null
 		cp ${NOMBRE}-s.desktop  ~/.config/autostart/
 
+		# solo para esta version
 		[ -d "${CARPETA}data" ] && sh chronicle2nanoblogger
 
 		mkdir ~/Ciboulette

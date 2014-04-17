@@ -2,7 +2,7 @@ TITLE: Ayuda
 AUTHOR: Ciboulette
 DATE:
 DESC: Pequeña ayuda para comenzar a editar
-FORMAT: markdown
+FORMAT: 
 -----
 BODY:
 

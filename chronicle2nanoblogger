@@ -10,7 +10,7 @@ find ~/.ciboulette/md/ -iname "*.md" \
 echo "AUTHOR: `whoami`
 DATE: 
 DESC: 
-FORMAT: markdown
+FORMAT: 
 -----
 BODY:"
 	cat $i | grep -v "^.*: "

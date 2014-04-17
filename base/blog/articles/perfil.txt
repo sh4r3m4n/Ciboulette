@@ -2,7 +2,7 @@ TITLE: Perfil
 AUTHOR: Ciboulette
 DATE:
 DESC: Modifica tu perfil de usuario
-FORMAT: markdown
+FORMAT: 
 -----
 BODY:
 
