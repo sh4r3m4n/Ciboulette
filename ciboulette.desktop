@@ -3,5 +3,5 @@ Name=Ciboulette
 Description=Red Social 100% Libre
 Icon=/usr/share/pixmaps/ciboulette.png
 Type=Application
-Exec=ciboulette -s
+Exec=ciboulette
 Categories=GTK;Network;
