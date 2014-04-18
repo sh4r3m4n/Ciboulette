@@ -17,56 +17,50 @@ Y es accesible desde cualquier computadora con Tor gracias a sus servicios ocult
 
 Este es un método muy simple para usar **Ciboulette** podes acceder a tu terminal desde el menú de inicio, por lo general esta en la sección accesorio.
 
-~~~
- cat ~/.ciboulette/hostname
-~~~
+ `cat ~/.ciboulette/hostname`
 
 Es el dirección de tu nodo (pásasela a tus amigxs)
 
-~~~
- ciboulette -n http://3orzmu3bziaoivpg.onion/
-~~~
+ `ciboulette -n http://3orzmu3bziaoivpg.onion`
 
 Es para agregar a un nodo a tu lector de [novedades](/articles/novedades/)
 
-~~~
- ciboulette -n http://3orzmu3bziaoivpg.onion/
-~~~
+ `ciboulette -n http://3orzmu3bziaoivpg.onion`
 
 Es para quitar un nodo a tu lector de [novedades](/articles/novedades/)
 
-~~~
- echo "Este es un articulo hecho en la terminal"  | ciboulette -a "Titulo del articulo"
-~~~
+ `echo "Este es un articulo hecho en la terminal"  | ciboulette -a "Titulo del articulo"`
 
 Publicar un articulo
 
-~~~
- ciboulette -l
-~~~
+ `ciboulette -l`
+
+## Ciboulette en tu celular
+
+Mientras este prendido y conectado el nodo que tiene tu ciboulette, podes conectarte con tu celular usando [GibberBot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=info.guardianproject.otr.app.im) con [Orbot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=org.torproject.android). Para pasar tu dirección a un celular o tablet podes usar el ![QR](/qr.png) y reconocerla con [Barcode Scanner](https://f-droid.org/repository/browse/?fdfilter=qr&fdid=com.google.zxing.client.android)
 
 Leer las novedades en Ciboulette
 
 ## Filosofía UNIX
 
-Ciboulette intenta seguir los principios de la filosofía Unix en su construcción y el modo en que se comunican sus nodos, o sea una red social con filosofía Unix
+Ciboulette sigue los principios de la **filosofía Unix** en su construcción, el modo en que se comunican sus nodos y en la integración con el sistema operativo, o sea una red social con filosofía Unix
 
-#. **Regla de Modularidad:** Escribe partes simples, conectadas por interfaces simples.
-#. **Regla de Claridad:** ser Claro es mejor que ser ingenioso.
-#. **Regla de Composición:** Diseña programas para que se conecten a otros programas.
-#. **Regla de Separación:** Separa las Reglas del funcionamiento; separa los interfaces de los mecanismos.
-#. **Regla de Simplicidad:** Diseña para la simplicidad; añade complejidad sólo donde sea estrictamente necesario.
-#. **Regla de Parsimonia:** Escribe un programa complejo sólo cuando sea evidente que no existe otra solución posible.
-#. **Regla de Transparencia:** Diseña para la visibilidad, para hacer más fácil la inspección y la corrección de fallos.
-#. **Regla de Robustez:** la Robustez es hija de la transparencia y la simplicidad.
-#. **Regla de Representación:** Convierte el conocimiento en datos, para que la lógica de los programas pueda ser estúpida y robusta.
-#. **Regla de Mínima Sorpresa:** En diseño de interfaces, haz siempre lo menos sorprendente.
-#. **Regla de Silencio:** Cuando un programa no tenga nada sorprendente que decir, no debería decir nada.
-#. **Regla de Reparación:** Cuando tengas que mostrar un error, falla estridentemente y lo antes posible.
-#. **Regla de Economía:** el tiempo del programador es caro; consérvalo sobre el tiempo de la máquina.
-#. **Regla de Generación:** Evita hacer cosas a mano; escribe programas que escriban programas siempre que puedas.
-#. **Regla de Optimización:** Prototipa antes de pulir. Haz que funcione antes de optimizarlo.
-#. **Regla de Diversidad:** Desconfía de todo lo que diga "esta es la única forma correcta".
-#. **Regla de Extensibilidad:** Diseña para el futuro, porque estará aquí antes de lo que piensas.
+* **Regla de Modularidad:** Escribe partes simples, conectadas por interfaces simples.
+* **Regla de Claridad:** ser Claro es mejor que ser ingenioso.
+* **Regla de Composición:** Diseña programas para que se conecten a otros programas.
+* **Regla de Separación:** Separa las Reglas del funcionamiento; separa los interfaces de los mecanismos.
+* **Regla de Simplicidad:** Diseña para la simplicidad; añade complejidad sólo donde sea estrictamente necesario.
+* **Regla de Parsimonia:** Escribe un programa complejo sólo cuando sea evidente que no existe otra solución posible.
+* **Regla de Transparencia:** Diseña para la visibilidad, para hacer más fácil la inspección y la corrección de fallos.
+* **Regla de Robustez:** la Robustez es hija de la transparencia y la simplicidad.
+* **Regla de Representación:** Convierte el conocimiento en datos, para que la lógica de los programas pueda ser estúpida y robusta.
+* **Regla de Mínima Sorpresa:** En diseño de interfaces, haz siempre lo menos sorprendente.
+* **Regla de Silencio:** Cuando un programa no tenga nada sorprendente que decir, no debería decir nada.
+* **Regla de Reparación:** Cuando tengas que mostrar un error, falla estridentemente y lo antes posible.
+* **Regla de Economía:** el tiempo del programador es caro; consérvalo sobre el tiempo de la máquina.
+* **Regla de Generación:** Evita hacer cosas a mano; escribe programas que escriban programas siempre que puedas.
+* **Regla de Optimización:** Prototipa antes de pulir. Haz que funcione antes de optimizarlo.
+* **Regla de Diversidad:** Desconfía de todo lo que diga _"esta es la única forma correcta"_.
+* **Regla de Extensibilidad:** Diseña para el futuro, porque estará aquí antes de lo que piensas.
 
 END-----
