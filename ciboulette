@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #	Ciboulette una red social 100% libre, descentralizada y entre pares
-#	version 0.3
+#	version 0.3.1
 #	AGPLv3+ © bazza
 #
 
@@ -101,7 +101,7 @@ function servidor_inicio {
 	# inicia el servidor
 	rm -f /tmp/$NOMBRE.pid && servidor_matar
 	# Si corremos arch
-	[ "$(which mini-httpd)" ] && /usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$WWW" -T "UTF8" -c "cgi-bin/*" || \
+	[ "$(which mini-httpd)" ] && /usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$WWW" -T "UTF8" -c "cgi-bin/*" 2> /dev/null || \
 	darkhttpd $WWW --port 4232 --pidfile /tmp/$NOMBRE.pid
 }
 
@@ -269,6 +269,8 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		$NOMBRE -d
 		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d &>/dev/null # Ciboulette';) | crontab -
 		$NOMBRE -h
+
+		xdg-open http://http://127.0.0.1:4232/
 
 		exit
 		;;
