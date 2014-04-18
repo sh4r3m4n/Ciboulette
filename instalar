@@ -111,6 +111,9 @@ cp ciboulette.png /usr/share/pixmaps/ 2> /dev/null
 cp -r lang /usr/share/nanoblogger/ 2> /dev/null
 cp ciboulette.desktop /usr/share/applications/ 2> /dev/null
 
+# parche para versiones de nanoblogger 3.4.2
+cp plugins/markdown.sh /usr/share/nanoblogger/plugins/page/format/markdown.sh
+
 echo "Host \"$HOST\"
 VirtualHost \"$HOST\"" > /etc/prosody/conf.avail/$HOST.cfg.lua
 cp /etc/prosody/conf.avail/$HOST.cfg.lua /etc/prosody/conf.d/$HOST.cfg.lua 2> /dev/null
