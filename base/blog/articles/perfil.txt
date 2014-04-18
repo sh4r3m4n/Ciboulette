@@ -2,10 +2,14 @@ TITLE: Perfil
 AUTHOR: Ciboulette
 DATE:
 DESC: Modifica tu perfil de usuario
-FORMAT: 
+FORMAT: markdown
 -----
 BODY:
 
-Este es el perfil del usuario
+![Tu Avatar](/avatar.png)
+
+Este es el perfil del usuario.
+
+![QR para pasar tu dirección](/qr.png)
 
 END-----
