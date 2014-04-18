@@ -17,6 +17,7 @@ bash ciboulette -u
 
 Luego de instalarlo se puede usar desde la terminal `ciboulette -h` o desde su **interfaz gráfica**
 
+* [doc/ayuda.md]
 * [Wiki del proyecto](http://wiki.hackcoop.com.ar/Ciboulette)
 * [Como funciona Ciboulette](doc/)
 
@@ -66,9 +67,9 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 
 ## Quehaceres
 
-* Enlaces simbolicos como parte del programa y no de la `base/`
+* Enlaces a tus amigos y tus novedades
 * Metodo de update con backup en lugar de sobre escribiendo
-* Lanzador a novedades
+* ~~Lanzador a novedades~~
 * ~~Adaptar tema al lector y posteo~~
 * ~~[Acceso transparente a los servicios ocultos](https://grepular.com/Transparent_Access_to_Tor_Hidden_Services) y [DNS](http://security-world.blogspot.com.ar/2013/04/postfix-through-tor-dns.html)~~
 * ~~Lector local y estatico de feed ([rawdog](http://offog.org/code/rawdog/) + https://github.com/roop/ngoplanet_org/)~~

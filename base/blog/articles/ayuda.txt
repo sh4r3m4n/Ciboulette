@@ -1,12 +1,12 @@
-TITLE:** Ayuda
-AUTHOR:** Ciboulette
-DATE:**
-DESC:** Pequeña ayuda para comenzar a editar
-FORMAT:** markdown
+TITLE: Ayuda
+AUTHOR: Ciboulette
+DATE:
+DESC: Pequeña ayuda para comenzar a editar
+FORMAT: markdown
 -----
-BODY:**
+BODY:
 
-# Ayuda
+# Ciboulette
 
 Es una red social 100% libre, entre pares, descentralizada y distribuida
 
@@ -17,23 +17,32 @@ Y es accesible desde cualquier computadora con Tor gracias a sus servicios ocult
 
 Este es un método muy simple para usar **Ciboulette** podes acceder a tu terminal desde el menú de inicio, por lo general esta en la sección accesorio.
 
- `cat ~/.ciboulette/hostname`
+<pre>cat ~/.ciboulette/hostname</pre>
 
-Es el dirección de tu nodo (pásasela a tus amigxs)
+Es el dirección de tu nodo (pasala a tus amigxs)
 
- `ciboulette -n http://3orzmu3bziaoivpg.onion`
+<pre>ciboulette -n http://3orzmu3bziaoivpg.onion</pre>
 
 Es para agregar a un nodo a tu lector de [novedades](/articles/novedades/)
 
- `ciboulette -n http://3orzmu3bziaoivpg.onion`
+<pre>ciboulette -n http://3orzmu3bziaoivpg.onion</pre>
 
 Es para quitar un nodo a tu lector de [novedades](/articles/novedades/)
 
- `echo "Este es un articulo hecho en la terminal"  | ciboulette -a "Titulo del articulo"`
+<pre>echo "Este es el contenido"  | ciboulette -a "Artículo en la terminal"</pre>
 
 Publicar un articulo
 
- `ciboulette -l`
+<pre>ciboulette -l</pre>
+
+## Ciboulette en internet
+
+Si alguno de tus amigo no tiene ciboulette podes pasarle la dirección para acceder desde internet.
+
+Podes usar [tor2web](https://es.wikipedia.org/wiki/.onion#tor2web) para esto existe varios servidores públicos de este servicio.
+
+* [tor2web.org](https://tor2web.org)
+* [onion.to](https://onion.to)
 
 ## Ciboulette en [Cyanogem](http://www.cyanogenmod.org/) o Andriod
 
@@ -41,8 +50,7 @@ Para pasar tu dirección a un celular o tablet podes usar el [QR](/qr.png) y rec
 
 Mientras este prendido y conectado tu nodo de Ciboulette, podes conectarte con tu celular usando [GibberBot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=info.guardianproject.otr.app.im) con [Orbot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=org.torproject.android). 
 
-
-Para leer las novedades se puede usar [Feedex](https://f-droid.org/repository/browse/?fdfilter=feedex&fdid=net.fred.feedex) tenes que configurarlo con [Orbot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=org.torproject.android). Con agregar tu dirección de [RSS de novedades](/novedades.xml) basta :D
+Para leer las novedades se puede usar [Feedex](https://f-droid.org/repository/browse/?fdfilter=feedex&fdid=net.fred.feedex) tenes que configurar el proxy en `127.0.0.1` puerto `8118`. Con agregar tu dirección de [RSS de novedades](/novedades.xml) basta :D
 
 _Todas estas aplicaciones estan disponibles en [F-droid](http://f-droid.org/)_
 
