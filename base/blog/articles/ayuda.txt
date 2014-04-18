@@ -35,11 +35,16 @@ Publicar un articulo
 
  `ciboulette -l`
 
-## Ciboulette en tu celular
+## Ciboulette en [Cyanogem](http://www.cyanogenmod.org/) o Andriod
 
-Mientras este prendido y conectado el nodo que tiene tu ciboulette, podes conectarte con tu celular usando [GibberBot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=info.guardianproject.otr.app.im) con [Orbot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=org.torproject.android). Para pasar tu dirección a un celular o tablet podes usar el ![QR](/qr.png) y reconocerla con [Barcode Scanner](https://f-droid.org/repository/browse/?fdfilter=qr&fdid=com.google.zxing.client.android)
+Para pasar tu dirección a un celular o tablet podes usar el [QR](/qr.png) y reconocerla con [Barcode Scanner](https://f-droid.org/repository/browse/?fdfilter=qr&fdid=com.google.zxing.client.android).
 
-Leer las novedades en Ciboulette
+Mientras este prendido y conectado tu nodo de Ciboulette, podes conectarte con tu celular usando [GibberBot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=info.guardianproject.otr.app.im) con [Orbot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=org.torproject.android). 
+
+
+Para leer las novedades se puede usar [Feedex](https://f-droid.org/repository/browse/?fdfilter=feedex&fdid=net.fred.feedex) tenes que configurarlo con [Orbot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=org.torproject.android). Con agregar tu dirección de [RSS de novedades](/novedades.xml) basta :D
+
+_Todas estas aplicaciones estan disponibles en [F-droid](http://f-droid.org/)_
 
 ## Filosofía UNIX
 
