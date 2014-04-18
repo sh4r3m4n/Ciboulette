@@ -67,6 +67,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 ## Quehaceres
 
 * Enlaces simbolicos como parte del programa y no de la `base/`
+* Metodo de update con backup en lugar de sobre escribiendo
 * Lanzador a novedades
 * ~~Adaptar tema al lector y posteo~~
 * ~~[Acceso transparente a los servicios ocultos](https://grepular.com/Transparent_Access_to_Tor_Hidden_Services) y [DNS](http://security-world.blogspot.com.ar/2013/04/postfix-through-tor-dns.html)~~
