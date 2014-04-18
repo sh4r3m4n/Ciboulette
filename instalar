@@ -29,7 +29,9 @@ echo
 
 DEPENENCIAS="mini-httpd tor torsocks zenity nanoblogger rawdog libnotify-bin prosody qrencode tidy markdown zenity python2-feedparser"
 
-[ -d "/var/lib/tor/ciboulette/" ] && cp -r /var/lib/tor/ciboulette/ /tmp/ciboulette-dir/
+mkdir /tmp/ciboulette-backup/
+[ -d "/var/lib/tor/ciboulette/" ] && cp -r /var/lib/tor/ciboulette/* /tmp/ciboulette-backup/*
+
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 
 if [ "$VERSION" -lt "24" ] && [ "$(which apt-get)" ]; then
@@ -73,8 +75,7 @@ echo 'HiddenServicePort 5222 127.0.0.1:5222 #ciboulette' >> /etc/tor/torrc
 echo 'HiddenServicePort 5269 127.0.0.1:5269 #ciboulette' >> /etc/tor/torrc
 
 # recupera el backup del tu ciboulette
-
-[ -d "/tmp/ciboulette-dir" ] && mv /tmp/ciboulette-dir/ /var/lib/tor/ciboulette/
+[ -d "/tmp/ciboulette-backup" ] && mv /tmp/ciboulette-backup/* /var/lib/tor/ciboulette/*
 
 # reincia tor
 
