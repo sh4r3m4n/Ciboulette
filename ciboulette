@@ -270,7 +270,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d &>/dev/null # Ciboulette';) | crontab -
 		$NOMBRE -h
 
-		xdg-open http://http://127.0.0.1:4232/
+		xdg-open http://127.0.0.1:4232/ &
 
 		exit
 		;;
@@ -282,7 +282,7 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Tu_plan Editar_tu_perfil Leer_novedades Agrega_nodo_amigo Quitar_nodos Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Tu nodo: $(cat ${CARPETA}hostname)"`
+MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Modificar_tu_plan Editar_tu_perfil Leer_novedades Agrega_un_nodo_amigo Quitar_un_nodo Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Tu nodo: $(cat ${CARPETA}hostname)"`
 case $MENU in
 		0 )
 			# Publicar articulo

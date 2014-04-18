@@ -66,6 +66,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 
 ## Quehaceres
 
+* Enlaces simbolicos como parte del programa y no de la `base/`
 * Lanzador a novedades
 * ~~Adaptar tema al lector y posteo~~
 * ~~[Acceso transparente a los servicios ocultos](https://grepular.com/Transparent_Access_to_Tor_Hidden_Services) y [DNS](http://security-world.blogspot.com.ar/2013/04/postfix-through-tor-dns.html)~~
@@ -85,6 +86,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
  * Documentar como hacerlo desde la terminal
  * Al usar imágenes en un articulo se copien en una carpeta y cree miniaturas
    * Generar galería de las imágenes
+ * giFT puerto 4001
 * Leer [Feed centralizados y ocultos](https://github.com/jol333/veracity/blob/master/index.php) https://github.com/pabluk/NotifyAll
 * ~~Usar una categoría estandarizada para eventos~~
  * hacer publicador (de eventos)
