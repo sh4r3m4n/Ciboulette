@@ -270,7 +270,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d &>/dev/null # Ciboulette';) | crontab -
 		$NOMBRE -h
 
-		xdg-open http://127.0.0.1:4232/ &
+		xdg-open http://127.0.0.1:4232/articles/ayuda &
 
 		exit
 		;;
