@@ -113,6 +113,8 @@ function servidor_matar {
 function nodo_agregar {
 	cat /dev/stdin | sed 's/\ /\n/g' | while read URL; do
 		# falta poner que si no tiene http:// lo agrege
+		URL=$(echo $URL | sed 's/\/$//g')
+		[ ! "$(echo $URL | sed 's/^http//g')" == "$URL" ] && URL="http://$URL"
 		$RAWDOG -a "$URL" 2> /dev/null
 	done
 }
