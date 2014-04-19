@@ -7,7 +7,7 @@ FORMAT: html
 BODY:
 
 	<!-- contenido -->
-	<div class="col-lg-6">
+	<div class="col-md-12">
   	    <!-- <div class="alert alert-info" id=beggining>
                 Llegaste al inicio
             </div> -->
