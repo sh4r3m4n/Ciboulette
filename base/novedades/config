@@ -1,7 +1,7 @@
 plugindirs plugins
 splitstate false
 
-maxarticles 10000
+maxarticles 0
 maxage 0
 
 expireage 1d
@@ -36,17 +36,17 @@ useids true
 
 hideduplicates id
 
-newfeedperiod 3h
+newfeedperiod 1h
 
 changeconfig true
-
 
 xmllanguage es
 
 outputxml rss.xml
 outputfoaf foafroll.xml
 outputopml contactos.opml
+
 xmltitle Ciboulette
-xmllink http://planetKDE.org/
+xmllink http://wiki.hackcoop.com.ar/Ciboulette
 xmldescription Una red social 100% libre y distribuida
 
