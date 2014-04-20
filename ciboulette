@@ -101,8 +101,7 @@ function servidor_inicio {
 	# inicia el servidor
 	rm -f /tmp/$NOMBRE.pid && servidor_matar
 	# Si corremos arch
-	[ "$(which mini-httpd)" ] && /usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$WWW" -T "UTF8" -c "cgi-bin/*" 2> /dev/null || \
-	darkhttpd $WWW --port 4232 --pidfile /tmp/$NOMBRE.pid
+	/usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$WWW" -T "UTF8" -c "cgi-bin/*" 2> /dev/null
 }
 
 function servidor_matar {
