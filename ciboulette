@@ -214,12 +214,13 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		[ -f "$NOVEDADES/config" ] && FEED="$(cat $NOVEDADES/config | grep "^feed ")"
 
 		echo "instalando ciboulette"
+		
 		# como pedir permiso
-		# [ "$(which sudo)" ] && gksu="gksu" || gksu="su -c"
+		[ "$(which gksu)" ] && gksu="gksu" || gksu="su -c"
 
 		echo "Escribir tu clave para XMPP y presionar entrada"
 		CLAVE=$(clave "una clave para tu chat (XMPP)")
-		gksu "./instalar $USER \"$CLAVE\""
+		$gksu "./instalar $USER \"$CLAVE\""
 
 		# ----------------------------- INSTALACION ----------------------------------
 
