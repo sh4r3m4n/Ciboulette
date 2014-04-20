@@ -17,7 +17,7 @@ bash ciboulette -u
 
 Luego de instalarlo se puede usar desde la terminal `ciboulette -h` o desde su **interfaz gráfica**
 
-* [Ayuda](doc/ayuda.md)
+* [Ayuda](doc/Ayuda.md)
 * [Wiki del proyecto](http://wiki.hackcoop.com.ar/Ciboulette)
 * [Como funciona Ciboulette](doc/)
 
