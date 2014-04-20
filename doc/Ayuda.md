@@ -11,7 +11,7 @@ Este es un método muy simple para usar **Ciboulette** podes acceder a tu termin
 
 <pre>cat ~/.ciboulette/hostname</pre>
 
-Es el dirección de tu nodo (pasala a tus amigxs)
+Es el dirección de tu nodo (pasala a tus amig@s)
 
 <pre>ciboulette -n http://3orzmu3bziaoivpg.onion</pre>
 
@@ -29,7 +29,7 @@ Publicar un articulo
 
 ## Ciboulette en internet
 
-Si alguno de tus amigo no tiene ciboulette podes pasarle la dirección para acceder desde internet.
+Si alguno de tus amig@s no tiene ciboulette podes pasarle la dirección para acceder desde internet.
 
 Podes usar [tor2web](https://es.wikipedia.org/wiki/.onion#tor2web) para esto existe varios servidores públicos de este servicio.
 
