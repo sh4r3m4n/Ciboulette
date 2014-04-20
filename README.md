@@ -36,7 +36,7 @@ Muchas redes sociales libres moderan a sus usuarios o pretenden un fin especific
 
 Que no posee un centro. 
 Por que no hay un servidor al que los usuarios tengan que acceder. Los pares iguales.
-Gracias a Tor y la publicación de servicio ocultos dentro de la red: los datos pasan entre nodos (pares iguales), de este modo todos los nodos de ciboulette se ven entre si.
+Gracias a Tor y la publicación de servicio ocultos dentro de la red: los datos pasan entre nodos (pares iguales), de este modo todos los nodos de Ciboulette se ven entre si.
 
 ## ¿Que es distribuida?
 
@@ -46,23 +46,16 @@ Es una red totalmente distribuida por no tener un centro, ni muchos de ellos.
 
 Que no existen servidores centrales. Los datos van de una computadora a otro directamente, pasando entre pares iguales.
 
-## ¿Que se puede hacer con ciboulette?
-
-### Publicar notas
-
-### Ver las novedades de tus amig@s
+## ¿Que se puede hacer con Ciboulette?
 
 ![pantalla de novedades](captura.png)
-
-### Chatear
+> Publicar y ver las publicaciones de nuestros amig@s
 
 ![Chatear](jabber_con_ciboulette.png)
-> Gracias a prosody se puede chatear
-
-#### Compartir archivos
+> Chatear
 
 ![Chatear](capturas/transferencia_de_archivos.png)
-> Gracias a prosody se puede chatear
+> Compartir archivos
 
 
 ## Quehaceres
@@ -88,7 +81,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
  * Documentar como hacerlo desde la terminal
  * Al usar imágenes en un articulo se copien en una carpeta y cree miniaturas
    * Generar galería de las imágenes
- * giFT puerto 4001
+ * GNUtella puerto 4001 (buscar demonio)
 * Leer [Feed centralizados y ocultos](https://github.com/jol333/veracity/blob/master/index.php) https://github.com/pabluk/NotifyAll
 * ~~Usar una categoría estandarizada para eventos~~
  * hacer publicador (de eventos)
