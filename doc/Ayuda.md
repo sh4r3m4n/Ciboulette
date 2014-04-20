@@ -17,7 +17,7 @@ Es el dirección de tu nodo (pasala a tus amigxs)
 
 Es para agregar a un nodo a tu lector de [novedades](/articles/novedades/)
 
-<pre>ciboulette -n http://3orzmu3bziaoivpg.onion</pre>
+<pre>ciboulette -b http://3orzmu3bziaoivpg.onion</pre>
 
 Es para quitar un nodo a tu lector de [novedades](/articles/novedades/)
 
