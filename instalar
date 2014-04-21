@@ -54,13 +54,27 @@ done
 
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 
-if [ ! "$VERSION" -lt "24" ] && [ ! "$(grep ^DNSPort /etc/tor/torrc)" ]; then
+if [ ! "$VERSION" -lt "24" ]; then
 
 	# agrega el soporte para DNS de Tor
-	echo 'DNSPort 127.0.0.1:5300'  >> /etc/tor/torrc
-	echo 'VirtualAddrNetworkIPv4 10.192.0.0/11'  >> /etc/tor/torrc
-	echo 'AutomapHostsOnResolve 1' >> /etc/tor/torrc
-	echo 'TransPort 9040' >> /etc/tor/torrc
+
+	cp /etc/resolv.conf /etc/resolv.conf.backup
+	RESOLV=$(cat /etc/resolv.conf)
+	echo "nameserver 127.0.0.1\n$RESOLV" > /etc/resolv.conf
+
+	# configuracion de tor sin ciboulette
+	cat /etc/tor/torrc  | grep -v "\(^DNSPort\|^VirtualAddrNetworkIP\|^AutomapHostsOnResolve\|^TransPort\|#ciboulette\)" > /tmp/torrc
+
+	# nueva configuracion
+	echo "VirtualAddrNetwork 10.192.0.0/10 #ciboulette" >> /tmp/torrc
+        echo "AutomapHostsOnResolve 1 #ciboulette" >> /tmp/torrc
+        echo "TransPort 9040 #ciboulette" >> /tmp/torrc
+        echo "DNSPort 53 #ciboulette" >> /tmp/torrc
+
+	# hace un backup antes de instalar ciboulette
+	[ "$(grep -v '#ciboulette')" ] && cp /etc/tor/torrc /etc/tor/torrc.backup
+	cp /tmp/torrc /etc/tor/torrc
+
 	# Agregar la linea solo si no existe
 	./ciboulette iptables
 fi
