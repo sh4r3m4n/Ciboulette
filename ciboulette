@@ -115,7 +115,7 @@ function nodo_agregar {
 		URL=$(echo $URL | sed 's/\/$//g')
 		[ ! "$(echo $URL | sed 's/^http//g')" == "$URL" ] && URL="http://$URL"
 		# $RAWDOG -a "$URL" 2> /dev/null
-		feed 3h "$URL" >> ${NOVEDADES}config
+		echo "feed 3h $URL" >> ${NOVEDADES}/config
 	done
 	# luego de agregarla actualiza novedades
 	ciboulette -d
