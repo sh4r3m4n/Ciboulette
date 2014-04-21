@@ -10,10 +10,7 @@ if [ "$1" == "iptables" ]; then
 	VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 	# no lo usa, si la version de tor es vieja
 	[ "$VERSION" -lt "24" ] && exit
-
-	iptables -t nat -A OUTPUT -p udp -m udp --dport 53 -j REDIRECT --to-ports 5300
-	iptables -t nat -A PREROUTING -p tcp -d 10.192.0.0/11 -j REDIRECT --to-port 9040
-	iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/11 -j REDIRECT --to-port 9040
+	iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/10 -j REDIRECT --to-ports 9040
 	exit
 fi
 
