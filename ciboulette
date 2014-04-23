@@ -248,8 +248,9 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		[ -f "$NOVEDADES/config" ] && FEED="$(cat $NOVEDADES/config | grep "^feed ")"
 
 		# pide permiso
+		PWD=$(pwd)
 		echo "Escribi tu clave de administración para instalar Ciboulette"
-		sudo -s "bash ./instalar $USER" || exit
+		sudo -s "cd $PWD ; bash ./instalar $USER" || exit
 
 		# ----------------------------- INSTALACION ----------------------------------
 
