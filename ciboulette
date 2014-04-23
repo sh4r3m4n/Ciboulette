@@ -88,7 +88,7 @@ function mostrar {
 	echo "$MENSAJE" | xsel -i
 }
 function progreso {
-	pid=`mktemp -t $NOMBRE`
+	pid=`mktemp -t ${NOMBRE}XXXX`
 	zenity --progress --pulsate --auto-close --title "Espere por favor..." --text="$*" & echo $! > $pid
 	cat /dev/stdin
 	kill `cat $pid`
@@ -173,7 +173,7 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		TITULO="`echo $@ | sed 's/^-a\ //g'`"
 		ARTICULO="`cat /dev/stdin`"
 		echo "Publicando articulo"
-		TMP=$(mktemp -t $NOMBRE)
+		TMP=$(mktemp -t ${NOMBRE}XXXX)
 		$NB --title "$TITULO" --text "$ARTICULO" make-file $TMP/articulo.txt
 		$NB import entry $TMP/articulo.txt
 
@@ -231,16 +231,19 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		echo
 	;;
 	i)
+		# deshabilita este comando una vez que esta instalado
+		[ "$(readlink -f $0 | grep ^/usr/)" ] && exit
 		# no debe correrse como root
 		[ "$(id -u)" == "0" ] && echo "No correr esto como root" && exit
 		# comprueba que tengas sudo
 		[ ! "$(which sudo)" ] && echo 'Necesitas instalar el comando `sudo` por lo general para instalarlo en `apt-get install sudo`, lo siento :(' && exit
 
+
 		# nombre del programa
 		NOMBRE=`basename $0`
 
 		# temporal, hay que correjirlo para freebsd/osx
-		TMP=$(mktemp -t $NOMBRE)
+		TMP=$(mktemp -t ${NOMBRE}XXXX)
 
 		# backups de tus amigxs
 		[ -f "$NOVEDADES/config" ] && FEED="$(cat $NOVEDADES/config | grep "^feed ")"
@@ -250,11 +253,6 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		sudo -s "bash ./instalar $USER" || exit
 
 		# ----------------------------- INSTALACION ----------------------------------
-
-		echo
-		echo "Instalando archivos de $NOMBRE"
-		echo "------------------------------"
-		echo
 
 		# Crea el directorio local y temas
 		mkdir -p $CARPETA
@@ -302,7 +300,8 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		# actualiza las novedades
 		$NOMBRE -d &> /dev/null
 		# actualiza las paginas
-		$NB update all
+		$NB update articles
+		$NB update main
 		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d &>/dev/null # Ciboulette';) | crontab -
 		$NOMBRE -h
 		xdg-open http://localhost:4232/articles/ayuda &
