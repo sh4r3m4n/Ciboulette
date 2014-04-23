@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 #	Ciboulette una red social 100% libre, descentralizada y entre pares
-#	version 0.3.1
-#	AGPLv3+ © bazza
+#	version 0.3.5
+#	AGPLv3+ | Licencias de Pares | Creative Commons by-sa 3.0 © bazza
 #
 
 # eso se usa para correrlo en rc.local
@@ -10,7 +10,9 @@ if [ "$1" == "iptables" ]; then
 	VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 	# no lo usa, si la version de tor es vieja
 	[ "$VERSION" -lt "24" ] && exit
+	# torifica los DNS (en lo posible)
 	iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/10 -j REDIRECT --to-ports 9040
+	# faltaria hardcodear el resolv.conf
 	exit
 fi
 
@@ -23,6 +25,8 @@ export WWW="${CARPETA}www"
 # programas
 export NB="nb -b $BLOG --template-dir $BLOG/templates"
 export RAWDOG="torify rawdog -d $NOVEDADES"
+# descarga con un limite de 500k por archivo
+[ "$(which wget)" ] && export WGET="torify wget --quota 500k -qO -" || export WGET="torify curl --max-filesize 500000 "
 
 # Renueva la llave gpg en el sitio
 ln -s ~/.pgpkey "$WWW/gpg.asc" &> /dev/null
@@ -84,14 +88,15 @@ function mostrar {
 	echo "$MENSAJE" | xsel -i
 }
 function progreso {
-	pid=`mktemp`
+	pid=`mktemp -t ${NOMBRE}XXXX`
 	zenity --progress --pulsate --auto-close --title "Espere por favor..." --text="$*" & echo $! > $pid
 	cat /dev/stdin
 	kill `cat $pid`
 }
 function blogear {
 	# nanoblogger construye el blog
-	$NB update all
+	$NB update date
+	$NB update main
 }
 
 function servidor_inicio {
@@ -107,15 +112,18 @@ function servidor_matar {
 }
 
 function nodo_agregar {
+	# aca se manda cualquiera
 	cat /dev/stdin | sed 's/\ /\n/g' | while read URL; do
 		# falta poner que si no tiene http:// lo agrege
 		URL=$(echo $URL | sed 's/\/$//g')
-		[ ! "$(echo $URL | sed 's/^http//g')" == "$URL" ] && URL="http://$URL"
-		# $RAWDOG -a "$URL" 2> /dev/null
+		[ "$(echo $URL | grep -v "^http")" ] && URL="http://$URL"
+		# falta comprobar que no se repita
 		echo "feed 3h $URL" >> ${NOVEDADES}/config
 	done
 	# luego de agregarla actualiza novedades
 	ciboulette -d
+	nodos_actualizar
+	avatares_actualizar
 }
 function nodo_borrar {
 	cat /dev/stdin | sed 's/\ /\n/g' | while read URL; do
@@ -126,47 +134,72 @@ function nodos_lista {
 	$RAWDOG -l 2> /dev/null
 }
 function nodos_actualizar {
-	N=$($RAWDOG -wu | cut -d " " -f1) 2> /dev/null
-	$NB update articles
+	N=$($RAWDOG -uw | cut -d " " -f1) 2> /dev/null
+	$NB update articles # Este deberia ser en particular el articulo de novedades
 	export DISPLAY=:0
 	[ ! "$N" == "0" ] && \
 	notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" \
 	-i "${BLOG}/images/logo.png"
 }
+function avatares_actualizar {
+	# 1. actualizar avatare
+	#  1.1 si no tiene avatar buscar <image>, favicon.ico, primera imagen encontrada
+	# 2. que no superen cierta cantidad de bits o tiempo
+	# 3. convertirlos a png de 128px y grabarlos con el [hash de tu feed](http://offog.org/git/rawdog/config)
+	# Nota: para que no tarde mucho habria que poner procesos en paralelo
+	URLHASHS=$(echo $(ciboulette -l | grep "^htt\|..Hash:\ ") | sed 's/http/\nhttp/g; s/..Hash:\ \(.*\)$/ \1/g'| grep -v "^$")
+		echo "$URLHASHS" | while read URLHASH; do
+		URL=$(echo $URLHASH | sed 's/\ .*$//g')
+		BASEURL=$(echo $URL | cut -d "/" -f 3 )
+		HASH=$(echo $URLHASH | sed 's/^.*\ //g')
+		echo "Descargando avatar de $URL $BASEURL $HASH"
+		# Descargas en avatares
+		([ "$(echo URL | grep "\.onion")" ] && $WGET "http://${BASEURL}/favicon.{ico,png}" 2> /dev/null || $WGET "${URL}/avatar.png" 2> /dev/null ) \
+		| convert -'[128x128]' "${WWW}/avatares/${HASH}.png" 2> /dev/null
+		# falta leer el header y ver los avatares
 
+		# Si no puede conseguir el avatar lo genera con QR
+		[ ! -f "${WWW}/avatares/${HASH}.png" ] && echo "$URL" | qrencode -o - | convert -  -fill purple -opaque black -transparent white "${WWW}/avatares/${HASH}.png" 2> /dev/null
+	done
+}
 
-while getopts a:b:n:skdlhiuw OPCION; do
+while getopts a:b:n:skdlhiuwz OPCION; do
 	case $OPCION in
-               a)
+        z)
+		avatares_actualizar
+	;;
+        a)
+		echo "Escriba el articulo y presione ctrl+D. Para generar otro parrafo use doble enter"
+		TITULO="`echo $@ | sed 's/^-a\ //g'`"
+		ARTICULO="`cat /dev/stdin`"
+		echo "Publicando articulo"
+		TMP=$(mktemp -t ${NOMBRE}XXXX)
+		$NB --title "$TITULO" --text "$ARTICULO" make-file $TMP/articulo.txt
+		$NB import entry $TMP/articulo.txt
 
-			echo "Escriba el articulo y presione ctrl+D. Para generar otro parrafo use doble enter"
-			TITULO="`echo $@ | sed 's/^-a\ //g'`"
-			ARTICULO="`cat /dev/stdin`"
-			echo "Publicando articulo"
-			TMP=$(mktemp -d)
-			$NB --title "$TITULO" --text "$ARTICULO" make-file $TMP/articulo.txt
-			$NB import entry $TMP/articulo.txt
-
-			#blogear
-			exit
-                ;;
-                w) blogear; exit
-                ;;
-                n) echo ${OPTARG} | nodo_agregar; exit
-                ;;
-                b) echo ${OPTARG} | nodo_borrar; exit
-                ;;
-                l) nodos_lista; exit
-                ;;
-                d) nodos_actualizar; exit
-                ;;
-                s) servidor_matar
-		   servidor_inicio
-		 exit
-                ;;
-                k)
-			servidor_matar; exit
-                ;;
+        ;;
+	w)
+		blogear
+        ;;
+        n)
+		echo ${OPTARG} | nodo_agregar
+        ;;
+        b)
+		echo ${OPTARG} | nodo_borrar
+        ;;
+        l)
+		nodos_lista
+        ;;
+        d)
+		nodos_actualizar
+        ;;
+        s)
+		servidor_matar
+		servidor_inicio
+        ;;
+        k)
+		servidor_matar
+        ;;
 	u)
 		NOMBRE=`basename $0`
         	AUTOR="b4zz4"
@@ -180,7 +213,6 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		cd $REPO-$ZIP/
 		chmod +x $NOMBRE
 		./$NOMBRE -i && echo "actualizado"
-		exit
 	;;
 	h)
 		echo "$(basename $0) $(cat ${CARPETA}hostname)"
@@ -197,34 +229,30 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		echo "  -d actualizar noticias de otros nodos"
 		echo "  -w forzar a actualizar tus noticias"
 		echo
-		exit
 	;;
 	i)
+		# deshabilita este comando una vez que esta instalado
+		[ "$(readlink -f $0 | grep ^/usr/)" ] && exit
+		# no debe correrse como root
 		[ "$(id -u)" == "0" ] && echo "No correr esto como root" && exit
+		# comprueba que tengas sudo
+		[ ! "$(which sudo)" ] && echo 'Necesitas instalar el comando `sudo` por lo general para instalarlo en `apt-get install sudo`, lo siento :(' && exit
 
+
+		# nombre del programa
 		NOMBRE=`basename $0`
 
-		# dependencias
-		TMP=$(mktemp)
+		# temporal, hay que correjirlo para freebsd/osx
+		TMP=$(mktemp -t ${NOMBRE}XXXX)
 
 		# backups de tus amigxs
 		[ -f "$NOVEDADES/config" ] && FEED="$(cat $NOVEDADES/config | grep "^feed ")"
 
-		echo "instalando ciboulette"
-		
-		# como pedir permiso
-		[ "$(which gksu)" ] && gksu="gksu" || gksu="su -c"
-
-		echo "Escribir tu clave para XMPP y presionar entrada"
-		CLAVE=$(clave "una clave para tu chat (XMPP)")
-		$gksu "./instalar $USER \"$CLAVE\""
+		# pide permiso
+		echo "Escribi tu clave de administración para instalar Ciboulette"
+		sudo -s "bash ./instalar $USER" || exit
 
 		# ----------------------------- INSTALACION ----------------------------------
-
-		echo
-		echo "Instalando archivos de $NOMBRE"
-		echo "------------------------------"
-		echo
 
 		# Crea el directorio local y temas
 		mkdir -p $CARPETA
@@ -249,6 +277,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		# direccion de tu ciboulette
 		echo "http://$(cat /tmp/hostname)" > ${CARPETA}hostname
 
+		# incio en cada sesion
 		mkdir ~/.config/autostart/ &> /dev/null
 		cp ${NOMBRE}-s.desktop  ~/.config/autostart/
 
@@ -262,21 +291,23 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		# ln -s "$COMPARTIR/" Compartir/
 		# ln -s "$NOVEDADES/" Novedades/
 
+		# genera el QR de tu ciboulette
 		qrencode "`cat ${CARPETA}hostname`" -o ${CARPETA}qr.png
 
 		# inicia el servidor
-		$NOMBRE -k
 		$NOMBRE -s &
-		$NOMBRE -w
-		$NOMBRE -d
+		echo "Iniciando los archivos de ciboulette, espere por favor..."
+		# actualiza las novedades
+		$NOMBRE -d &> /dev/null
+		# actualiza las paginas
+		$NB update articles
+		$NB update main
 		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d &>/dev/null # Ciboulette';) | crontab -
 		$NOMBRE -h
-
-		xdg-open http://127.0.0.1:4232/articles/ayuda &
-
-		exit
-		;;
+		xdg-open http://localhost:4232/articles/ayuda &
+	;;
 	esac
+	exit
 done
 
 
@@ -288,8 +319,8 @@ MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Modificar_tu_plan Editar_tu_
 case $MENU in
 		0 )
 			# Publicar articulo
-			TITULO="$(titulo)"
-			mensaje | ciboulette -a "$TITULO"
+			TITULO="$(titulo "Titulo de tu artículo" || exit)"
+			mensaje | ciboulette -a "$TITULO" || exit
 		;;
 		1 )
 			# Imagen del perfil
@@ -308,11 +339,11 @@ case $MENU in
 		3)
 			# Configuración del perfil
 			xdg-open "${BLOG}/articles/perfil.txt"
-			blogear
+			blogear # deberia solo actualizar la pagina de perfil
 		;;
 		4)
 			# Novedades
-			xdg-open "http://127.0.0.1:4232/articles/novedades/"
+			xdg-open "http://localhost:4232/articles/novedades/"
 		;;
 		5)
 			# Agregar nodo
@@ -320,6 +351,7 @@ case $MENU in
 			$NOMBRE -n "$URL"
 		;;
 		6)
+			# necesita una automatización para el zenity
 			$NOMBRE -b $(ciboulette -l | grep "\(Title\|Link\)" \
 			| sed 's/^.*:\ //g' \
 			| zenity --list --column "Nodo" --column "URL" --hide-header \
