@@ -25,7 +25,8 @@ export WWW="${CARPETA}www"
 # programas
 export NB="nb -b $BLOG --template-dir $BLOG/templates"
 export RAWDOG="torify rawdog -d $NOVEDADES"
-export WGET="torify wget --quota 500k -qO -" # necesito correjirlo si no tiene wget, usar curl
+# descarga con un limite de 500k por archivo
+[ ! "$(which wget)" ] && export WGET="torify wget --quota 500k -qO -" || export WGET="torify curl --max-filesize 500000"
 
 # Renueva la llave gpg en el sitio
 ln -s ~/.pgpkey "$WWW/gpg.asc" &> /dev/null
@@ -87,7 +88,7 @@ function mostrar {
 	echo "$MENSAJE" | xsel -i
 }
 function progreso {
-	pid=`mktemp`
+	pid=`mktemp -t $NOMBRE`
 	zenity --progress --pulsate --auto-close --title "Espere por favor..." --text="$*" & echo $! > $pid
 	cat /dev/stdin
 	kill `cat $pid`
@@ -171,7 +172,7 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		TITULO="`echo $@ | sed 's/^-a\ //g'`"
 		ARTICULO="`cat /dev/stdin`"
 		echo "Publicando articulo"
-		TMP=$(mktemp -d)
+		TMP=$(mktemp -t $NOMBRE)
 		$NB --title "$TITULO" --text "$ARTICULO" make-file $TMP/articulo.txt
 		$NB import entry $TMP/articulo.txt
 
@@ -238,7 +239,7 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		NOMBRE=`basename $0`
 
 		# temporal, hay que correjirlo para freebsd/osx
-		TMP=$(mktemp)
+		TMP=$(mktemp -t $NOMBRE)
 
 		# backups de tus amigxs
 		[ -f "$NOVEDADES/config" ] && FEED="$(cat $NOVEDADES/config | grep "^feed ")"
