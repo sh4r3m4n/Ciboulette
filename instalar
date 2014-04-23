@@ -50,36 +50,6 @@ done
 
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 
-<<<<<<< HEAD
-if [ ! "$VERSION" -lt "24" ]; then
-
-	cp /etc/resolv.conf /etc/resolv.conf.backup
-	NAMESERVER="$(cat /etc/resolv.conf | grep -v '127.0.0.1')"
-	echo -e "nameserver 127.0.0.1\n$NAMESERVER" > /etc/resolv.conf
-
-	# tengo qu borrar la vieja configuración y poner la nueva
-	# agrega el soporte para DNS de Tor
-	# torrc sin ciboulette
-	cat /etc/tor/torrc | grep -v "\(\#ciboulette\|^DNSPort\|^VirtualAddrNetworkIPv\|^AutomapHostsOnResolve\|^TransPort\)" > /tmp/torrc
-
-	echo 'DNSPort 53 #ciboulette'  >> /tmp/torrc
-	echo 'VirtualAddrNetworkIPv4 10.192.0.0/11 #ciboulette'  >> /tmp/torrc
-	echo 'AutomapHostsOnResolve 1 #ciboulette' >> /tmp/torrc
-	echo 'TransPort 9040 #ciboulette' >> /tmp/torrc
-
-	# backup
-	cp /etc/tor/torrc /etc/tor/torrc.backup
-	# tor con ciboulette
-	cp /tmp/torrc /etc/tor/torrc
-	# Agregar la linea solo si no existe
-	./ciboulette iptables
-fi
-
-
-# quita las viejas versiones
-cat /etc/tor/torrc | grep -v '#ciboulette' > /tmp/torrc
-cp /tmp/torrc /etc/tor/torrc
-=======
 # hace un backup antes de instalar ciboulette
 [ "$(grep -v '#ciboulette' /etc/tor/torrc )" ] && cp /etc/tor/torrc /etc/tor/torrc.backup
 
@@ -114,7 +84,6 @@ if [ ! "$VERSION" -lt "24" ]; then
 	# Agregar la linea solo si no existe
 	./ciboulette iptables
 fi
->>>>>>> iptables
 
 # incio del servicio oculto
 echo "HiddenServiceDir /var/lib/tor/ciboulette/ #ciboulette" >> /tmp/torrc
