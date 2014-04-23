@@ -41,6 +41,8 @@
 			</ul>
 			<h3 class="text-muted"><img src="${BASE_URL}images/logo.png" /> Ciboulette</h3>
 	</div>
+<!-- permalink -->
+
 	<div class="jumbotron">
 		<!-- falta el avatar del usuario -->
 		<img src="${BASE_URL}avatar.png" class="pull-left" />
@@ -50,13 +52,13 @@
 		<!-- falta el metodo para postear si esta en localhost -->
 	</div>
 	<div class="row marketing">
-<div class="col-md-12">
-$NB_MetaBody
-</div>
-<ul class="pager">
-	<li class="previous" >$([ ! -z "$prev_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_PrevEntryPermalink'">'$NB_PrevPage'</a>')</li>
-	<li class="next" >$([ ! -z "$next_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_NextEntryPermalink'">'$NB_NextPage'</a>')</li>
-</ul>
+		<div class="col-md-12">
+		$NB_MetaBody
+		</div>
+		<ul class="pager">
+			<li class="previous" >$([ ! -z "$prev_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_PrevEntryPermalink'">'$NB_PrevPage'</a>')</li>
+			<li class="next" >$([ ! -z "$next_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_NextEntryPermalink'">'$NB_NextPage'</a>')</li>
+		</ul>
 	</div>
 	<div class="footer">
 		<p>$BLOG_TITLE con <a href="http://wiki.hackcoop.com.ar/Ciboulette">Ciboulette</a> &copy; $LAST_UPDATED - Liberado bajo licencia <a href="https://www.gnu.org/licenses/agpl.html">AGPLv3</p>

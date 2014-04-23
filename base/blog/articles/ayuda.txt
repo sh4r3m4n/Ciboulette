@@ -42,7 +42,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 
 ----- 
 
-## Instalación en GNU/Linux
+# Instalación en GNU/Linux
 
 <pre>
 cd /tmp
@@ -52,14 +52,14 @@ bash ciboulette -u
 
 ----- 
 
-## ¿Como usarla?
+# ¿Como usarla?
 
-### En en el navegador
+## En en el navegador
 
 ![pantalla de novedades](../../images/ciboulette_novedades.png)
 > Publicar y ver las publicaciones de nuestros amig@s
 
-### Desde el menú
+## Desde el menú
 
 ![menú del sistema](../../images/ciboulette_menu.png)
 > Busca el programa en tu menú de inicio
@@ -67,7 +67,7 @@ bash ciboulette -u
 ![menú del sistema](../../images/ciboulette_gui.png)
 > Al correr la aplicación podrás ver las opciones
 
-#### Chatear con Ciboulette <span class="glyphicon glyphicon-comment"><!-- chat --></span>
+### Chatear con Ciboulette <span class="glyphicon glyphicon-comment"><!-- chat --></span>
 
 Para chatear con usamos el protocolo [XMPP](https://es.wikipedia.org/wiki/Xmpp) soportado por muchos clientes de chat.
 
@@ -76,7 +76,7 @@ Para chatear con usamos el protocolo [XMPP](https://es.wikipedia.org/wiki/Xmpp) 
 
 Siempre recorda usar el Complemento [OTR](https://otr.cypherpunks.ca/index.php#downloads) (Fuera de grabación) esto asegura que nuestra conversación no es leída por otras personas.
 
-### Desde la terminal
+## Desde la terminal
 
 Este es un método muy simple para usar **Ciboulette** podes acceder a tu terminal desde el menú de inicio, por lo general esta en la sección accesorio.
 
@@ -110,7 +110,7 @@ Actualiza tu programa a la ultima versión de Ciboluette. _Más ayuda en `ciboul
 
 ----- 
 
-## Ciboulette en internet <span class="glyphicon glyphicon-globe"><!-- globo --></span>
+# Ciboulette en internet <span class="glyphicon glyphicon-globe"><!-- globo --></span>
 
 Si alguno de tus amig@s no tiene ciboulette podes pasarle la dirección para acceder desde internet.
 
@@ -119,7 +119,7 @@ Podes usar [tor2web](https://es.wikipedia.org/wiki/.onion#tor2web) para esto exi
 * [tor2web.org](https://tor2web.org)
 * [onion.to](https://onion.to)
 
-## Ciboulette en [Cyanogem](http://www.cyanogenmod.org/) o Android <span class="glyphicon glyphicon-phone"><!-- dispositivo movil --></span>
+# Ciboulette en [Cyanogem](http://www.cyanogenmod.org/) o Android <span class="glyphicon glyphicon-phone"><!-- dispositivo movil --></span>
 
 Para pasar tu dirección a un celular o tablet podes usar el [QR](/qr.png) y reconocerla con [Barcode Scanner](https://f-droid.org/repository/browse/?fdfilter=qr&fdid=com.google.zxing.client.android).
 
@@ -131,7 +131,7 @@ _Todas estas aplicaciones están disponibles en [F-droid](http://f-droid.org/)_
 
 ----- 
 
-## Filosofía UNIX
+# Filosofía UNIX
 
 Ciboulette sigue los principios de la **filosofía Unix** en su construcción, el modo en que se comunican sus nodos y en la integración con el sistema operativo, o sea una red social con filosofía Unix
 

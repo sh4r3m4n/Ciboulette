@@ -59,11 +59,16 @@ cat /etc/tor/torrc | grep -v "\(^DNSPort\|^VirtualAddrNetworkIP\|^AutomapHostsOn
 if [ ! "$VERSION" -lt "24" ]; then
 
 	# para versiones viejas de debian, ubuntu, mint, trisquel, etc
-	[ "$(grep -v '#ciboulette' /etc/dhcp3/dhclient.conf )" ] && cp /etc/dhcp3/dhclient.conf /etc/dhcp3/dhclient.conf.backup \
-	&& echo "prepend domain-name-servers 127.0.0.1; #ciboulette" >> /etc/dhcp3/dhclient.conf
+	if [ ! "$(grep '#ciboulette' /etc/dhcp3/dhclient.conf )" ]; then
+ 		cp /etc/dhcp3/dhclient.conf /etc/dhcp3/dhclient.conf.backup
+		cat /etc/dhcp3/dhclient.conf | grep -v "^prepend domain-name-servers" > /tmp/dhclient.conf
+		# agrega resolver dns por tor
+		echo "prepend domain-name-servers 127.0.0.1; #ciboulette" >> /tmp/dhclient.conf
+		cp /tmp/dhclient.conf /etc/dhcp3/dhclient.conf.backup
+	fi
 
-	# para dhcpclient
-	[ "$(grep '#ciboulette' /etc/resolv.conf.head )" ] && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
+	# para dhcpc y otros
+	[ ! "$(grep '#ciboulette' /etc/resolv.conf.head )" ] && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
 
 
 	# reinicia el demonio
@@ -128,9 +133,10 @@ cp ciboulette.desktop /usr/share/applications/ 2> /dev/null
 cp plugins/markdown.sh /usr/share/nanoblogger/plugins/page/format/markdown.sh
 
 if [ ! "$VERSION" -lt "24" ]; then
+
 	# deberia pedir la clave para hacer el chat aca
 	echo "Introducir la clave para el XMPP (chat) y presionar entrada"
-	CLAVE=$(read)
+	read CLAVE
 
 	echo "Host \"$HOST\"
 	VirtualHost \"$HOST\"" > /etc/prosody/conf.avail/$HOST.cfg.lua

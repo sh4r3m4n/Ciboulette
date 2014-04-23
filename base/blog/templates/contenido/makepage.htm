@@ -1,7 +1,13 @@
-<div class="col-md-12">
-	$NB_MetaBody
-</div>
-<ul class="pager">
-	<li class="previous" >$([ ! -z "$prev_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_PrevEntryPermalink'">'$NB_PrevPage'</a>')</li>
-	<li class="next" >$([ ! -z "$next_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_NextEntryPermalink'">'$NB_NextPage'</a>')</li>
-</ul>
+<!-- makepage -->
+	<div class="jumbotron">
+		<h1><a href="${BASE_URL}articles/perfil" accesskey="1">$NB_EntryTitle</a></h1>
+	</div>
+	<div class="row marketing">
+<H1></H1>
+		<div class="col-md-12">
+			$NB_MetaBody
+		</div>
+		<ul class="pager">
+			<li class="previous" >$([ ! -z "$prev_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_PrevEntryPermalink'">'$NB_PrevPage'</a>')</li>
+			<li class="next" >$([ ! -z "$next_entry" ] && echo '<a href="'${ARCHIVES_PATH}$NB_NextEntryPermalink'">'$NB_NextPage'</a>')</li>
+		</ul>
