@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 #	Ciboulette una red social 100% libre, descentralizada y entre pares
-#	version 0.3.1
-#	AGPLv3+ © bazza
+#	version 0.3.5
+#	AGPLv3+ | Licencias de Pares | Creative Commons by-sa 3.0 © bazza
 #
 
 # eso se usa para correrlo en rc.local
