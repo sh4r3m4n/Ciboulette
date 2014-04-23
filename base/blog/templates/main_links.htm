@@ -19,7 +19,7 @@
 	${NB_AtomAltLink}
 	${NB_RSS2AltLink}
 	${NB_RSSAltLink}
-	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" title="Nodos amigos de ${BLOG_TITLE}" href="${BASE_URL}/novedades.xml">
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" title="Nodos amigos de ${BLOG_TITLE}" href="${BASE_URL}novedades.xml">
 	<!-- Just for debugging purposes. Don't actually copy this line! -->
 	<!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
@@ -44,7 +44,7 @@
 	<div class="jumbotron">
 		<!-- falta el avatar del usuario -->
 		<img src="${BASE_URL}avatar.png" class="pull-left" />
-		<h1><a href="${BASE_URL}articles/perfil" accesskey="1">${BLOG_AUTHOR}</a></h1>
+		<h1><a href="${BASE_URL}articles/perfil" accesskey="1">${BLOG_TITLE}</a></h1>
 		<!-- esto no deberia estar si no hay BLOG_TITLE -->
 		<p class="lead">${BLOG_DESCRIPTION}</p>
 		<!-- falta el metodo para postear si esta en localhost -->
@@ -54,7 +54,7 @@
 <!-- add more links below this line -->
 	</div>
 	<div class="footer">
-		<p>$BLOG_AUTHOR con <a href="http://wiki.hackcoop.com.ar/Ciboulette">Ciboulette</a> &copy; $LAST_UPDATED - Liberado bajo licencia <a href="https://www.gnu.org/licenses/agpl.html">AGPLv3</p>
+		<p>$BLOG_TITLE con <a href="http://wiki.hackcoop.com.ar/Ciboulette">Ciboulette</a> &copy; $LAST_UPDATED - Liberado bajo licencia <a href="https://www.gnu.org/licenses/agpl.html">AGPLv3</p>
 	</div>
 </div> <!-- /container -->
 

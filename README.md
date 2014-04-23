@@ -60,7 +60,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 
 ## Quehaceres
 
-* Enlaces a tus amigos y tus novedades
+* Método para descargar avatares cada tanto
 * Metodo de update con backup en lugar de sobre escribiendo
 * ~~Lanzador a novedades~~
 * ~~Adaptar tema al lector y posteo~~

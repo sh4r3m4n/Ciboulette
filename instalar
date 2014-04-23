@@ -1,7 +1,6 @@
 #!/bin/bash
 
 USUARIO=$1
-CLAVE=$2
 
                 # - instala dependencias
                 # - verificar version de tor
@@ -24,13 +23,10 @@ echo
 [ "$(which yaourt)" ] && aptitude="yaourt -S"
 [ "$(which apt-get)" ] && aptitude="apt-get -y install"
 
-
-echo
-
 DEPENENCIAS="mini-httpd tor torsocks zenity nanoblogger rawdog libnotify-bin prosody qrencode tidy markdown zenity python2-feedparser"
 
-mkdir /tmp/ciboulette-backup/
-[ -d "/var/lib/tor/ciboulette/" ] && cp -r /var/lib/tor/ciboulette/* /tmp/ciboulette-backup/*
+mkdir /tmp/ciboulette-backup/ 2> /dev/null
+cp -r /var/lib/tor/ciboulette/* /tmp/ciboulette-backup/* 2> /dev/null
 
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 
@@ -54,16 +50,25 @@ done
 
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 
+# hace un backup antes de instalar ciboulette
+[ "$(grep -v '#ciboulette' /etc/tor/torrc )" ] && cp /etc/tor/torrc /etc/tor/torrc.backup
+
+# configuracion de tor sin ciboulette
+cat /etc/tor/torrc | grep -v "\(^DNSPort\|^VirtualAddrNetworkIP\|^AutomapHostsOnResolve\|^TransPort\|#ciboulette\)" > /tmp/torrc
+
 if [ ! "$VERSION" -lt "24" ]; then
 
-	# agrega el soporte para DNS de Tor
+	# para versiones viejas de debian, ubuntu, mint, trisquel, etc
+	[ "$(grep -v '#ciboulette' /etc/dhcp3/dhclient.conf )" ] && cp /etc/dhcp3/dhclient.conf /etc/dhcp3/dhclient.conf.backup \
+	&& echo "prepend domain-name-servers 127.0.0.1; #ciboulette" >> /etc/dhcp3/dhclient.conf
 
-	cp /etc/resolv.conf /etc/resolv.conf.backup
-	RESOLV=$(cat /etc/resolv.conf)
-	echo "nameserver 127.0.0.1\n$RESOLV" > /etc/resolv.conf
+	# para dhcpclient
+	[ "$(grep '#ciboulette' /etc/resolv.conf.head )" ] && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
 
-	# configuracion de tor sin ciboulette
-	cat /etc/tor/torrc  | grep -v "\(^DNSPort\|^VirtualAddrNetworkIP\|^AutomapHostsOnResolve\|^TransPort\|#ciboulette\)" > /tmp/torrc
+
+	# reinicia el demonio
+	systemctl restart tor 2> /dev/null
+	/etc/init.d/resolvconf restart 2> /dev/null
 
 	# nueva configuracion
 	echo "VirtualAddrNetwork 10.192.0.0/10 #ciboulette" >> /tmp/torrc
@@ -71,22 +76,16 @@ if [ ! "$VERSION" -lt "24" ]; then
         echo "TransPort 9040 #ciboulette" >> /tmp/torrc
         echo "DNSPort 53 #ciboulette" >> /tmp/torrc
 
-	# hace un backup antes de instalar ciboulette
-	[ "$(grep -v '#ciboulette')" ] && cp /etc/tor/torrc /etc/tor/torrc.backup
-	cp /tmp/torrc /etc/tor/torrc
-
 	# Agregar la linea solo si no existe
 	./ciboulette iptables
 fi
-# quita las viejas versiones
-cat /etc/tor/torrc | grep -v '#ciboulette' > /tmp/torrc
-cp /tmp/torrc /etc/tor/torrc
 
 # incio del servicio oculto
-echo "HiddenServiceDir /var/lib/tor/ciboulette/ #ciboulette" >> /etc/tor/torrc
-echo 'HiddenServicePort 80 127.0.0.1:4232   #ciboulette' >> /etc/tor/torrc
-echo 'HiddenServicePort 5222 127.0.0.1:5222 #ciboulette' >> /etc/tor/torrc
-echo 'HiddenServicePort 5269 127.0.0.1:5269 #ciboulette' >> /etc/tor/torrc
+echo "HiddenServiceDir /var/lib/tor/ciboulette/ #ciboulette" >> /tmp/torrc
+echo 'HiddenServicePort 80 127.0.0.1:4232   #ciboulette' >> /tmp/torrc
+echo 'HiddenServicePort 5222 127.0.0.1:5222 #ciboulette' >> /tmp/torrc
+echo 'HiddenServicePort 5269 127.0.0.1:5269 #ciboulette' >> /tmp/torrc
+cp /tmp/torrc /etc/tor/torrc
 
 # recupera el backup del tu ciboulette
 [ -d "/tmp/ciboulette-backup" ] && mv /tmp/ciboulette-backup/* /var/lib/tor/ciboulette/*
@@ -128,17 +127,23 @@ cp ciboulette.desktop /usr/share/applications/ 2> /dev/null
 # parche para versiones de nanoblogger 3.4.2
 cp plugins/markdown.sh /usr/share/nanoblogger/plugins/page/format/markdown.sh
 
-echo "Host \"$HOST\"
-VirtualHost \"$HOST\"" > /etc/prosody/conf.avail/$HOST.cfg.lua
-cp /etc/prosody/conf.avail/$HOST.cfg.lua /etc/prosody/conf.d/$HOST.cfg.lua 2> /dev/null
+if [ ! "$VERSION" -lt "24" ]; then
+	# deberia pedir la clave para hacer el chat aca
+	echo "Introducir la clave para el XMPP (chat) y presionar entrada"
+	CLAVE=$(read)
 
-/etc/init.d/prosody restart 2> /dev/null
-systemctl restart prosody 2> /dev/null
+	echo "Host \"$HOST\"
+	VirtualHost \"$HOST\"" > /etc/prosody/conf.avail/$HOST.cfg.lua
+	cp /etc/prosody/conf.avail/$HOST.cfg.lua /etc/prosody/conf.d/$HOST.cfg.lua 2> /dev/null
 
-XMPP="${USUARIO}@${HOST}"
-echo "$CLAVE
-$CLAVE
-" | prosodyctl adduser $XMPP $CLAVE 2> /dev/null
+	# hacer un certificado
 
-echo
-echo "tu cuenta de XMPP ya fue creada $XMPP"
+	/etc/init.d/prosody restart 2> /dev/null
+	systemctl restart prosody 2> /dev/null
+
+	XMPP="${USUARIO}@${HOST}"
+	echo -e "$CLAVE\n$CLAVE\n" | prosodyctl adduser $XMPP $CLAVE 2> /dev/null
+	echo
+	echo "tu cuenta de XMPP ya fue creada $XMPP"
+	echo
+fi

@@ -10,7 +10,9 @@ if [ "$1" == "iptables" ]; then
 	VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 	# no lo usa, si la version de tor es vieja
 	[ "$VERSION" -lt "24" ] && exit
+	# torifica los DNS (en lo posible)
 	iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/10 -j REDIRECT --to-ports 9040
+	# faltaria hardcodear el resolv.conf
 	exit
 fi
 
@@ -23,6 +25,7 @@ export WWW="${CARPETA}www"
 # programas
 export NB="nb -b $BLOG --template-dir $BLOG/templates"
 export RAWDOG="torify rawdog -d $NOVEDADES"
+export WGET="torify wget --quota 500k -qO -"
 
 # Renueva la llave gpg en el sitio
 ln -s ~/.pgpkey "$WWW/gpg.asc" &> /dev/null
@@ -107,15 +110,19 @@ function servidor_matar {
 }
 
 function nodo_agregar {
+	# aca se manda cualquiera
+	# descarga avatares si estan disponibles
 	cat /dev/stdin | sed 's/\ /\n/g' | while read URL; do
 		# falta poner que si no tiene http:// lo agrege
 		URL=$(echo $URL | sed 's/\/$//g')
-		[ ! "$(echo $URL | sed 's/^http//g')" == "$URL" ] && URL="http://$URL"
-		# $RAWDOG -a "$URL" 2> /dev/null
+		[ "$(echo $URL | grep -v "^http")" ] && URL="http://$URL"
+		# falta comprobar que no se repita
 		echo "feed 3h $URL" >> ${NOVEDADES}/config
 	done
 	# luego de agregarla actualiza novedades
 	ciboulette -d
+	nodos_actualizar
+	avatares_actualizar
 }
 function nodo_borrar {
 	cat /dev/stdin | sed 's/\ /\n/g' | while read URL; do
@@ -126,17 +133,39 @@ function nodos_lista {
 	$RAWDOG -l 2> /dev/null
 }
 function nodos_actualizar {
-	N=$($RAWDOG -wu | cut -d " " -f1) 2> /dev/null
+	N=$($RAWDOG -uw | cut -d " " -f1) 2> /dev/null
 	$NB update articles
 	export DISPLAY=:0
 	[ ! "$N" == "0" ] && \
 	notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" \
 	-i "${BLOG}/images/logo.png"
 }
+function avatares_actualizar {
+	# 1. actualizar avatare
+	#  1.1 si no tiene avatar buscar <image>, favicon.ico, primera imagen encontrada
+	# 2. que no superen cierta cantidad de bits o tiempo
+	# 3. convertirlos a png de 128px y grabarlos con el [hash de tu feed](http://offog.org/git/rawdog/config)
+	# Nota: para que no tarde mucho habria que poner procesos en paralelo
+	URLHASHS=$(echo $(ciboulette -l | grep "^htt\|..Hash:\ ") | sed 's/http/\nhttp/g; s/..Hash:\ \(.*\)$/ \1/g')
+	echo "$URLHASHS" | while read URLHASH; do
+		URL=$(echo $URLHASH | sed 's/\ .*$//g')
+		BASEURL=$(echo $URL | cut -d "/" -f 3 )
+		HASH=$(echo $URLHASH | sed 's/^.*\ //g')
+		echo
+		echo "Descargando avatar de $URL $BASEURL $HASH"
+		# Descargas en avatares
+		([ "$(echo URL | grep "\.onion")" ] && $WGET "http://${BASEURL}/favicon.{ico,png}" || $WGET "${URL}/avatar.png") \
+		| convert -'[128x128]' "${WWW}/avatares/${HASH}.png"
+		# falta leer el header y ver los avatares
+	done
+}
 
-
-while getopts a:b:n:skdlhiuw OPCION; do
+while getopts a:b:n:skdlhiuwz OPCION; do
 	case $OPCION in
+               z)
+			avatares_actualizar
+			exit
+		;;
                a)
 
 			echo "Escriba el articulo y presione ctrl+D. Para generar otro parrafo use doble enter"
@@ -211,13 +240,10 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		[ -f "$NOVEDADES/config" ] && FEED="$(cat $NOVEDADES/config | grep "^feed ")"
 
 		echo "instalando ciboulette"
-		
 		# como pedir permiso
-		[ "$(which gksu)" ] && gksu="gksu" || gksu="su -c"
 
-		echo "Escribir tu clave para XMPP y presionar entrada"
-		CLAVE=$(clave "una clave para tu chat (XMPP)")
-		$gksu "./instalar $USER \"$CLAVE\""
+		echo "Escribi tu clave de administración para instalar Ciboulette"
+		su -c "./instalar $USER"
 
 		# ----------------------------- INSTALACION ----------------------------------
 
@@ -272,7 +298,7 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d &>/dev/null # Ciboulette';) | crontab -
 		$NOMBRE -h
 
-		xdg-open http://127.0.0.1:4232/articles/ayuda &
+		xdg-open http://localhost:4232/articles/ayuda &
 
 		exit
 		;;
@@ -312,7 +338,7 @@ case $MENU in
 		;;
 		4)
 			# Novedades
-			xdg-open "http://127.0.0.1:4232/articles/novedades/"
+			xdg-open "http://localhost:4232/articles/novedades/"
 		;;
 		5)
 			# Agregar nodo
