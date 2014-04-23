@@ -58,20 +58,16 @@ bash ciboulette -u
 
 # ¿Como usarla?
 
-## En en el navegador
-
-![pantalla de novedades](../../images/ciboulette_novedades.png)
-> Publicar y ver las publicaciones de nuestros amig@s
-
-## Desde el menú
-
 ![menú del sistema](../../images/ciboulette_menu.png)
 > Busca el programa en tu menú de inicio
 
 ![menú del sistema](../../images/ciboulette_gui.png)
-> Al correr la aplicación podrás ver las opciones
+> Al correr la aplicación podrás publicar, cambiar tu avatar, modificar tu perfil y más
 
-### Chatear con Ciboulette <span class="glyphicon glyphicon-comment"><!-- chat --></span>
+![pantalla de novedades](../../images/ciboulette_novedades.png)
+> En la pagina local de [tu ciboulette](http://localhost:4232) podes ver tus [publicaciones](http://localhost:4232/) y las [novedades](http://localhost:4232/articles/novedades/) de tus amig@s.
+
+## Chatear con Ciboulette <span class="glyphicon glyphicon-comment"><!-- chat --></span>
 
 Para chatear con usamos el protocolo [XMPP](https://es.wikipedia.org/wiki/Xmpp) soportado por muchos clientes de chat.
 
@@ -126,7 +122,7 @@ Podes usar [tor2web](https://es.wikipedia.org/wiki/.onion#tor2web) para esto exi
 
 # Ciboulette en [Cyanogem](http://www.cyanogenmod.org/) o Android <span class="glyphicon glyphicon-phone"><!-- dispositivo movil --></span>
 
-Mientras este prendido y conectado tu nodo de Ciboulette, podes conectarte con tu celular usando [GibberBot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=info.guardianproject.otr.app.im) con [Orbot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=org.torproject.android). 
+Mientras esté prendido y conectado tu nodo de Ciboulette, podés conectarte con tu celular usando [GibberBot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=info.guardianproject.otr.app.im) con [Orbot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=org.torproject.android). 
 
 Para las novedades se puede usar [Feedex](https://f-droid.org/repository/browse/?fdfilter=feedex&fdid=net.fred.feedex) tenes que configurar el proxy en `127.0.0.1` puerto `8118`. Con agregar tu dirección de [RSS de novedades](/novedades.xml) basta :D
 
