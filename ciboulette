@@ -26,7 +26,7 @@ export WWW="${CARPETA}www"
 export NB="nb -b $BLOG --template-dir $BLOG/templates"
 export RAWDOG="torify rawdog -d $NOVEDADES"
 # descarga con un limite de 500k por archivo
-[ ! "$(which wget)" ] && export WGET="torify wget --quota 500k -qO -" || export WGET="torify curl --max-filesize 500000"
+[ "$(which wget)" ] && export WGET="torify wget --quota 500k -qO -" || export WGET="torify curl --max-filesize 500000 "
 
 # Renueva la llave gpg en el sitio
 ln -s ~/.pgpkey "$WWW/gpg.asc" &> /dev/null
@@ -113,7 +113,6 @@ function servidor_matar {
 
 function nodo_agregar {
 	# aca se manda cualquiera
-	# descarga avatares si estan disponibles
 	cat /dev/stdin | sed 's/\ /\n/g' | while read URL; do
 		# falta poner que si no tiene http:// lo agrege
 		URL=$(echo $URL | sed 's/\/$//g')
@@ -148,17 +147,19 @@ function avatares_actualizar {
 	# 2. que no superen cierta cantidad de bits o tiempo
 	# 3. convertirlos a png de 128px y grabarlos con el [hash de tu feed](http://offog.org/git/rawdog/config)
 	# Nota: para que no tarde mucho habria que poner procesos en paralelo
-	URLHASHS=$(echo $(ciboulette -l | grep "^htt\|..Hash:\ ") | sed 's/http/\nhttp/g; s/..Hash:\ \(.*\)$/ \1/g')
-	echo "$URLHASHS" | while read URLHASH; do
+	URLHASHS=$(echo $(ciboulette -l | grep "^htt\|..Hash:\ ") | sed 's/http/\nhttp/g; s/..Hash:\ \(.*\)$/ \1/g'| grep -v "^$")
+		echo "$URLHASHS" | while read URLHASH; do
 		URL=$(echo $URLHASH | sed 's/\ .*$//g')
 		BASEURL=$(echo $URL | cut -d "/" -f 3 )
 		HASH=$(echo $URLHASH | sed 's/^.*\ //g')
-		echo
 		echo "Descargando avatar de $URL $BASEURL $HASH"
 		# Descargas en avatares
-		([ "$(echo URL | grep "\.onion")" ] && $WGET "http://${BASEURL}/favicon.{ico,png}" || $WGET "${URL}/avatar.png") \
-		| convert -'[128x128]' "${WWW}/avatares/${HASH}.png"
+		([ "$(echo URL | grep "\.onion")" ] && $WGET "http://${BASEURL}/favicon.{ico,png}" 2> /dev/null || $WGET "${URL}/avatar.png" 2> /dev/null ) \
+		| convert -'[128x128]' "${WWW}/avatares/${HASH}.png" 2> /dev/null
 		# falta leer el header y ver los avatares
+
+		# Si no puede conseguir el avatar lo genera con QR
+		[ ! -f "${WWW}/avatares/${HASH}.png" ] && echo "$URL" | qrencode -o - | convert -  -fill purple -opaque black -transparent white "${WWW}/avatares/${HASH}.png" 2> /dev/null
 	done
 }
 
