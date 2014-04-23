@@ -92,3 +92,4 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 * hacer que las configuraciones de la instalación solo se agreguen si no existen
 * ~~Falta modificar el template :P~~
 * Bot de XMPP para publicar desde el chat (celulares, tablet, de modo remoto, etc)
+* desinstalación por si la moscas
