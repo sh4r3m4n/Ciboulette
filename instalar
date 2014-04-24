@@ -154,4 +154,11 @@ if [ ! "$VERSION" -lt "24" ]; then
 	echo
 	echo "tu cuenta de XMPP ya fue creada $XMPP"
 	echo
+else
+	echo
+	echo "tu versión de tor es muy vieja :("
+	echo "Suma la nueva a tus respositorios: https://www.torproject.org/docs/debian.html.en"
+	echo 'Para que funcione el chat con XMPP tenes actualizarlo a la versión 2.4 o más, luego corre `ciboulette -u`'
+	echo
+	sleep 10
 fi
