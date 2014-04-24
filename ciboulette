@@ -139,6 +139,15 @@ function nodos_actualizar {
 	notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" \
 	-i "${BLOG}/images/logo.png"
 }
+function avatar {
+	# favicon
+	convert "$@" -strip -resize 16x16 ${CARPETA}favicon.ico
+	# Genera el avatar, le guarda el hostname y la gpg
+	convert "$@" -strip -resize 128x128 -set url "$(cat ${CARPETA}hostname)" \
+	-set llave "$(cat ${WWW}/gpg.asc)" ${CARPETA}avatar.png
+	# se pueden sumar muchos mas datos
+	# qrencode "$(cat ${CARPETA}hostname)" -o ${CARPETA}qr.png
+}
 function avatares_actualizar {
 	# 1. actualizar avatare
 	#  1.1 si no tiene avatar buscar <image>, favicon.ico, primera imagen encontrada
@@ -165,6 +174,9 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 	case $OPCION in
         z)
 		avatares_actualizar
+	;;
+        g)
+		avatar $@
 	;;
         a)
 		echo "Escriba el articulo y presione ctrl+D. Para generar otro parrafo use doble enter"
@@ -282,7 +294,7 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		cp ${NOMBRE}-s.desktop  ~/.config/autostart/
 
 		# solo para esta version
-		[ -d "${CARPETA}data" ] && sh chronicle2nanoblogger
+		sh chronicle2nanoblogger
 
 		# la idea de esto es compartir archivos
 		# mkdir ~/Ciboulette
@@ -326,16 +338,15 @@ case $MENU in
 		1 )
 			# Imagen del perfil
 			ARCHIVO=$(archivo "Imagen del perfil")
-			convert "$ARCHIVO" -resize 16x16 ${CARPETA}favicon.ico
-			convert "$ARCHIVO" -resize 128x128 ${CARPETA}avatar.png
-			qrencode "`cat {$CARPETA}hostname`" -o ${CARPETA}qr.png
+			$NOMBRE -g "$ARCHIVO"
 			# generar respuesta
 			echo "avatar actualizado" | alerta
 		;;
 		2)
 			titulo "¿Cual es tu plan?" > ~/.plan
 			echo "plan actualizado" | alerta
-			blogear
+			$NOMBRE -d
+			$NOMBRE -w
 		;;
 		3)
 			# Configuración del perfil
@@ -348,8 +359,7 @@ case $MENU in
 		;;
 		5)
 			# Agregar nodo
-			URL=$(url)
-			$NOMBRE -n "$URL"
+			$NOMBRE -n $(url)
 		;;
 		6)
 			# necesita una automatización para el zenity
