@@ -30,17 +30,19 @@ cp -r /var/lib/tor/ciboulette/* /tmp/ciboulette-backup/* 2> /dev/null
 
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 
-if [ "$VERSION" -lt "24" ] && [ "$(which apt-get)" ]; then
-	echo "------- Actualizando Tor --------"
-	echo "tu version de tor es muy vieja... actualizando"
-	echo
-	# necesita comproba si existe
-	[ ! "$(grep 'deb.torproject.org' /etc/apt/sources.list)" ] && \
-		echo "deb http://deb.torproject.org/torproject.org $(grep DISTRIB_CODENAME  /etc/lsb-release | cut -d= -f2) main" >> /etc/apt/sources.list
-	gpg --keyserver keys.gnupg.net --recv 886DDD89
-	gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
-	apt-get update &> /dev/null
-	apt-get install -y deb.torproject.org-keyring
+if [ "$VERSION" -lt "24" ]; then
+	if [ "$(which apt-get)" ]; then
+		echo "------- Actualizando Tor --------"
+		echo "tu version de tor es muy vieja... actualizando"
+		echo
+		# necesita comproba si existe
+		[ ! "$(grep 'deb.torproject.org' /etc/apt/sources.list)" ] && \
+			echo "deb http://deb.torproject.org/torproject.org $(grep DISTRIB_CODENAME  /etc/lsb-release | cut -d= -f2) main" >> /etc/apt/sources.list
+		gpg --keyserver keys.gnupg.net --recv 886DDD89
+		gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
+		apt-get update &> /dev/null
+		apt-get install -y deb.torproject.org-keyring
+	fi
 fi
 
 echo "$DEPENENCIAS" | sed 's/\ /\n/g' | while read i; do
