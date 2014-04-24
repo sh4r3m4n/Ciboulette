@@ -48,14 +48,12 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 
 ## ¿Que se puede hacer con Ciboulette?
 
-![pantalla de novedades](captura.png)
+![pantalla de novedades](base/blog/images/ciboulette_novedades.png
+)
 > Publicar y ver las publicaciones de nuestros amig@s
 
-![Chatear](jabber_con_ciboulette.png)
-> Chatear
-
-![Chatear](capturas/transferencia_de_archivos.png)
-> Compartir archivos
+![Chatear](base/blog/images/ciboulette_chat.png)
+> Chatear y compartir archivos
 
 
 ## Quehaceres
@@ -93,3 +91,5 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 * ~~Falta modificar el template :P~~
 * Bot de XMPP para publicar desde el chat (celulares, tablet, de modo remoto, etc)
 * desinstalación por si la moscas
+* Agregar Llave privada y QR en los avatares.
+ * generar llave con openssl, gnutls o nacl
