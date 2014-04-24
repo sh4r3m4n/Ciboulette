@@ -226,6 +226,7 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		echo "  -l lisa de nodos amigos"
 		echo "  -d actualizar noticias de otros nodos"
 		echo "  -w forzar a actualizar tus noticias"
+		echo "  -z actualiza los avatares de los usuarios"
 		echo
 	;;
 	i)
