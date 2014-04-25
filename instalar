@@ -21,7 +21,7 @@ DEPENENCIAS="mini-httpd tor torsocks prosody nanoblogger rawdog tidy markdown py
 
 # hace un backup de la ultima instalación de ciboulette
 mkdir /tmp/ciboulette-backup/ 2> /dev/null
-cp -r /var/lib/tor/ciboulette/* /tmp/ciboulette-backup/ 2> /dev/null
+tar -xf /var/lib/tor/ciboulette /tmp/ciboulette-backup.tar
 
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 
@@ -113,7 +113,7 @@ echo 'HiddenServicePort 5269 127.0.0.1:5269 #ciboulette' >> /tmp/torrc
 cp /tmp/torrc /etc/tor/torrc
 
 # recupera el backup del tu ciboulette
-[ -d "/tmp/ciboulette-backup" ] && mv /tmp/ciboulette-backup/* /var/lib/tor/ciboulette/
+[ ! -d "/var/lib/tor/ciboulette/" ] && [ -f "/tmp/ciboulette-backup.tar" ] && tar -xf /tmp/ciboulette-backup.tar /
 
 # reincia tor
 
