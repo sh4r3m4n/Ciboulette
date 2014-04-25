@@ -77,6 +77,12 @@ if [ ! "$VERSION" -lt "24" ]; then
 		cp /tmp/dhclient.conf /etc/dhcp/dhclient.conf.backup 2> /dev/null
 	fi
 
+	# dnsmasq
+	if [ ! "$(grep '#ciboulette' /etc/dnsmasq.conf )" ]; then
+ 		cp /etc/dnsmasq.conf /etc/dnsmasq.conf.backup
+		echo "server=/onion/127.0.0.1#53 #ciboulette" >> /etc/dnsmasq.conf
+	fi
+
 	# para dhcpc y otros
 	[ ! "$(grep '#ciboulette' /etc/resolv.conf.head )" ] && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
 
