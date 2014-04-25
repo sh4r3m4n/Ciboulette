@@ -132,6 +132,7 @@ cp ciboulette.desktop /usr/share/applications/ 2> /dev/null
 
 # parche para versiones de nanoblogger 3.4.2
 cp plugins/markdown.sh /usr/share/nanoblogger/plugins/page/format/markdown.sh
+cp plugins/markdown.sh /usr/share/nanoblogger/plugins/entry/format/markdown.sh
 
 if [ ! "$VERSION" -lt "24" ]; then
 	# toma el usuario
