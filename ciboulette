@@ -12,7 +12,7 @@ if [ "$1" == "iptables" ]; then
 	[ "$VERSION" -lt "24" ] && exit
 	# torifica los DNS (en lo posible)
 	iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/10 -j REDIRECT --to-ports 9040
-	 ! "$(grep '#ciboulette' /etc/resolv.conf)" ] &&  echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf
+	[ ! "$(grep '#ciboulette' /etc/resolv.conf)" ] &&  echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf
 	exit
 fi
 

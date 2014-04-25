@@ -1,4 +1,4 @@
-#!/bin/bash
+w#!/bin/bash
 
 [ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root para correr este programa, ejemplo: sudo $0" && exit
 [ ! "$1" ] && echo "Necesita un sobrenombre como parametro, ejemplo: $0 pepito" && exit
@@ -81,14 +81,18 @@ if [ ! "$VERSION" -lt "24" ]; then
 	if [ ! "$(grep '#ciboulette' /etc/dnsmasq.conf )" ]; then
  		cp /etc/dnsmasq.conf /etc/dnsmasq.conf.backup
 		echo "server=/onion/127.0.0.1#53 #ciboulette" >> /etc/dnsmasq.conf
+
 	fi
 
 	# para dhcpc y otros
 	[ ! "$(grep '#ciboulette' /etc/resolv.conf.head )" ] && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
 
 
+	# reincia el dnsmasq
+	systemctl restart dnsmasq 2> /dev/null
+	/etc/init.d/dnsmasq restart 2>/dev/null
 
-	# reinicia el demonio
+	# reinicia el resolvconf
 	systemctl restart resolvconf 2> /dev/null
 	/etc/init.d/resolvconf restart 2> /dev/null
 
