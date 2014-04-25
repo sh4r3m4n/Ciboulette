@@ -10,6 +10,8 @@ BODY:
 
 Es una red social **100% libre**, entre pares, descentralizada y distribuida
 
+![Enlaces con ciboulette usando Feed y XMPP](../../images/ciboulette_enlaces.png)
+
 Con un simple blog y lectores de Noticias (**RSS**, **Atom**, **RDF**) se crea una red social libre en la que cada persona publica novedades directamente desde su computadora.
 Y es accesible desde cualquier computadora con [TOR](https://www.torproject.org/) gracias a sus servicios ocultos.
 
@@ -77,9 +79,14 @@ _Asi se ve el chat y la transferencia de archivos en [Pidgin](https://pidgin.im/
 
 Siempre recorda usar el Complemento <span class="glyphicon glyphicon-lock"><!-- OTR --></span> [OTR](https://otr.cypherpunks.ca/index.php#downloads) (Fuera de grabación) esto asegura que nuestra conversación no es leída por otras personas.
 
+### Configurar el chat
+
+![Configurar el Pidgin](../../images/ciboulette_chat_configurar.png)
+> Hay que poner en **dominio** la dirección de tu **Ciboulette**, nuestro nombre de **usuario** y la clave que pusimos durante la instalación.
+
 ## Desde la terminal
 
-Este es un método muy simple para usar **Ciboulette** podes acceder a tu terminal desde el menú de inicio, por lo general esta en la sección accesorio.
+Este es un método muy simple para usar **Ciboulette** podes acceder a tu terminal desde el menú de inicio, por lo general esta en la sección _Accesorios_.
 
 <pre>cat ~/.ciboulette/hostname</pre>
 

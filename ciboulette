@@ -294,7 +294,7 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		cp ${NOMBRE}-s.desktop  ~/.config/autostart/
 
 		# solo para esta version
-		sh chronicle2nanoblogger
+		[ -d "${CARPETA}md" ] && sh chronicle2nanoblogger
 
 		# la idea de esto es compartir archivos
 		# mkdir ~/Ciboulette
