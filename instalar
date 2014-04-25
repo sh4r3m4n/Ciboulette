@@ -68,6 +68,15 @@ if [ ! "$VERSION" -lt "24" ]; then
 		cp /tmp/dhclient.conf /etc/dhcp3/dhclient.conf.backup
 	fi
 
+	# DHCP
+	if [ ! "$(grep '#ciboulette' /etc/dhcp/dhclient.conf )" ]; then
+ 		cp /etc/dhcp/dhclient.conf /etc/dhcp/dhclient.conf.backup
+		cat /etc/dhcp/dhclient.conf | grep -v "^prepend domain-name-servers" > /tmp/dhclient.conf
+		# agrega resolver dns por tor
+		echo "prepend domain-name-servers 127.0.0.1; #ciboulette" >> /tmp/dhclient.conf
+		cp /tmp/dhclient.conf /etc/dhcp/dhclient.conf.backup
+	fi
+
 	# para dhcpc y otros
 	[ ! "$(grep '#ciboulette' /etc/resolv.conf.head )" ] && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
 
