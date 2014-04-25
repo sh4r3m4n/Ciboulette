@@ -56,6 +56,8 @@ bash ciboulette -u
 
 > La instalación te va a pedir la clave de administrador y luego una clave para tu cuenta de chat.
 
+_Sí no tenes GNU/Linux es momento de que [lo pruebes](http://wiki.hackcoop.com.ar/Como_probar_GNU/Linux)._
+
 ----- 
 
 # ¿Como usarla?
@@ -115,6 +117,16 @@ Listado de amig@s sumados a Ciboulette
 
 Actualiza tu programa a la ultima versión de Ciboluette. _Más ayuda en `ciboulette -h`_
 
+----- 
+
+# Errores frecuentes
+
+* No puedo ver los nodos de otros amigos en en navegador 
+ * Seguramente TOR no esta resolviendo los DNS, puede ser que tengas una versión vieja de TOR. Ciboulette necesita la versión 0.2.4 en adelante para funcionar perfectamente. Pero podés resolver esto usando [foxyproxy](http://wiki.hackcoop.com.ar/FoxyProxy#TOR)
+* Si agrego amigos al chat no aparecen
+ * Tu versión de TOR seguramente es anterior a la versión 0.2.4. [Actualizar TOR](https://www.torproject.org/docs/debian.html.en)
+* Mi versión de TOR es 0.2.4 o superior, pero no me anda el chat, ni veo a mis amigos en el navegador.
+ * TOR no esta pudiendo resolver los DNS. Comproba que en tu `/etc/resolv.conf` aparezca `nameserver 127.0.0.1` de no ser asi podes agregarlo a mano. **Nota:** muchos programas como NetworkManager sobrescriben este archivo al reconectar a la red.
 
 ----- 
 
