@@ -12,7 +12,6 @@ if [ "$1" == "iptables" ]; then
 	[ "$VERSION" -lt "24" ] && exit
 	# torifica los DNS (en lo posible)
 	iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/10 -j REDIRECT --to-ports 9040
-	# faltaria hardcodear el resolv.conf
 	exit
 fi
 
@@ -29,7 +28,7 @@ export RAWDOG="torify rawdog -d $NOVEDADES"
 [ "$(which wget)" ] && export WGET="torify wget --quota 500k -qO -" || export WGET="torify curl --max-filesize 500000 "
 
 # Renueva la llave gpg en el sitio
-ln -s ~/.pgpkey "$WWW/gpg.asc" &> /dev/null
+# ln -s ~/.pgpkey "$WWW/gpg.asc" &> /dev/null
 
 #---------------------- funciones graficas -----------------
 function opciones {
@@ -51,7 +50,6 @@ function opciones {
 	# genera el menu
 	eval "zenity --title \"$TITULO\" --window-icon /usr/share/pixmaps/$NOMBRE.png --text \"$MENSAJE\" --list --height=350 --column \"\" --column \"\" --hide-column 1  --hide-header $C"
 }
-
 function error {
 	zenity --error --text="$*"
 }
@@ -100,8 +98,7 @@ function blogear {
 
 function servidor_inicio {
 	# inicia el servidor
-	rm -f /tmp/$NOMBRE.pid && servidor_matar
-	# Si corremos arch
+	servidor_matar
 	/usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$WWW" -T "UTF8" -c "cgi-bin/*" 2> /dev/null
 }
 
@@ -144,7 +141,7 @@ function avatar {
 	convert "$@" -strip -resize 16x16 ${CARPETA}favicon.ico
 	# Genera el avatar, le guarda el hostname y la gpg
 	convert "$@" -strip -resize 128x128 -set url "$(cat ${CARPETA}hostname)" \
-	-set llave "$(cat ${WWW}/gpg.asc)" ${CARPETA}avatar.png
+	-set llave "$LLAVE" ${CARPETA}avatar.png
 	# se pueden sumar muchos mas datos
 	# qrencode "$(cat ${CARPETA}hostname)" -o ${CARPETA}qr.png
 }
@@ -337,8 +334,7 @@ case $MENU in
 		;;
 		1 )
 			# Imagen del perfil
-			ARCHIVO=$(archivo "Imagen del perfil")
-			$NOMBRE -g "$ARCHIVO"
+			$NOMBRE -g "$(archivo "Imagen del perfil")"
 			# generar respuesta
 			echo "avatar actualizado" | alerta
 		;;

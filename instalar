@@ -1,21 +1,15 @@
 #!/bin/bash
 
-USUARIO=$1
+[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root para correr este programa, ejemplo: sudo $0" && exit
+[ ! "$1" ] && echo "Necesita un sobrenombre como parametro, ejemplo: $0 pepito" && exit
 
-                # - instala dependencias
-                # - verificar version de tor
-                # - cargar iptables en rc.local
-                # - crea servicio oculto
-                # - genera las carpetas
-                # - copia las configuraciones de nanoblogger, rawdog
-                # - copia ciboulette
-                # - actualizar ciboulette
+# - instala dependencias
+# - verificar version de tor
+# - cargar iptables en rc.local
+# - crea servicio oculto
+# - genera las carpetas
+# - copia ciboulette
 
-
-echo
-echo "Instalando dependencias"
-echo "-----------------------"
-echo
 
 # verifica el sistema operativo
 
@@ -23,10 +17,11 @@ echo
 [ "$(which yaourt)" ] && aptitude="yaourt -S"
 [ "$(which apt-get)" ] && aptitude="apt-get -y install"
 
-DEPENENCIAS="mini-httpd tor torsocks zenity nanoblogger rawdog libnotify-bin prosody qrencode tidy markdown zenity python2-feedparser"
+DEPENENCIAS="mini-httpd tor torsocks prosody nanoblogger rawdog tidy markdown python2-feedparser qrencode imagemagick zenity libnotify-bin"
 
+# hace un backup de la ultima instalación de ciboulette
 mkdir /tmp/ciboulette-backup/ 2> /dev/null
-cp -r /var/lib/tor/ciboulette/* /tmp/ciboulette-backup/* 2> /dev/null
+cp -r /var/lib/tor/ciboulette/* /tmp/ciboulette-backup/ 2> /dev/null
 
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 
@@ -45,15 +40,19 @@ if [ "$VERSION" -lt "24" ]; then
 	fi
 fi
 
+echo
+echo "Instalando dependencias"
+echo "-----------------------"
+echo
+
 echo "$DEPENENCIAS" | sed 's/\ /\n/g' | while read i; do
 	[ ! "$(which $i)" ] && $aptitude $i
 done
-[ ! "$(which mini-httpd)" ] && $aptitude darkhttpd
 
 VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
 
 # hace un backup antes de instalar ciboulette
-[ "$(grep -v '#ciboulette' /etc/tor/torrc )" ] && cp /etc/tor/torrc /etc/tor/torrc.backup
+[ ! "$(grep '#ciboulette' /etc/tor/torrc )" ] && cp /etc/tor/torrc /etc/tor/torrc.backup
 
 # configuracion de tor sin ciboulette
 cat /etc/tor/torrc | grep -v "\(^DNSPort\|^VirtualAddrNetworkIP\|^AutomapHostsOnResolve\|^TransPort\|#ciboulette\)" > /tmp/torrc
@@ -95,7 +94,7 @@ echo 'HiddenServicePort 5269 127.0.0.1:5269 #ciboulette' >> /tmp/torrc
 cp /tmp/torrc /etc/tor/torrc
 
 # recupera el backup del tu ciboulette
-[ -d "/tmp/ciboulette-backup" ] && mv /tmp/ciboulette-backup/* /var/lib/tor/ciboulette/*
+[ -d "/tmp/ciboulette-backup" ] && mv /tmp/ciboulette-backup/* /var/lib/tor/ciboulette/
 
 # reincia tor
 
@@ -135,6 +134,8 @@ cp ciboulette.desktop /usr/share/applications/ 2> /dev/null
 cp plugins/markdown.sh /usr/share/nanoblogger/plugins/page/format/markdown.sh
 
 if [ ! "$VERSION" -lt "24" ]; then
+	# toma el usuario
+	USUARIO=$1
 
 	# deberia pedir la clave para hacer el chat aca
 	echo "Introducir la clave para el XMPP (chat) y presionar entrada"
@@ -160,5 +161,6 @@ else
 	echo "Suma la nueva a tus respositorios: https://www.torproject.org/docs/debian.html.en"
 	echo 'Para que funcione el chat con XMPP tenes actualizarlo a la versión 2.4 o más, luego corre `ciboulette -u`'
 	echo
-	sleep 10
 fi
+
+sleep 10
