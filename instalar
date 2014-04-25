@@ -1,4 +1,4 @@
-w#!/bin/bash
+#!/bin/bash
 
 [ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root para correr este programa, ejemplo: sudo $0" && exit
 [ ! "$1" ] && echo "Necesita un sobrenombre como parametro, ejemplo: $0 pepito" && exit
