@@ -269,7 +269,7 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		# pide permiso
 		PWD=$(pwd)
 		echo "Escribi tu clave de administración para instalar Ciboulette"
-		sudo ./instalar $USER || exit
+		sudo ./instalar $USER || echo "error en la clave" && exit
 
 		# ----------------------------- INSTALACION ----------------------------------
 
