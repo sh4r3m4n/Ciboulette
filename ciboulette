@@ -2,7 +2,7 @@
 #
 #	Ciboulette una red social 100% libre, descentralizada y entre pares
 #	version 0.3.5
-#	AGPLv3+ | Licencias de Pares | Creative Commons by-sa 3.0 © bazza
+#	AGPLv3+ | Licencias de Pares | Creative Commons Atribución-CompartirIgual 3.0 © Ernesto Bazzano (bazza)
 #
 
 # eso se usa para correrlo en rc.local
@@ -12,6 +12,7 @@ if [ "$1" == "iptables" ]; then
 	[ "$VERSION" -lt "24" ] && exit
 	# torifica los DNS (en lo posible)
 	iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/10 -j REDIRECT --to-ports 9040
+	echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf
 	exit
 fi
 
@@ -235,7 +236,8 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		echo "  -l lisa de nodos amigos"
 		echo "  -d actualizar noticias de otros nodos"
 		echo "  -w forzar a actualizar tus noticias"
-		echo "  -z actualiza los avatares de los usuarios"
+		echo "  -g /home/usuario/imagen.png		actualiza tu avatare "
+		echo "  -z actualiza los avatares de los nodos"
 		echo
 	;;
 	i)
