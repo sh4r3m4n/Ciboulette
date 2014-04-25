@@ -81,7 +81,6 @@ if [ ! "$VERSION" -lt "24" ]; then
 	if [ ! "$(grep '#ciboulette' /etc/dnsmasq.conf )" ]; then
  		cp /etc/dnsmasq.conf /etc/dnsmasq.conf.backup
 		echo "server=/onion/127.0.0.1#53 #ciboulette" >> /etc/dnsmasq.conf
-
 	fi
 
 	# para dhcpc y otros
