@@ -56,7 +56,7 @@ bash ciboulette -u
 
 > La instalación te va a pedir la clave de administrador y luego una clave para tu cuenta de chat.
 
-_Sí no tenes GNU/Linux es momento de que [lo pruebes](http://wiki.hackcoop.com.ar/Como_probar_GNU/Linux)._
+_¡Sí no tenes **GNU/Linux** es momento de que [lo pruebes](http://wiki.hackcoop.com.ar/Como_probar_GNU/Linux)!_
 
 ----- 
 
@@ -119,16 +119,15 @@ Actualiza tu programa a la ultima versión de Ciboluette. _Más ayuda en `ciboul
 
 ----- 
 
-# Errores frecuentes
+# Errores frecuentes <span class="glyphicon glyphicon-remove-sign"><!-- error --></span>
 
-* No puedo ver los nodos de otros amig@s en en navegador 
- * Seguramente TOR no esta resolviendo los DNS, puede ser que tengas una versión vieja de TOR. Ciboulette necesita la versión 0.2.4 en adelante para funcionar perfectamente. Pero podes resolver esto usando [foxyproxy](http://wiki.hackcoop.com.ar/FoxyProxy#TOR)
+* No puedo ver los nodos de otros amig@s en el navegador 
+ * Seguramente TOR no esta resolviendo los DNS, puede ser que tengas una versión vieja de TOR. Ciboulette necesita la versión 0.2.4 en adelante para funcionar perfectamente. Pero podes resolver esto usando [FoxyProxy](http://wiki.hackcoop.com.ar/FoxyProxy#TOR)
 * Agrego amig@s al chat no aparecen
- * Tu versión de TOR seguramente es anterior a la versión 0.2.4. [Actualizar TOR](https://www.torproject.org/docs/debian.html.en)
-* Mi versión de TOR es 0.2.4 o superior, pero no me anda el chat, ni veo a mis amig@s en el navegador.
- * TOR no esta pudiendo resolver los DNS. Compraba que en tu `/etc/resolv.conf` aparezca `nameserver 127.0.0.1` de no ser así podes agregarlo a mano. **Nota:** muchos programas como NetworkManager sobrescriben este archivo al reconectar a la red.
- * Otra opción es `sudo ciboulette opennic` y de ahora en más nuestros DNS los resuelven TOR y [Opennic](http://opennicproject.org)
-* Luego de instalar ciboulette tor dejo de andar.
+ * Tu versión de TOR seguramente es anterior a la versión 0.2.4, esto lo podes comprombar con `tor --version`. Si tu versión es anterior tendrias que [actualizar TOR](https://www.torproject.org/docs/debian.html.en)
+* Mi versión de TOR es 0.2.4 o superior, pero no veo a mis amig@s en el chat o en el navegador.
+ * Pone en la terminal `sudo ciboulette opennic` y de ahora en más nuestros DNS los resuelven TOR y [Opennic](http://opennicproject.org), seguramente vas a tener que reiniciar la red para ver los cambios.
+* Luego de instalar **Ciboulette**, TOR dejo de andar.
  * Hay un backup de tus preferencias originales en `/etc/tor/torrc.backup`, podes recuperarla haciendo `sudo /etc/tor/torrc.backup /etc/tor/torrc` y reinciar el demonio.
 
 ----- 
