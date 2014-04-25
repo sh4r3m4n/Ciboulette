@@ -16,6 +16,13 @@ if [ "$1" == "iptables" ]; then
 	exit
 fi
 
+# si queres hardocear los dns
+if [ "$1" == "opennic" ]; then
+	echo -e "nameserver 127.0.0.1 #ciboulette\nnameserver 162.221.191.3\nnameserver 37.235.52.191\nnameserver 208.115.243.35" > /etc/resolv.conf
+	chattr +i /etc/resolv.conf
+	exit
+fi
+
 export NOMBRE="ciboulette"
 export CARPETA=~/.${NOMBRE}/
 export BLOG="${CARPETA}blog"
