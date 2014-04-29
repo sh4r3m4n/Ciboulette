@@ -14,22 +14,14 @@ Ud. es libre de
 Bajo las condiciones siguientes:
 --------------------------------
 
-.. figure:: images/by.png
-   :alt: 
 
 **Atribución** - Debe reconocer los créditos de la obra de la manera
 especificada por el autor o el licenciante (pero no de una manera que
 sugiera que tiene su apoyo o que apoyan el uso que hace de su obra).
 
-.. figure:: images/sa.png
-   :alt: 
-
 **Compartir bajo la Misma Licencia** - Si altera o transforma esta obra,
 o genera una obra derivada, sólo puede distribuir la obra generada bajo
 una licencia idéntica a ésta.
-
-.. figure:: images/nc.png
-   :alt: 
 
 **No Capitalista** - La explotación comercial de esta obra sólo está
 permitida a cooperativas, organizaciones y colectivos sin fines de
@@ -62,12 +54,3 @@ Entendiendo que
 -  **Aviso** - Al reutilizar o distribuir la obra, tiene que dejar muy
    en claro los términos de la licencia de esta obra. La mejor forma de
    hacerlo es enlazar a esta página.
-
-.. raw:: html
-
-   <div class="references">
-
-.. raw:: html
-
-   </div>
-
