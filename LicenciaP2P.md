@@ -1,8 +1,8 @@
 Licencia de Producción de Pares (Versión legible por humanos)
 =============================================================
 
-    Esto es un resumen legible por humanos del `texto legal (la licencia
-    completa) <http://endefensadelsl.org/ppl_es.html>`__
+    Esto es un resumen legible por humanos del texto legal ([la licencia
+    completa](http://endefensadelsl.org/ppl_es.html))
 
 Ud. es libre de
 ---------------
