@@ -58,20 +58,20 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 
 ## Quehaceres
 
-* Método para descargar avatares cada tanto
+* ~~[Acceso transparente a los servicios ocultos](https://grepular.com/Transparent_Access_to_Tor_Hidden_Services) y [DNS](http://security-world.blogspot.com.ar/2013/04/postfix-through-tor-dns.html)~~
+ * Daba errores y use el [wiki de tor](https://trac.torproject.org/projects/tor/wiki/doc/TransparentProxy#TransparentlyDoingDNSandRoutingfor.onionTraffic)
+ * Opennic, dhcp
+* ~~Método para descargar avatares cada tanto~~
  * Para descargar o ~~generar avatares de paginas web~~
 * Metodo de update con backup en lugar de sobre escribiendo
 * ~~Lanzador a novedades~~
 * ~~Adaptar tema al lector y posteo~~
-* ~~[Acceso transparente a los servicios ocultos](https://grepular.com/Transparent_Access_to_Tor_Hidden_Services) y [DNS](http://security-world.blogspot.com.ar/2013/04/postfix-through-tor-dns.html)~~
- * Daba errores y use el [wiki de tor](https://trac.torproject.org/projects/tor/wiki/doc/TransparentProxy#TransparentlyDoingDNSandRoutingfor.onionTraffic)
 * ~~Lector local y estatico de feed ([rawdog](http://offog.org/code/rawdog/) + https://github.com/roop/ngoplanet_org/)~~
  * ~~mover estática dentro de nanoblogger~~
  * Publicador, editor de perfil y agregador de amigos con CGI (solo para la red local)
    * Ejemplos de como editar en [markdown](https://es.wikipedia.org/wiki/Markdown)
 * ~~Sacar el nombre del usuario de `whoami`~~
  * ~~Poner datos de `finger` guardados en los archivos `.plan`, `.project` y `.pgpkey`~~
-   * Manual de como usarlo
  * [xfaces](https://en.wikipedia.org/wiki/X-Face) y/o [picons](http://www.cs.indiana.edu/picons/ftp/index.html) 
  * ~~Generar QR del hostname~~
 * ~~[Chat para ciboulette](chat.png) prosody + [mod_onions](https://blog.thijsalkema.de/blog/2013/06/11/xmpp-federation-over-tor-hidden-services/)~~
@@ -93,3 +93,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 * desinstalación por si la moscas
 * Agregar Llave privada y QR en los avatares.
  * generar llave con openssl, gnutls o nacl
+
+## Licencia
+
+Esta obra esta liberada bajo [Licencia de Produccion de Pares](LicenciaP2P.md)
