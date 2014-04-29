@@ -96,4 +96,4 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 
 ## Licencia
 
-Esta obra esta liberada bajo [Licencia de Produccion de Pares](LicenciaP2P.md)
+Esta obra esta liberada bajo [Licencia de Produccion de Pares](LicenciaP2P.md) [AGPLv3](https://www.gnu.org/licenses/agpl.html) [Creative Commons BY-SA](https://creativecommons.org/licenses/by-sa/3.0/deed.es)
