@@ -17,7 +17,7 @@
 [ "$(which yaourt)" ] && aptitude="yaourt -S"
 [ "$(which apt-get)" ] && aptitude="apt-get -y install"
 
-DEPENENCIAS="mini-httpd tor torsocks prosody nanoblogger rawdog tidy markdown python2-feedparser qrencode imagemagick zenity libnotify-bin"
+DEPENENCIAS="mini-httpd tor torsocks prosody nanoblogger rawdog tidy markdown python2-feedparser qrencode imagemagick zenity libnotify-bin dhcp3-server"
 
 # hace un backup de la ultima instalación de ciboulette
 mkdir /tmp/ciboulette-backup/ 2> /dev/null
