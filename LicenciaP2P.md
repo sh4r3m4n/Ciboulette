@@ -52,24 +52,8 @@ Entendiendo que
    en claro los términos de la licencia de esta obra. La mejor forma de
    hacerlo es enlazar a esta página.
 
-Licencia de Producción de Pares: un modelo para el copyfarleft
-==============================================================
-
-    Este es el texto legal de la Licencia de Producción de Pares.
-    También puede leer el `resumen legible por
-    humanos <http://endefensadelsl.org/ppl_deed_es.html>`__
-
-    La Licencia de Producción de Pares es un modelo de licencia
-    copyfarleft, derivada de la licencia Creative Commons
-    `Atribución-NoComercial-CompartirIgual 3.0
-    Unported <http://creativecommons.org/licenses/by-nc-sa/3.0/>`__
-
-    Para la traducción al castellano se adaptó el texto de la licencia
-    `Creative Commons Atribución-NoComercial-CompartirIgual 3.0
-    Chile <http://creativecommons.org/licenses/by-nc-sa/3.0/cl/>`__
-
 Licencia de Producción de Pares
--------------------------------
+===============================
 
 LA OBRA (TAL Y COMO SE DEFINE MÁS ADELANTE) SE OTORGA BAJO ESTA LICENCIA
 COPYFARLEFT PÚBLICA (“LICENCIA”). LA OBRA ESTÁ PROTEGIDA POR DERECHOS DE
