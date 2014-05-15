@@ -322,6 +322,8 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 
 		# genera el QR de tu ciboulette
 		qrencode "`cat ${CARPETA}hostname`" -o ${CARPETA}qr.png
+		# si no tiene avatar agrega uno
+		[ ! -f "${CARPETA}/avatar.png" ] && ciboulette -d ciboulette.png
 
 		# inicia el servidor
 		$NOMBRE -s &
