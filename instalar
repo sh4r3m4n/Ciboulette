@@ -6,7 +6,6 @@
 # -------------------- ser root -----------------------
 
 [ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0" && exit
-[ ! "$1" ] && echo "Necesita un sobrenombre como parametro, ejemplo: sudo $0 pepito" && exit
 
 # -------------------- backup del servicio oculto -----------------------
 
@@ -31,7 +30,7 @@ done
 for N in /etc/dhcp*/dhclient.conf; do
 	grep '#ciboulette' $N || \
 	cp $N $N.backup && \
-	sed -e "s/^nprepend\ domain-name-servers.*$/#&\nprepend domain-name-servers 127.0.0.1; #ciboulette/" -i $N
+	sed -e "s/^prepend\ domain-name-servers.*$/#&\nprepend domain-name-servers 127.0.0.1; #ciboulette/" -i $N
 done
 
 # resolv.conf
@@ -98,3 +97,33 @@ cp ciboulette.desktop /usr/share/applications/ 2> /dev/null
 cp -r lang /usr/share/nanoblogger/ 2> /dev/null
 cp plugins/markdown.sh /usr/share/nanoblogger/plugins/page/format/markdown.sh
 cp plugins/markdown.sh /usr/share/nanoblogger/plugins/entry/format/markdown.sh
+
+# ------------------- prosody ---------------------------
+
+# toma el usuario
+
+HOST=$(cat /var/lib/tor/ciboulette/hostname)
+
+# generar una nueva instalación con un certificado copado
+
+DIR=$(pwd)
+
+VIRTUAL="Host"
+cd /etc/prosody/certs/
+[ ! -f /etc/prosody/certs/$HOST.key ] && prosodyctl cert generate $HOST && VIRTUAL="VirtualHost" ||
+openssl req -new -x509 -days 365 -nodes -out "$HOST.crt" -newkey rsa:2048 -keyout "$HOST.key"
+
+cd $DIR
+
+# graba el nuevo host de prosody
+echo "$VIRTUAL \"$HOST\"
+ssl = {
+  key = \"/etc/prosody/certs/$HOST.key\";
+  certificate = \"/etc/prosody/certs/$HOST.crt\";
+}" > /etc/prosody/conf.avail/$HOST.cfg.lua
+cp /etc/prosody/conf.avail/$HOST.cfg.lua /etc/prosody/conf.d/$HOST.cfg.lua 2> /dev/null
+
+# reinicie el servidor de prosody
+
+prosodyctl stop
+prosodyctl start

@@ -7,6 +7,7 @@
 
 # eso se usa para correrlo en rc.local
 if [ "$1" == "iptables" ]; then
+	[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0" && exit
 	# torifica los DNS (en lo posible)
 	iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/10 -j REDIRECT --to-ports 9040
 	exit
@@ -14,12 +15,23 @@ fi
 
 # si queres hardocear los dns
 if [ "$1" == "opennic" ]; then
+	[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0" && exit
 	echo -e "nameserver 127.0.0.1 #ciboulette\nnameserver 162.221.191.3\nnameserver 37.235.52.191\nnameserver 208.115.243.35" > /etc/resolv.conf
 	chattr +i /etc/resolv.conf
 	# http://wiki.hackcoop.com.ar/DNS
 	exit
 fi
 
+if [ "$1" == "adduser" ]; then
+	[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0" && exit
+	[ ! "$2" ] && echo "Necesita un sobrenombre como parametro, ejemplo: sudo $0 $1 sobrenombre" && exit
+	USUARIO=$2
+	read CLAVE
+	XMPP="${USUARIO}@${HOST}"
+	echo -e "$CLAVE\n$CLAVE\n" | prosodyctl adduser $XMPP $CLAVE 2> /dev/null
+	echo "tu cuenta de XMPP ya fue creada $XMPP"
+	exit
+fi
 
 export NOMBRE="ciboulette"
 export CARPETA=~/.${NOMBRE}/
@@ -243,6 +255,7 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		echo "  -d actualizar noticias de otros nodos"
 		echo "  -w forzar a actualizar tus noticias"
 		echo "  -g /home/usuario/imagen.png		actualiza tu avatare "
+		echo " [ adduser sobrenombre ] agrega una cuenta de XMPP"
 		echo "  -z actualiza los avatares de los nodos"
 		echo
 	;;
