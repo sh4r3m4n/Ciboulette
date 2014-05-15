@@ -107,9 +107,12 @@ HOST=$(cat /var/lib/tor/ciboulette/hostname)
 
 # generar una nueva instalación con un certificado copado
 
+# no llena los datos
+
 VIRTUAL="Host"
 [ ! -f /etc/prosody/certs/$HOST.key ] && prosodyctl cert generate $HOST && VIRTUAL="VirtualHost" ||
-openssl req -new -x509 -days 365 -nodes -out "/etc/prosody/certs/$HOST.crt" -newkey rsa:2048 -keyout "/etc/prosody/certs/$HOST.key"
+echo -e "AU\n\n\n\n\n\n\n" | \
+openssl req -new -x509 -days 365 -nodes -out "/etc/prosody/certs/$HOST.crt" -newkey rsa:4096 -keyout "/etc/prosody/certs/$HOST.key"
 
 # guarda el certificado asi no tenemos que aceptarlo mas :D
 
