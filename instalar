@@ -13,7 +13,7 @@ tar -cf /var/lib/tor/ciboulette /tmp/ciboulette-backup.tar
 
 # -------------------- dependencias -----------------------
 
-# verifica el sistema operativo
+# verifica el sistema operativo (no sirve para nada)
 [ "$(which yum)" ] && aptitude="yum -y install"
 [ "$(which yaourt)" ] && aptitude="yaourt -S"
 [ "$(which apt-get)" ] && aptitude="apt-get -y install"
@@ -28,16 +28,17 @@ done
 
 service resolvconf stop 2> /dev/null
 
-# agrega la configuracion a dhcp y dhcp3
-for N in /etc/dhcp*/dhclient.conf; do
+type shopt &>/dev/null && shopt -s nullglob
+
+# agrega la configuracion a dhcp y dhcpX
+for N in /etc/dhcp*/dhclient.conf /etc/dhclient.conf; do
 	grep '#ciboulette' $N || \
 	cp $N $N.backup && \
 	sed -e "s/^prepend\ domain-name-servers.*$/#&\nprepend domain-name-servers 127.0.0.1; #ciboulette/" -i $N
 done
 
 # Agregar la linea solo si no existe
-./ciboulette iptables ||
-grep '#ciboulette' /etc/resolv.conf.head || echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
+grep '#ciboulette' /etc/resolv.conf.head || cp /etc/resolv.conf.head /etc/resolv.conf.head.backup && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
 
 service resolvconf start 2> /dev/null
 
