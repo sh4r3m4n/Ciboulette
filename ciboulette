@@ -351,7 +351,7 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Modificar_tu_plan Editar_tu_perfil Leer_novedades Agrega_un_nodo_amigo Quitar_un_nodo Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Tu nodo: $(cat ${CARPETA}hostname)"`
+MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Modificar_tu_plan Editar_tu_perfil Leer_novedades Agrega_un_nodo_amigo Quitar_un_nodo Generar_una_cuenta_de_chat Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Tu nodo: $(cat ${CARPETA}hostname)"`
 case $MENU in
 		0 )
 			# Publicar articulo
@@ -391,14 +391,19 @@ case $MENU in
 			--multiple --print-column 2 --title "Elija los nodos a borrar" --separator " ")
 		;;
 		7)
+			USUARIO=$(echo $USER | titulo "nombre de usuario" || exit)
+			# Inicia al servidor
+			clave "clave de para tu cuenta" | gksu $NOMBRE adduser $USUARIO
+		;;
+		8)
 			# Inicia al servidor
 			$NOMBRE -s
 		;;
-		8)
+		9)
 			# Mata el servidor
 			$NOMBRE -k
 		;;
-		9)
+		10)
 			# Mata el servidor
 			$NOMBRE -u
 		;;
