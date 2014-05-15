@@ -28,7 +28,7 @@ Muchos servicios de redes sociales moderan a sus usuarios o pretenden un fin esp
 
 ## ¿Que es descentralizada?
 
-![Centralizado, Federado y Distribuido](../../images/ciboulette_distribuido.png)
+<center>![Centralizado, Federado y Distribuido](../../images/ciboulette_distribuido.png)</center>
 
 Que no posee un centro. 
 por qué no hay un servidor al qué los usuarios tengan qué acceder. Los pares iguales.
@@ -71,15 +71,20 @@ _¡Sí no tenes **GNU/Linux** es momento de que [lo pruebes](http://wiki.hackcoo
 ![pantalla de novedades](../../images/ciboulette_novedades.png)
 > En la pagina local de [tu ciboulette](http://localhost:4232) podes ver tus [publicaciones](http://localhost:4232/) y las [novedades](http://localhost:4232/articles/novedades/) de tus amig@s.
 
+## Publicar un artículo <span class="glyphicon glyphicon-pencil"><!-- publicar --></span>
+
+![Menú para publicar](../../images/ciboulette_publicar.png)
+
+> Para editar en Ciboulette se puede usar [markdown](https://es.wikipedia.org/wiki/Markdown), un modo de hacer que nuestros artículos tengan estilo lindos sin la necesidad de usar HTML o editores complejos.
+
 ## Chatear con Ciboulette <span class="glyphicon glyphicon-comment"><!-- chat --></span>
 
 Para chatear con usamos el protocolo [XMPP](https://es.wikipedia.org/wiki/Xmpp) soportado por muchos clientes de chat.
 
 ![conversación en ciboulette usando Pidgin](../../images/ciboulette_chat.png)
 
-_Asi se ve el chat y la transferencia de archivos en [Pidgin](https://pidgin.im/)_
-
-Siempre recorda usar el Complemento <span class="glyphicon glyphicon-lock"><!-- OTR --></span> [OTR](https://otr.cypherpunks.ca/index.php#downloads) (Fuera de grabación) esto asegura qué nuestra conversación no es leída por otras personas.
+> _Asi se ve el chat y la transferencia de archivos en [Pidgin](https://pidgin.im/)_
+> Siempre hay que usar el complemento <span class="glyphicon glyphicon-lock"><!-- OTR --></span> [OTR](https://otr.cypherpunks.ca/index.php#downloads) (Fuera de grabación) esto asegura qué nuestra conversación no es leída por otras personas. Si no lo tenes instalado `sudo apt-get install pidgin pidgin-otr`
 
 ### Configurar el chat
 

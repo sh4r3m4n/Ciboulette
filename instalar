@@ -1,189 +1,100 @@
 #!/bin/bash
+#
+#	instalacion para Mint, Ubuntu, Debian y similares
+#
 
-[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root para correr este programa, ejemplo: sudo $0" && exit
-[ ! "$1" ] && echo "Necesita un sobrenombre como parametro, ejemplo: $0 pepito" && exit
+# -------------------- ser root -----------------------
 
-# - instala dependencias
-# - verificar version de tor
-# - cargar iptables en rc.local
-# - crea servicio oculto
-# - genera las carpetas
-# - copia ciboulette
+[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0" && exit
+[ ! "$1" ] && echo "Necesita un sobrenombre como parametro, ejemplo: sudo $0 pepito" && exit
 
+# -------------------- backup del servicio oculto -----------------------
+
+tar -cf /var/lib/tor/ciboulette /tmp/ciboulette-backup.tar
+
+# -------------------- dependencias -----------------------
 
 # verifica el sistema operativo
-
 [ "$(which yum)" ] && aptitude="yum -y install"
 [ "$(which yaourt)" ] && aptitude="yaourt -S"
 [ "$(which apt-get)" ] && aptitude="apt-get -y install"
 
-DEPENENCIAS="mini-httpd tor torsocks prosody nanoblogger rawdog tidy markdown python2-feedparser qrencode imagemagick zenity libnotify-bin dhcp3-server"
-
-# hace un backup de la ultima instalación de ciboulette
-mkdir /tmp/ciboulette-backup/ 2> /dev/null
-tar -cf /var/lib/tor/ciboulette /tmp/ciboulette-backup.tar
-
-VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
-
-if [ "$VERSION" -lt "24" ]; then
-	if [ "$(which apt-get)" ]; then
-		echo "------- Actualizando Tor --------"
-		echo "tu version de tor es muy vieja... actualizando"
-		echo
-		# necesita comproba si existe
-		[ ! "$(grep 'deb.torproject.org' /etc/apt/sources.list)" ] && \
-			echo "deb http://deb.torproject.org/torproject.org $(grep DISTRIB_CODENAME  /etc/lsb-release | cut -d= -f2) main" >> /etc/apt/sources.list
-		gpg --keyserver keys.gnupg.net --recv 886DDD89
-		gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
-		apt-get update &> /dev/null
-		apt-get install -y deb.torproject.org-keyring
-	fi
-fi
-
-echo
-echo "Instalando dependencias"
-echo "-----------------------"
-echo
+DEPENENCIAS="mini-httpd tor torsocks prosody nanoblogger rawdog tidy markdown python2-feedparser qrencode imagemagick zenity libnotify-bin"
 
 echo "$DEPENENCIAS" | sed 's/\ /\n/g' | while read i; do
 	[ ! "$(which $i)" ] && $aptitude $i
 done
 
-VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
+# -------------------- dependencias -----------------------
+
+# agrega la configuracion a dhcp y dhcp3
+for N in /etc/dhcp*/dhclient.conf; do
+	grep '#ciboulette' $N || \
+	cp $N $N.backup && \
+	sed -e "s/^nprepend\ domain-name-servers.*$/#&\nprepend domain-name-servers 127.0.0.1; #ciboulette/" -i $N
+done
+
+# resolv.conf
+grep '#ciboulette' /etc/resolv.conf.head || echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
+
+# Agregar la linea solo si no existe
+./ciboulette iptables
+
+service resolvconf restart 2> /dev/null
+
+# -------------------- tor -----------------------
 
 # hace un backup antes de instalar ciboulette
-[ ! "$(grep '#ciboulette' /etc/tor/torrc )" ] && cp /etc/tor/torrc /etc/tor/torrc.backup
+[ ! "$(grep '#ciboulette' /etc/tor/torrc)" ] && cp /etc/tor/torrc /etc/tor/torrc.backup
 
 # configuracion de tor sin ciboulette
 cat /etc/tor/torrc | grep -v "\(^DNSPort\|^VirtualAddrNetworkIP\|^AutomapHostsOnResolve\|^TransPort\|#ciboulette\)" > /tmp/torrc
 
-if [ ! "$VERSION" -lt "24" ]; then
-
-	# para versiones viejas de debian, ubuntu, mint, trisquel, etc
-	if [ ! "$(grep '#ciboulette' /etc/dhcp3/dhclient.conf )" ]; then
- 		cp /etc/dhcp3/dhclient.conf /etc/dhcp3/dhclient.conf.backup
-		cat /etc/dhcp3/dhclient.conf | grep -v "^prepend domain-name-servers" > /tmp/dhclient.conf
-		# agrega resolver dns por tor
-		echo "prepend domain-name-servers 127.0.0.1; #ciboulette" >> /tmp/dhclient.conf
-		cp /tmp/dhclient.conf /etc/dhcp3/dhclient.conf.backup 2> /dev/null
-	fi
-
-	# DHCP
-	if [ ! "$(grep '#ciboulette' /etc/dhcp/dhclient.conf )" ]; then
- 		cp /etc/dhcp/dhclient.conf /etc/dhcp/dhclient.conf.backup
-		cat /etc/dhcp/dhclient.conf | grep -v "^prepend domain-name-servers" > /tmp/dhclient.conf
-		# agrega resolver dns por tor
-		echo "prepend domain-name-servers 127.0.0.1; #ciboulette" >> /tmp/dhclient.conf
-		cp /tmp/dhclient.conf /etc/dhcp/dhclient.conf.backup 2> /dev/null
-	fi
-
-	# dnsmasq
-	if [ ! "$(grep '#ciboulette' /etc/dnsmasq.conf )" ]; then
- 		cp /etc/dnsmasq.conf /etc/dnsmasq.conf.backup
-		echo "server=/onion/127.0.0.1#53 #ciboulette" >> /etc/dnsmasq.conf
-	fi
-
-	# para dhcpc y otros
-	[ ! "$(grep '#ciboulette' /etc/resolv.conf.head )" ] && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
-
-
-	# reincia el dnsmasq
-	systemctl restart dnsmasq 2> /dev/null
-	/etc/init.d/dnsmasq restart 2>/dev/null
-
-	# reinicia el resolvconf
-	systemctl restart resolvconf 2> /dev/null
-	/etc/init.d/resolvconf restart 2> /dev/null
-
-	# nueva configuracion
-	echo "VirtualAddrNetwork 10.192.0.0/10 #ciboulette" >> /tmp/torrc
-        echo "AutomapHostsOnResolve 1 #ciboulette" >> /tmp/torrc
-        echo "TransPort 9040 #ciboulette" >> /tmp/torrc
-        echo "DNSPort 53 #ciboulette" >> /tmp/torrc
-
-	# Agregar la linea solo si no existe
-	./ciboulette iptables
-fi
+# nueva configuracion
+echo "VirtualAddrNetwork 10.192.0.0/10 #ciboulette
+AutomapHostsOnResolve 1 #ciboulette
+TransPort 9040 #ciboulette
+DNSPort 53 #ciboulette" >> /tmp/torrc
 
 # incio del servicio oculto
-echo "HiddenServiceDir /var/lib/tor/ciboulette/ #ciboulette" >> /tmp/torrc
-echo 'HiddenServicePort 80 127.0.0.1:4232   #ciboulette' >> /tmp/torrc
-echo 'HiddenServicePort 5222 127.0.0.1:5222 #ciboulette' >> /tmp/torrc
-echo 'HiddenServicePort 5269 127.0.0.1:5269 #ciboulette' >> /tmp/torrc
-cp /tmp/torrc /etc/tor/torrc
+echo "HiddenServiceDir /var/lib/tor/ciboulette/ #ciboulette
+HiddenServicePort 80 127.0.0.1:4232   #ciboulette
+HiddenServicePort 5222 127.0.0.1:5222 #ciboulette
+HiddenServicePort 5269 127.0.0.1:5269 #ciboulette" >> /tmp/torrc
 
-# recupera el backup del tu ciboulette
-DIR="$(pwd)"
-cd /
-[ ! -d "/var/lib/tor/ciboulette/" ] && [ -f "/tmp/ciboulette-backup.tar" ] && tar -xf /tmp/ciboulette-backup.tar
-cd $DIR
+# copia la configuracion de tor
+cat /tmp/torrc > /etc/tor/torrc
 
 # reincia tor
-
-systemctl restart tor 2> /dev/null
-/etc/init.d/tor restart 2> /dev/null
+service tor restart 2> /dev/null
 
 sleep 10
 
+# -------------------- restaura el ciboulette de cibuolette -----------------------
+
+# recupera el backup del servicio oculto
+tar -xf /tmp/ciboulette-backup.tar --directory /var/lib/tor/ciboulette/
+
+# nombre de tu nodo
+cat "/var/lib/tor/ciboulette/hostname" > /tmp/hostname
+
+# -------------------- configuraciones -----------------------
+
 # redirecciona los DNS a Tor
 
-if [ ! "$(cat /etc/rc.local | grep 'ciboulette')" ]; then
+grep -q "ciboulette iptables" /etc/rc.local || \
+sed -e "s,^exit*$,/usr/local/bin/ciboulette iptables\nexit 0," -i /etc/rc.local
 
-echo "$(cat /etc/rc.local | grep -v "^exit")
-/usr/local/bin/ciboulette iptables
-exit 0" > /etc/rc.local
-
-fi
-
-# ------------------- prosody ---------------------------
-
-cat "/var/lib/tor/ciboulette/hostname" > /tmp/hostname
-HOST=$(cat /tmp/hostname)
-
+# ------------------- instalacion de ciboulette ---------------------------
 
 # instala ciboulette
 
 cp ciboulette /usr/local/bin/ 2> /dev/null
-
-
-echo '------- Inicio -----'
-
 cp ciboulette.png /usr/share/pixmaps/ 2> /dev/null
-cp -r lang /usr/share/nanoblogger/ 2> /dev/null
 cp ciboulette.desktop /usr/share/applications/ 2> /dev/null
 
 # parche para versiones de nanoblogger 3.4.2
+
+cp -r lang /usr/share/nanoblogger/ 2> /dev/null
 cp plugins/markdown.sh /usr/share/nanoblogger/plugins/page/format/markdown.sh
 cp plugins/markdown.sh /usr/share/nanoblogger/plugins/entry/format/markdown.sh
-
-if [ ! "$VERSION" -lt "24" ]; then
-	# toma el usuario
-	USUARIO=$1
-
-	# deberia pedir la clave para hacer el chat aca
-	echo "Introducir la clave para el XMPP (chat) y presionar entrada"
-	read CLAVE
-
-	echo "Host \"$HOST\"
-	VirtualHost \"$HOST\"" > /etc/prosody/conf.avail/$HOST.cfg.lua
-	cp /etc/prosody/conf.avail/$HOST.cfg.lua /etc/prosody/conf.d/$HOST.cfg.lua 2> /dev/null
-
-	# hacer un certificado
-
-	/etc/init.d/prosody restart 2> /dev/null
-	systemctl restart prosody 2> /dev/null
-
-	XMPP="${USUARIO}@${HOST}"
-	echo -e "$CLAVE\n$CLAVE\n" | prosodyctl adduser $XMPP $CLAVE 2> /dev/null
-	echo
-	echo "tu cuenta de XMPP ya fue creada $XMPP"
-	echo
-else
-	echo
-	echo "tu versión de tor es muy vieja :("
-	echo "Suma la nueva a tus respositorios: https://www.torproject.org/docs/debian.html.en"
-	echo 'Para que funcione el chat con XMPP tenes actualizarlo a la versión 2.4 o más, luego corre `ciboulette -u`'
-	echo
-fi
-
-sleep 10

@@ -7,12 +7,8 @@
 
 # eso se usa para correrlo en rc.local
 if [ "$1" == "iptables" ]; then
-	VERSION=$(tor --version | sed 's/(.*$//g; s/[^0-9]//g; s/^0//g; s/\(..\).*/\1/g')
-	# no lo usa, si la version de tor es vieja
-	[ "$VERSION" -lt "24" ] && exit
 	# torifica los DNS (en lo posible)
 	iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/10 -j REDIRECT --to-ports 9040
-	[ ! "$(grep '#ciboulette' /etc/resolv.conf)" ] &&  echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf
 	exit
 fi
 
@@ -23,6 +19,7 @@ if [ "$1" == "opennic" ]; then
 	# http://wiki.hackcoop.com.ar/DNS
 	exit
 fi
+
 
 export NOMBRE="ciboulette"
 export CARPETA=~/.${NOMBRE}/
@@ -149,6 +146,7 @@ function avatar {
 	# favicon
 	convert "$@" -strip -resize 16x16 ${CARPETA}favicon.ico
 	# Genera el avatar, le guarda el hostname y la gpg
+	# metadata
 	convert "$@" -strip -resize 128x128 -set url "$(cat ${CARPETA}hostname)" \
 	-set llave "$LLAVE" ${CARPETA}avatar.png
 	# se pueden sumar muchos mas datos

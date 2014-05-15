@@ -1,0 +1,27 @@
+# ------------------- prosody ---------------------------
+
+# toma el usuario
+USUARIO=$1
+HOST=$(cat /tmp/hostname)
+
+# deberia pedir la clave para hacer el chat aca
+echo "Introducir la clave para el XMPP (chat) y presionar entrada"
+read CLAVE
+
+# generar una nueva instalación con un certificado copado
+
+echo "Host \"$HOST\"
+VirtualHost \"$HOST\"" > /etc/prosody/conf.avail/$HOST.cfg.lua
+cp /etc/prosody/conf.avail/$HOST.cfg.lua /etc/prosody/conf.d/$HOST.cfg.lua 2> /dev/null
+
+# hacer un certificado
+
+service prosody restart 2> /dev/null
+
+XMPP="${USUARIO}@${HOST}"
+echo -e "$CLAVE\n$CLAVE\n" | prosodyctl adduser $XMPP $CLAVE 2> /dev/null
+echo
+echo "tu cuenta de XMPP ya fue creada $XMPP"
+echo
+
+sleep 10
