@@ -54,7 +54,7 @@ wget https://raw.github.com/b4zz4/Ciboulette/master/ciboulette
 bash ciboulette -u
 </pre>
 
-> La instalación te va a pedir la clave de administrador y luego una clave para tu cuenta de chat.
+> La instalación te va a pedir la clave de administrador.
 
 _¡Sí no tenes **GNU/Linux** es momento de que [lo pruebes](http://wiki.hackcoop.com.ar/Como_probar_GNU/Linux)!_
 
@@ -78,6 +78,12 @@ _¡Sí no tenes **GNU/Linux** es momento de que [lo pruebes](http://wiki.hackcoo
 > Para editar en Ciboulette se puede usar [markdown](https://es.wikipedia.org/wiki/Markdown), un modo de hacer que nuestros artículos tengan estilo lindos sin la necesidad de usar HTML o editores complejos.
 
 ## Chatear con Ciboulette <span class="glyphicon glyphicon-comment"><!-- chat --></span>
+
+Agrega un usuario al prosody,
+
+~~~
+sudo ciboulette adduser $USER
+~~~
 
 Para chatear con usamos el protocolo [XMPP](https://es.wikipedia.org/wiki/Xmpp) soportado por muchos clientes de chat.
 
