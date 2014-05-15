@@ -256,8 +256,12 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		echo "  -d actualizar noticias de otros nodos"
 		echo "  -w forzar a actualizar tus noticias"
 		echo "  -g /home/usuario/imagen.png		actualiza tu avatare "
-		echo " [ adduser sobrenombre ] agrega una cuenta de XMPP"
 		echo "  -z actualiza los avatares de los nodos"
+		echo
+		echo " adduser sobrenombre	agrega una cuenta de XMPP"
+		echo " opennic		cambia nuestro DNS por opennic"
+		echo " iptables		resuelve los onion por tor"
+
 		echo
 	;;
 	i)
