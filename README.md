@@ -60,7 +60,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
 
 * ~~[Acceso transparente a los servicios ocultos](https://grepular.com/Transparent_Access_to_Tor_Hidden_Services) y [DNS](http://security-world.blogspot.com.ar/2013/04/postfix-through-tor-dns.html)~~
  * Daba errores y use el [wiki de tor](https://trac.torproject.org/projects/tor/wiki/doc/TransparentProxy#TransparentlyDoingDNSandRoutingfor.onionTraffic)
- * Opennic, dhcp
+ * ~~Opennic, dhcp~~
 * ~~Método para descargar avatares cada tanto~~
  * Para descargar o ~~generar avatares de paginas web~~
 * Metodo de update con backup en lugar de sobre escribiendo
