@@ -16,6 +16,7 @@ fi
 # si queres hardocear los dns
 if [ "$1" == "opennic" ]; then
 	[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0" && exit
+	chattr -i /etc/resolv.conf
 	echo -e "nameserver 127.0.0.1 #ciboulette\nnameserver 162.221.191.3\nnameserver 37.235.52.191\nnameserver 208.115.243.35" > /etc/resolv.conf
 	chattr +i /etc/resolv.conf
 	# http://wiki.hackcoop.com.ar/DNS

@@ -26,6 +26,8 @@ done
 
 # -------------------- dependencias -----------------------
 
+service resolvconf stop 2> /dev/null
+
 # agrega la configuracion a dhcp y dhcp3
 for N in /etc/dhcp*/dhclient.conf; do
 	grep '#ciboulette' $N || \
@@ -33,13 +35,11 @@ for N in /etc/dhcp*/dhclient.conf; do
 	sed -e "s/^prepend\ domain-name-servers.*$/#&\nprepend domain-name-servers 127.0.0.1; #ciboulette/" -i $N
 done
 
-# resolv.conf
+# Agregar la linea solo si no existe
+./ciboulette iptables ||
 grep '#ciboulette' /etc/resolv.conf.head || echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
 
-# Agregar la linea solo si no existe
-./ciboulette iptables
-
-service resolvconf restart 2> /dev/null
+service resolvconf start 2> /dev/null
 
 # -------------------- tor -----------------------
 
