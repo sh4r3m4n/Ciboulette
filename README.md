@@ -76,6 +76,7 @@ Que no existen servidores centrales. Los datos van de una computadora a otro dir
  * ~~Generar QR del hostname~~
 * ~~[Chat para ciboulette](chat.png) prosody + [mod_onions](https://blog.thijsalkema.de/blog/2013/06/11/xmpp-federation-over-tor-hidden-services/)~~
  * ~~Hacer instalador~~ (probarlo)
+ * ~~mejorar certificado~~ https://prosody.im/doc/certificates
 * [Mail sobre tor](http://www.groovy.net/ww/2012/01/torfixbis) - hice multiples pruebas pero no pude salir de mi nodo
 * Método para compartir archivos y multimedia (carpeta XDG_PUBLICSHARE_DIR)
  * Documentar como hacerlo desde la terminal
