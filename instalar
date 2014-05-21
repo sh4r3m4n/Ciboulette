@@ -3,6 +3,8 @@
 #	instalacion para Mint, Ubuntu, Debian y similares
 #
 
+BACKUP=".ciboulette.backup"
+
 # -------------------- ser root -----------------------
 
 [ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0" && exit
@@ -33,19 +35,19 @@ type shopt &>/dev/null && shopt -s nullglob
 # agrega la configuracion a dhcp y dhcpX
 for N in /etc/dhcp*/dhclient.conf /etc/dhclient.conf; do
 	grep '#ciboulette' $N || \
-	cp $N $N.backup && \
+	cp $N $N$BACKUP && \
 	sed -e "s/^prepend\ domain-name-servers.*$/#&\nprepend domain-name-servers 127.0.0.1,37.235.52.191,69.164.196.21,208.115.243.35,208.115.243.38; #ciboulette/" -i $N
 done
 
 # Agregar la linea solo si no existe
-[ -f /etc/resolv.conf.head ] && grep '#ciboulette' /etc/resolv.conf.head || cp /etc/resolv.conf.head /etc/resolv.conf.head.backup && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
+[ -f /etc/resolv.conf.head ] && grep '#ciboulette' /etc/resolv.conf.head || cp /etc/resolv.conf.head /etc/resolv.conf.head$BACKUP && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
 
 service resolvconf start 2> /dev/null
 
 # -------------------- tor -----------------------
 
 # hace un backup antes de instalar ciboulette
-[ ! "$(grep '#ciboulette' /etc/tor/torrc)" ] && cp /etc/tor/torrc /etc/tor/torrc.backup
+[ ! "$(grep '#ciboulette' /etc/tor/torrc)" ] && cp /etc/tor/torrc /etc/tor/torrc$BACKUP
 
 # configuracion de tor sin ciboulette
 cat /etc/tor/torrc | grep -v "\(^DNSPort\|^VirtualAddrNetworkIP\|^AutomapHostsOnResolve\|^TransPort\|#ciboulette\)" > /tmp/torrc
@@ -82,7 +84,7 @@ cat "/var/lib/tor/ciboulette/hostname" > /tmp/hostname
 
 # redirecciona los DNS a Tor
 
-grep -q "ciboulette iptables" /etc/rc.local || \
+grep -v "ciboulette" /etc/rc.local
 sed -e "s,^exit*$,/usr/local/bin/ciboulette iptables\nexit 0," -i /etc/rc.local
 
 # ------------------- instalacion de ciboulette ---------------------------
