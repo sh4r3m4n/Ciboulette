@@ -34,11 +34,11 @@ type shopt &>/dev/null && shopt -s nullglob
 for N in /etc/dhcp*/dhclient.conf /etc/dhclient.conf; do
 	grep '#ciboulette' $N || \
 	cp $N $N.backup && \
-	sed -e "s/^prepend\ domain-name-servers.*$/#&\nprepend domain-name-servers 127.0.0.1; #ciboulette/" -i $N
+	sed -e "s/^prepend\ domain-name-servers.*$/#&\nprepend domain-name-servers 127.0.0.1,37.235.52.191,69.164.196.21,208.115.243.35,208.115.243.38; #ciboulette/" -i $N
 done
 
 # Agregar la linea solo si no existe
-grep '#ciboulette' /etc/resolv.conf.head || cp /etc/resolv.conf.head /etc/resolv.conf.head.backup && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
+[ -f /etc/resolv.conf.head ] && grep '#ciboulette' /etc/resolv.conf.head || cp /etc/resolv.conf.head /etc/resolv.conf.head.backup && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
 
 service resolvconf start 2> /dev/null
 
