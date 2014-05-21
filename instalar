@@ -37,6 +37,7 @@ for N in /etc/dhcp*/dhclient.conf /etc/dhclient.conf; do
 	grep '#ciboulette' $N || \
 	cp $N $N$BACKUP && \
 	sed -e "s/^prepend\ domain-name-servers.*$/#&\nprepend domain-name-servers 127.0.0.1,37.235.52.191,69.164.196.21,208.115.243.35,208.115.243.38; #ciboulette/" -i $N
+	# falta el si no existe la linea la agrega
 done
 
 # Agregar la linea solo si no existe
@@ -111,7 +112,8 @@ HOST=$(cat /var/lib/tor/ciboulette/hostname)
 
 VIRTUAL="Host"
 [ ! -f /etc/prosody/certs/$HOST.key ] && prosodyctl cert generate $HOST && VIRTUAL="VirtualHost" ||
-echo -e "AU\n\n\n\n\n\n\n" | openssl req -new -x509 -days 365 -nodes -out "/etc/prosody/certs/$HOST.crt" -newkey rsa:4096 -keyout "/etc/prosody/certs/$HOST.key
+echo -e "AU\n\n\n\n\n\n\n" | \
+openssl req -new -x509 -days 365 -nodes -out "/etc/prosody/certs/$HOST.crt" -newkey rsa:4096 -keyout "/etc/prosody/certs/$HOST.key"
 
 # guarda el certificado asi no tenemos que aceptarlo mas :D
 
