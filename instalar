@@ -116,7 +116,7 @@ cp plugins/markdown.sh /usr/share/nanoblogger/plugins/entry/format/markdown.sh
 
 HOST=$(cat /var/lib/tor/ciboulette/hostname)
 
-if [ ! "$HOST" ] && echo 'Error. No se pudo generar el .onion, tal vez tu `/etc/tor/torrc` no este configurado correctamente. Modificar y volver a correr la instalación.' && exit
+[ ! "$HOST" ] && echo 'Error. No se pudo generar la dirección .onion, tal vez tu `/etc/tor/torrc` no este configurado correctamente. Modificar y volver a correr la instalación.' && exit
 
 # generar una nueva instalación con un certificado copado
 
