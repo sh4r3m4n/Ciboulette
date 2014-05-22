@@ -30,8 +30,6 @@ done
 
 service resolvconf stop 2> /dev/null
 
-type shopt &>/dev/null && shopt -s nullglob
-
 # agrega la configuracion a dhcp y dhcpX
 for N in /etc/dhcp*/dhclient.conf /etc/dhclient.conf; do
 	if [ ! -f $N ]; then
@@ -93,8 +91,7 @@ cat "/var/lib/tor/ciboulette/hostname" > /tmp/hostname
 
 # redirecciona los DNS a Tor
 
-grep -v "ciboulette" /etc/rc.local > /etc/rc.local
-sed -e "s,^exit*$,/usr/local/bin/ciboulette iptables\nexit 0," -i /etc/rc.local
+grep -v "ciboulette" /etc/rc.local | sed -e "s,^exit.*$,/usr/local/bin/ciboulette iptables\nexit 0," > /etc/rc.local
 
 # ------------------- instalacion de ciboulette ---------------------------
 
