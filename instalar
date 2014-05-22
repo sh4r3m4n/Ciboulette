@@ -11,7 +11,7 @@ BACKUP=".ciboulette.backup"
 
 # -------------------- backup del servicio oculto -----------------------
 
-tar -cf /var/lib/tor/ciboulette /tmp/ciboulette-backup.tar
+tar -cf /var/lib/tor/ciboulette /tmp/ciboulette-backup.tar 2> /dev/null
 
 # -------------------- dependencias -----------------------
 
@@ -27,8 +27,6 @@ echo "$DEPENENCIAS" | sed 's/\ /\n/g' | while read i; do
 done
 
 # -------------------- dependencias -----------------------
-
-service resolvconf stop 2> /dev/null
 
 # agrega la configuracion a dhcp y dhcpX
 for N in /etc/dhcp*/dhclient.conf /etc/dhclient.conf; do
@@ -46,8 +44,6 @@ done
 
 # Agregar la linea solo si no existe
 [ -f /etc/resolv.conf.head ] && grep '#ciboulette' /etc/resolv.conf.head || cp /etc/resolv.conf.head /etc/resolv.conf.head$BACKUP && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
-
-service resolvconf start 2> /dev/null
 
 # -------------------- tor -----------------------
 
@@ -82,7 +78,7 @@ sleep 10
 # -------------------- restaura el ciboulette de cibuolette -----------------------
 
 # recupera el backup del servicio oculto
-tar -xf /tmp/ciboulette-backup.tar --directory /var/lib/tor/ciboulette/
+tar -xf /tmp/ciboulette-backup.tar --directory /var/lib/tor/ciboulette/ 2> /dev/null
 
 # nombre de tu nodo
 cat "/var/lib/tor/ciboulette/hostname" > /tmp/hostname
@@ -141,5 +137,6 @@ cp /etc/prosody/conf.avail/$HOST.cfg.lua /etc/prosody/conf.d/$HOST.cfg.lua 2> /d
 
 # reinicie el servidor de prosody
 
-prosodyctl stop
-prosodyctl start
+service resolvconf restart 2> /dev/null
+prosodyctl stop 2> /dev/null
+prosodyctl start 2> /dev/null
