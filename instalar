@@ -2,6 +2,13 @@
 #
 #	instalacion para Mint, Ubuntu, Debian y similares
 #
+#	Que hacer:
+#		- instala dependencias
+#		- conecta a la VPN de tor
+#		- resolucion de DNS por tor
+#		- activa tus servicios ocultos a tor para ciboulette
+#		- agrega la regla de iptable para hacer que tor resuelva los .onion
+#
 
 BACKUP=".ciboulette.backup"
 
@@ -87,6 +94,7 @@ cat "/var/lib/tor/ciboulette/hostname" > /tmp/hostname
 
 # redirecciona los DNS a Tor
 
+grep '#ciboulette' /tmp/rc.local || cp /tmp/rc.local /tmp/rc.local$BACKUP
 grep -v "\(ciboulette\|^exit\ 0$\)" /etc/rc.local > /tmp/rc.local
 echo "/usr/local/bin/ciboulette iptables" >> /tmp/rc.local
 echo "exit 0" >> /tmp/rc.local
