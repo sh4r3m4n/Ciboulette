@@ -303,7 +303,7 @@ while getopts a:b:n:skdlhiIuwz OPCION; do
 		mkdir -p $CARPETA
 
 		echo "Escribi tu clave de administración para instalar Ciboulette"
-		sudo ./instalar || echo "error en la clave"; exit
+		sudo ./instalar || echo "error en la clave"
 
 		# direccion de tu ciboulette
 		echo "http://$(cat /tmp/hostname)" > ${CARPETA}hostname
