@@ -16,6 +16,43 @@ fi
 if [ "$1" == "adduser" ]; then
 	[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0" && exit
 	[ ! "$2" ] && echo "Necesita un sobrenombre como parametro, ejemplo: sudo $0 $1 sobrenombre" && exit
+
+	# ------------------- prosody ---------------------------
+	# toma el usuario
+
+	HOST=$(cat /var/lib/tor/ciboulette/hostname)
+
+	[ ! "$HOST" ] && echo 'Error. No se pudo generar la dirección .onion, tal vez tu `/etc/tor/torrc` no este configurado correctamente. Modificar y volver a correr la instalación.' && exit
+
+	# generar una nueva instalación con un certificado copado
+
+	VIRTUAL="Host"
+	if [ ! -f /etc/prosody/certs/$HOST.key ]; then
+		if [ "$(prosodyctl | grep cert )" ]; then
+			prosodyctl cert generate $HOST && VIRTUAL="VirtualHost"
+		else
+			echo -e "AU\n\n\n\n\n\n\n" | \
+			openssl req -new -x509 -days 365 -nodes -out "/etc/prosody/certs/$HOST.crt" -newkey rsa:4096 -keyout "/etc/prosody/certs/$HOST.key"
+		fi
+	fi
+
+	# guarda el certificado asi no tenemos que aceptarlo mas :D
+
+	cp /etc/prosody/certs/$HOST.crt /etc/ssl/certs/ 2> /dev/null
+
+	# graba el nuevo host de prosody
+	echo "$VIRTUAL \"$HOST\"
+	ssl = {
+	  key = \"/etc/prosody/certs/$HOST.key\";
+	  certificate = \"/etc/prosody/certs/$HOST.crt\";
+	}" > /etc/prosody/conf.avail/$HOST.cfg.lua
+	cp /etc/prosody/conf.avail/$HOST.cfg.lua /etc/prosody/conf.d/$HOST.cfg.lua 2> /dev/null
+
+	# reinicie el servidor de prosody
+
+	prosodyctl stop 2> /dev/null
+	prosodyctl start 2> /dev/null
+
 	USUARIO=$2
 	read CLAVE
 	XMPP="${USUARIO}@${HOST}"
