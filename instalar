@@ -30,7 +30,7 @@ done
 
 # agrega la configuracion a dhcp y dhcpX
 for N in /etc/dhcp*/dhclient.conf /etc/dhclient.conf; do
-	if [ ! -f $N ]; then
+	if [ ! -f "$N" ]; then
 		grep '#ciboulette' $N || cp $N $N$BACKUP
 		sed -e "s/^prepend\ domain-name-servers.*$/#&\nprepend domain-name-servers 127.0.0.1,37.235.52.191,69.164.196.21,208.115.243.35,208.115.243.38; #ciboulette/" -i $N
 		# falta el si no existe la linea la agrega
