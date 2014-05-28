@@ -304,10 +304,11 @@ while getopts a:b:n:skdlhiIuwz OPCION; do
 
 		echo "Escribi tu clave de administración para instalar Ciboulette"
 		sudo ./instalar || echo "error en la clave"; exit
-		./ciboulette -I
 
 		# direccion de tu ciboulette
 		echo "http://$(cat /tmp/hostname)" > ${CARPETA}hostname
+
+		./ciboulette -I
 
 		;;
 	I)
