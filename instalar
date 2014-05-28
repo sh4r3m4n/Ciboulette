@@ -87,7 +87,10 @@ cat "/var/lib/tor/ciboulette/hostname" > /tmp/hostname
 
 # redirecciona los DNS a Tor
 
-grep -v "ciboulette" /etc/rc.local | sed -e "s,^exit.*$,/usr/local/bin/ciboulette iptables\nexit 0," > /etc/rc.local
+grep -v "\(ciboulette\|^exit\ 0$\)" /etc/rc.local > /tmp/rc.local
+echo "/usr/local/bin/ciboulette iptables" >> /tmp/rc.local
+echo "exit 0" >> /tmp/rc.local
+cat  /tmp/rc.local > /etc/rc.local
 
 # ------------------- instalacion de ciboulette ---------------------------
 
