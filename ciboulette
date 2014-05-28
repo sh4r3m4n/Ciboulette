@@ -55,7 +55,7 @@ if [ "$1" == "adduser" ]; then
 	prosodyctl start 2> /dev/null
 
 	USUARIO=$2
-	read CLAVE
+	CLAVE=$3
 	XMPP="${USUARIO}@${HOST}"
 	echo -e "$CLAVE\n$CLAVE\n" | prosodyctl adduser $XMPP $CLAVE 2> /dev/null
 	echo "tu cuenta de XMPP ya fue creada $XMPP"
@@ -387,7 +387,7 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Modificar_tu_plan Editar_tu_perfil Leer_novedades Agrega_un_nodo_amigo Quitar_un_nodo Generar_una_cuenta_de_chat Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Tu nodo: $(cat ${CARPETA}hostname)"`
+MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Modificar_tu_plan Editar_tu_perfil Leer_novedades Agrega_un_nodo_amigo Quitar_un_nodo Configura_el_chat Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Tu nodo: $(cat ${CARPETA}hostname)"`
 case $MENU in
 		0 )
 			# Publicar articulo
@@ -427,9 +427,12 @@ case $MENU in
 			--multiple --print-column 2 --title "Elija los nodos a borrar" --separator " ")
 		;;
 		7)
-			USUARIO=$(echo $USER | titulo "nombre de usuario" || exit)
-			# Inicia al servidor
-			clave "clave de para tu cuenta" | gksu $NOMBRE adduser $USUARIO
+			USUARIO=$(echo $USER | titulo "nombre para tu chat, ejemplo: $USER" \
+			| sed 'y/A-Z/a-z/; s/\ /_/g; s/ñ/n/g; s/-/_/g; s/[^a-z0-9_]//g')
+			[ "$USUARIO" == "" ] && exit
+			CLAVE=$(clave "clave para iniciar el chat")
+			[ "$CLAVE" == "" ] && exit
+			gksu $NOMBRE adduser "$USUARIO" "$CLAVE" | zenity --text-info
 		;;
 		8)
 			# Inicia al servidor
