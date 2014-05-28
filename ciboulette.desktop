@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Ciboulette
+Description=Red Social 100% Libre
+Icon=/usr/share/pixmaps/ciboulette.png
+Type=Application
+Exec=ciboulette
+Categories=GTK;Network;

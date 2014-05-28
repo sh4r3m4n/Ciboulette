@@ -1,0 +1,230 @@
+TITLE: Ayuda
+AUTHOR: Ciboulette
+DATE:
+DESC: Pequeña ayuda para comenzar a editar
+FORMAT: markdown
+-----
+BODY:
+
+# Ciboulette
+
+Es una red social **100% libre**, entre pares, descentralizada y distribuida
+
+![Enlaces con ciboulette usando Feed y XMPP](../../images/ciboulette_enlaces.png)
+
+Con un simple blog y lectores de Noticias (**RSS**, **Atom**, **RDF**) se crea una red social libre en la qué cada persona publica novedades directamente desde su computadora.
+Y es accesible desde cualquier computadora con [TOR](https://www.torproject.org/) gracias a sus servicios ocultos.
+
+## ¿por qué 100% libre?
+
+Esta hecho únicamente con software libre. Y es una de las pocas redes sociales qué respetan los [conceptos del software libre](https://www.gnu.org/philosophy/free-sw.html) en su uso
+
+* La libertad de ejecutar el programa para cualquier propósito _(libertad 0)_.
+* La libertad de estudiar cómo funciona el programa, y cambiarlo para qué haga lo qué usted quiera _(libertad 1)_. El acceso al código fuente es una condición necesaria para ello.
+* La libertad de redistribuir copias para ayudar a su prójimo _(libertad 2)_.
+* La libertad de distribuir copias de sus versiones modificadas a terceros _(libertad 3)_. Esto le permite ofrecer a toda la comunidad la oportunidad de beneficiarse de las modificaciones. El acceso al código fuente es una condición necesaria para ello.
+
+Muchos servicios de redes sociales moderan a sus usuarios o pretenden un fin especifico para su red, violando nuestra **libertad 0**
+
+## ¿Que es descentralizada?
+
+<center>![Centralizado, Federado y Distribuido](../../images/ciboulette_distribuido.png)</center>
+
+Que no posee un centro. 
+por qué no hay un servidor al qué los usuarios tengan qué acceder. Los pares iguales.
+Gracias a [TOR](https://www.torproject.org/) y la publicación de servicio ocultos dentro de la red: los datos pasan entre nodos (pares iguales), de este modo todos los nodos de Ciboulette se ven entre si.
+
+## ¿Que es distribuida?
+
+Es una red totalmente distribuida por no tener un centro, ni muchos de ellos. A la vez los datos pueden ser republicados fácilmente en cualquiera de los otros nodos.
+
+## ¿Que es entre pares?
+
+Que no existen servidores centrales. Los datos van de una computadora a otro directamente, pasando entre pares iguales.
+
+----- 
+
+# Instalación en GNU/Linux
+
+Abrí una terminal (por lo general están en el menú en la categoría "Accesorios") y pega este código:
+
+<pre>
+cd /tmp
+wget https://raw.github.com/b4zz4/Ciboulette/master/ciboulette
+bash ciboulette -u
+</pre>
+
+> La instalación te va a pedir la clave de administrador.
+
+_¡Sí no tenes **GNU/Linux** es momento de que [lo pruebes](http://wiki.hackcoop.com.ar/Como_probar_GNU/Linux)!_
+
+----- 
+
+# ¿Como usarla?
+
+![menú del sistema](../../images/ciboulette_menu.png)
+> Busca el programa en tu menú de inicio
+
+![menú del sistema](../../images/ciboulette_gui.png)
+> Al correr la aplicación podrás publicar, cambiar tu avatar, modificar tu perfil y más
+
+![pantalla de novedades](../../images/ciboulette_novedades.png)
+> En la pagina local de [tu ciboulette](http://localhost:4232) podes ver tus [publicaciones](http://localhost:4232/) y las [novedades](http://localhost:4232/articles/novedades/) de tus amig@s.
+
+## Publicar un artículo <span class="glyphicon glyphicon-pencil"><!-- publicar --></span>
+
+![Menú para publicar](../../images/ciboulette_publicar.png)
+
+> Para editar en Ciboulette se puede usar [markdown](https://es.wikipedia.org/wiki/Markdown), un modo de hacer que nuestros artículos tengan estilo lindos sin la necesidad de usar HTML o editores complejos.
+
+## Chatear con Ciboulette <span class="glyphicon glyphicon-comment"><!-- chat --></span>
+
+Agrega un usuario al prosody,
+
+~~~
+sudo ciboulette adduser $USER
+~~~
+
+Para chatear con usamos el protocolo [XMPP](https://es.wikipedia.org/wiki/Xmpp) soportado por muchos clientes de chat.
+
+![conversación en ciboulette usando Pidgin](../../images/ciboulette_chat.png)
+
+> _Asi se ve el chat y la transferencia de archivos en [Pidgin](https://pidgin.im/)_
+> Siempre hay que usar el complemento <span class="glyphicon glyphicon-lock"><!-- OTR --></span> [OTR](https://otr.cypherpunks.ca/index.php#downloads) (Fuera de grabación) esto asegura qué nuestra conversación no es leída por otras personas. Si no lo tenes instalado `sudo apt-get install pidgin pidgin-otr`
+
+### Configurar el chat
+
+![Configurar el Pidgin](../../images/ciboulette_chat_configurar.png)
+> Hay qué poner en **dominio** la dirección de tu **Ciboulette**, nuestro nombre de **usuario** y la clave qué pusimos durante la instalación.
+
+## Desde la terminal
+
+Este es un método muy simple para usar **Ciboulette** podes acceder a tu terminal desde el menú de inicio, por lo general esta en la sección _Accesorios_.
+
+<pre>cat ~/.ciboulette/hostname</pre>
+
+Es el dirección de tu nodo (pasala a tus amigxs)
+
+
+<pre>ciboulette -n http://3orzmu3bziaoivpg.onion</pre>
+
+Es para agregar a un nodo a tu lector de [novedades](/articles/novedades/)
+
+
+<pre>ciboulette -b http://3orzmu3bziaoivpg.onion</pre>
+Es para quitar un nodo a tu lector de [novedades](/articles/novedades/)
+
+
+<pre>echo "Este es el contenido"  | ciboulette -a "Artículo en la terminal"</pre>
+Publicar un articulo
+
+
+<pre>ciboulette -l</pre>
+
+Listado de amig@s sumados a Ciboulette
+
+
+<pre>ciboulette -u</pre>
+
+Actualiza tu programa a la ultima versión de Ciboluette. _Más ayuda en `ciboulette -h`_
+
+----- 
+
+# Errores frecuentes <span class="glyphicon glyphicon-remove-sign"><!-- error --></span>
+
+* No puedo ver los nodos de otros amig@s en el navegador 
+ * Seguramente TOR no esta resolviendo los DNS, puede ser que tengas una versión vieja de TOR. Ciboulette necesita la versión 0.2.4 en adelante para funcionar perfectamente. Pero podes resolver esto usando [FoxyProxy](http://wiki.hackcoop.com.ar/FoxyProxy#TOR)
+* Agrego amig@s al chat no aparecen
+ * Tu versión de TOR seguramente es anterior a la versión 0.2.4, esto lo podes comprombar con `tor --version`. Si tu versión es anterior tendrias que [actualizar TOR](https://www.torproject.org/docs/debian.html.en)
+* Mi versión de TOR es 0.2.4 o superior, pero no veo a mis amig@s en el chat o en el navegador.
+ * Pone en la terminal `sudo ciboulette opennic` y de ahora en más nuestros DNS los resuelven TOR y [Opennic](http://opennicproject.org), seguramente vas a tener que reiniciar la red para ver los cambios.
+* Luego de instalar **Ciboulette**, TOR dejo de andar.
+ * Hay un backup de tus preferencias originales en `/etc/tor/torrc.backup`, podes recuperarla haciendo `sudo /etc/tor/torrc.backup /etc/tor/torrc` y reinciar el demonio.
+
+----- 
+
+# Ciboulette en internet <span class="glyphicon glyphicon-globe"><!-- globo --></span>
+
+Si alguno de tus amig@s no tiene ciboulette podes pasarle la dirección para acceder desde internet.
+
+Podes usar [tor2web](https://es.wikipedia.org/wiki/.onion#tor2web) para esto existe varios servidores públicos de este servicio.
+
+* [tor2web.org](https://tor2web.org)
+* [onion.to](https://onion.to)
+
+# Ciboulette en [Cyanogem](http://www.cyanogenmod.org/) o Android <span class="glyphicon glyphicon-phone"><!-- dispositivo movil --></span>
+
+Mientras esté prendido y conectado tu nodo de Ciboulette, podés conectarte con tu celular usando [GibberBot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=info.guardianproject.otr.app.im) con [Orbot](https://f-droid.org/repository/browse/?fdfilter=orbot&fdid=org.torproject.android). 
+
+Para las novedades se puede usar [Feedex](https://f-droid.org/repository/browse/?fdfilter=feedex&fdid=net.fred.feedex) tenes qué configurar el proxy en `127.0.0.1` puerto `8118`. Con agregar tu dirección de [RSS de novedades](/novedades.xml) basta :D
+
+Para pasar tu dirección a un celular o tablet podes usar el <span class="glyphicon glyphicon-qrcode"><!-- QR --></span> [QR](/qr.png) y reconocerlo con [Barcode Scanner](https://f-droid.org/repository/browse/?fdfilter=qr&fdid=com.google.zxing.client.android).
+
+_Todas estas aplicaciones están disponibles en [F-droid.org](http://f-droid.org/)_
+
+# Más formas de usar Ciboulette <span class="glyphicon glyphicon-asterisk"><!-- personalizable --></span>
+
+Existen miles de formas de visualizarse Ciboulette, acá van algunos ejemplos:
+
+![Brief](../../images/ciboulette_brief.png)
+
+> [Brief](http://brief.mozdev.org/) un complemento para [Firefox](https://www.mozilla.org/es-ES/firefox/)
+
+![Emacs y Notmuch](../../images/ciboulette_emacs.png)
+
+> [Emacs](https://www.gnu.org/software/emacs/) con [Notmuch](http://notmuchmail.org/) y [Bread](https://github.com/fauno/bread) qué se encarga de convertir los [fuente de novedades](../../novedades.xml) en correos electrónicos qué son enviados con [Sendmail](https://github.com/fauno/sendmail) 
+
+![Liferea](../../images/ciboulette_liferea.png)
+
+> Sumando un contacto en [Liferea](http://lzone.de/liferea/)
+
+Para usar estos programas lo único qué tenemos qué hacer es sumar nuestro [fuente de novedades](../../novedades.xml). Busca tu forma de usar Ciboulette :D
+
+----- 
+
+# Filosofía UNIX
+
+Ciboulette sigue los principios de la **filosofía Unix** en su construcción, el modo en qué se comunican sus nodos y en la integración con el sistema operativo, o sea una red social con filosofía Unix
+
+* **Regla de Modularidad:** Escribe partes simples, conectadas por interfaces simples.
+* **Regla de Claridad:** ser Claro es mejor qué ser ingenioso.
+* **Regla de Composición:** Diseña programas para qué se conecten a otros programas.
+* **Regla de Separación:** Separa las Reglas del funcionamiento; separa los interfaces de los mecanismos.
+* **Regla de Simplicidad:** Diseña para la simplicidad; añade complejidad sólo donde sea estrictamente necesario.
+* **Regla de Parsimonia:** Escribe un programa complejo sólo cuando sea evidente qué no existe otra solución posible.
+* **Regla de Transparencia:** Diseña para la visibilidad, para hacer más fácil la inspección y la corrección de fallos.
+* **Regla de Robustez:** la Robustez es hija de la transparencia y la simplicidad.
+* **Regla de Representación:** Convierte el conocimiento en datos, para qué la lógica de los programas pueda ser estúpida y robusta.
+* **Regla de Mínima Sorpresa:** En diseño de interfaces, haz siempre lo menos sorprendente.
+* **Regla de Silencio:** Cuando un programa no tenga nada sorprendente qué decir, no debería decir nada.
+* **Regla de Reparación:** Cuando tengas qué mostrar un error, falla estridentemente y lo antes posible.
+* **Regla de Economía:** el tiempo del programador es caro; consérvalo sobre el tiempo de la máquina.
+* **Regla de Generación:** Evita hacer cosas a mano; escribe programas qué escriban programas siempre qué puedas.
+* **Regla de Optimización:** Prototipa antes de pulir. Haz qué funcione antes de optimizarlo.
+* **Regla de Diversidad:** Desconfía de todo lo qué diga _"esta es la única forma correcta"_.
+* **Regla de Extensibilidad:** Diseña para el futuro, porque estará aquí antes de lo qué piensas.
+
+----- 
+
+# Receta de Ciboulette
+
+<!-- ## Ingredientes -->
+
+* [Logo](https://openclipart.org/detail/175418/cut-onion-by-mray-175418)	El logo esta basado en esta imágen, para cambiarle el color se uso [Inkscape](http://inkscape.org/)
+* [TOR](https://torproject.org/)						Arma la red libre sobre internet que nos une
+* [Bash](http://tiswww.case.edu/php/chet/bash/bashtop.html)			Lenguaje de programación con el que se mezcla todo
+* [Nanoblogger](http://nanoblogger.sourceforge.net/)				Arma el blog y las paginas
+  * [markdown](ttp://daringfireball.net/projects/markdown/)			Convierte markdown en html
+  * [Tidy](http://tidy.sourceforge.net)						Mejora nuestro html
+* [Rawdog](http://offog.org/code/rawdog/)					Recolecta los datos de tus amig@s
+* [ImageMagick](http://www.imagemagick.org/)					Hace magía con nuestras imágenes
+* [QRencode](http://fukuchi.org/works/qrencode/)				Genera el QR de las URL
+* [Prosody](http://prosody.im/)							Servidor para el chat
+* [Bootstrap](http://getbootstrap.com/)						Estetica de la pagina
+ * [Glyphicons](http://glyphicons.com/)						Glifos
+ * [Simple Smileys](http://simplesmileys.org/)					Caritas
+* [Opennic](http://www.opennicproject.org)					A veces, Opennic nos ayuda a resolver los DNS
+
+<!-- podria poner esto como una receta :P -->
+
+END-----

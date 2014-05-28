@@ -1,0 +1,47 @@
+TITLE: Novedades
+AUTHOR: Ciboulette
+DATE:
+DESC: Novedades de tus amigxs
+FORMAT: html
+-----
+BODY:
+
+	<!-- contenido -->
+	<div class="col-md-12">
+  	    <!-- <div class="alert alert-info" id=beggining>
+                Llegaste al inicio
+            </div> -->
+            <div class="pages">
+                __paged_output_pages__
+            </div>
+            <div id="items">
+                __items__
+            </div>
+            <div class="pages">
+                __paged_output_pages__
+            </div>
+	    	<a id="toTopButton" href="#" class="btn btn-default btn-lg pull-right">
+			<span class="glyphicon glyphicon-chevron-up"><!-- ^ --></span>
+		</a>
+	</div>
+	<style>
+	        .label a, .label a:hover, .label a:link, .label:visited {
+	                text-decoration: none;
+	                color: #fff;
+	        }
+	        /* luego mover al tema general */
+	</style>
+
+	<!-- menu 
+	<div class="col-lg-1">
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu3">
+			<li role="presentation"><a onclick="toggleall('block')"><span class="glyphicon glyphicon-eye-open"></span>Ver todos</a></li> 
+			<li role="presentation"><a onclick="toggleall('none')"><span class="glyphicon glyphicon-eye-close"></span>Ocultar todos</a></li>
+			<li role="presentation"><a onclick="markAllRead()"><span class="glyphicon glyphicon-ok"></span>Marcar como leidos</a></li>
+			<li role="presentation"><a id="navNext" onclick="nextPrev('next')"><span class="glyphicon glyphicon-up"></span> Próximo</a></li>
+			<li role="presentation"><a id="navPrev"onclick="nextPrev('previous')"><span class="glyphicon glyphicon-down"></span> Próximo</a></li>
+			<li role="presentation"><a id="markStatus" onclick="nextPrev('previous')"><span class="glyphicon glyphicon-flash"></span> Próximo sin leer</a></li>
+		</ul>
+	</div>
+	-->
+END-----

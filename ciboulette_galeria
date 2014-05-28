@@ -1,0 +1,70 @@
+#!/bin/bash
+#
+#	galeria de imagenes para nanoblogger
+#
+#
+
+MINI=128x128
+MEDIA=800x800
+TITULO="basename $(pwd)"
+
+while getopts "ht:s:S:" FLAG; do
+        case "$FLAG"
+                in
+                        h)	exit 0;;
+                        t)      TITULO=$OPTARG;;
+                        s)      MINI=${OPTARG}x${OPTARG};;
+                        S)      MEDIA=${OPTARG}x${OPTARG};;
+                esac
+done
+
+ID=$(echo $TITULO | tr "[A-Z]" "[a-z]" | sed 'y/áéíóúñ/aeioun/; s/\ /_/g; s/[^a-z0-9_]//g')
+export GALERIA="$HOME/.ciboulette/www/galeria/$ID"
+mkdir -p $GALERIA/mini #2> /dev/null
+
+TMP=$(mktemp -d)
+
+# 1. convertir todas las imagenes a 800px y 128x128 (cortadas)
+# 2. hacer enlaces de las imagenes de 128 a 800 en markdown
+
+cat <<EOF >> "$TMP/$ID.txt"
+TITLE: $TITULO
+AUTHOR: $AUTOR
+DATE:
+DESC: $DESCRIPCION
+FORMAT: raw
+-----
+BODY:
+EOF
+
+# imagenes, pdf, videos, etc
+ls | grep -i "\(jp*g\|png\|pdf\)$" | while read ARCHIVO; do
+
+	# deberia no tener codigos raros
+	NOMBRE="${ARCHIVO%.[^.]*}"
+
+	# si no existen crea las miniaturas y el archivo a tamaño
+	MINIA="$GALERIA/mini/$NOMBRE.gif"
+	[[ ! -f "$MINIA" ]] && convert "$ARCHIVO" -resize $MINI^ -contrast -gravity center -extent $MINI "$MINIA"
+
+	AMEDIA="$GALERIA/$NOMBRE.jpg"
+	[[ ! -f "$AMEDIA" ]] && convert "$ARCHIVO" -resize $MEDIA -quality 65 "$AMEDIA"
+
+	TITULO=`identify -format %t $ARCHIVO || echo "$NOMBRE"`
+	DESCRIPCION=`identify -format %c $ARCHIVO`
+cat <<EOF >> "$TMP/$ID.txt"
+<a href="../../galeria/$ID/$NOMBRE.jpg" class="fancybox" rel="gallery" title="$TITLE" >
+	<img src="../../galeria/$ID/mini/$NOMBRE.gif" class="thumb" title="$TITULO" alt="$DESCRIPCION" />
+</a>
+EOF
+	echo $TITULO
+	echo $DESCRIPCION
+done
+
+cat <<EOF >> "$TMP/$ID.txt"
+END-----
+
+EOF
+
+mv $TMP/$ID.txt ~/.ciboulette/blog/articles/
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="$BLOG_MIMETYPE; charset=$BLOG_CHARSET">
+	<meta name="description" content="$BLOG_DESCRIPTION">
+	<meta name="author" content="$BLOG_AUTHOR">
+	<link rel="shortcut icon" href="${BASE_URL}$BLOG_ICON">
+	<title>${BLOG_TITLE}</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="${BASE_URL}dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link href="${BASE_URL}$BLOG_CSS" rel="stylesheet">
+    
+	${NB_AtomAltLink}
+	${NB_RSS2AltLink}
+	${NB_RSSAltLink}
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" title="Nodos amigos de ${BLOG_TITLE}" href="${BASE_URL}novedades.xml">
+	<!-- Just for debugging purposes. Don't actually copy this line! -->
+	<!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<ul class="nav nav-pills pull-right">
+				<li><a href="${BASE_URL}$NB_INDEX"><span class="glyphicon glyphicon-home"><!-- ${template_main} --></span></a></li>
+				<li><a href="${BASE_URL}articles/novedades/">Novedades</a></li>
+				<li><a href="${BASE_URL}archives/cat_1/">Eventos</a></li>
+				<li><a href="${BASE_URL}articles/perfil/">Perfil</a></li>
+				<li><a href="${BASE_URL}articles/ayuda/">Ayuda</a></li>
+			</ul>
+			<h3 class="text-muted"><img src="${BASE_URL}images/logo.png" /> Ciboulette</h3>
+	</div>

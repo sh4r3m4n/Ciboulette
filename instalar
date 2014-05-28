@@ -1,0 +1,116 @@
+#!/bin/bash
+#
+#	instalacion para Mint, Ubuntu, Debian y similares
+#
+#	Que hacer:
+#		- instala dependencias
+#		- conecta a la VPN de tor
+#		- resolucion de DNS por tor
+#		- activa tus servicios ocultos a tor para ciboulette
+#		- agrega la regla de iptable para hacer que tor resuelva los .onion
+#
+
+BACKUP=".ciboulette.backup"
+
+# -------------------- ser root -----------------------
+
+[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0" && exit
+
+# -------------------- backup del servicio oculto -----------------------
+
+tar -cf /var/lib/tor/ciboulette /tmp/ciboulette-backup.tar 2> /dev/null
+
+# -------------------- dependencias -----------------------
+
+# verifica el sistema operativo (no sirve para nada)
+[ "$(which yum)" ] && aptitude="yum -y install"
+[ "$(which yaourt)" ] && aptitude="yaourt -S"
+[ "$(which apt-get)" ] && aptitude="apt-get -y install"
+
+DEPENENCIAS="mini-httpd tor torsocks prosody nanoblogger rawdog tidy markdown python2-feedparser qrencode imagemagick zenity libnotify-bin"
+
+echo "$DEPENENCIAS" | sed 's/\ /\n/g' | while read i; do
+	[ ! "$(which $i)" ] && $aptitude $i
+done
+
+# -------------------- dependencias -----------------------
+
+# agrega la configuracion a dhcp y dhcpX
+for N in /etc/dhcp*/dhclient.conf /etc/dhclient.conf; do
+	if [ ! -f "$N" ]; then
+		grep '#ciboulette' $N || cp $N $N$BACKUP
+		sed -e "s/^prepend\ domain-name-servers.*$/#&\nprepend domain-name-servers 127.0.0.1,37.235.52.191,69.164.196.21,208.115.243.35,208.115.243.38; #ciboulette/" -i $N
+		# falta el si no existe la linea la agrega
+		#echo "request subnet-mask, broadcast-address, time-offset, routers,
+	        #domain-name, domain-name-servers, domain-search, host-name,
+	        #dhcp6.name-servers, dhcp6.domain-search,
+	        #netbios-name-servers, netbios-scope, interface-mtu,
+		#rfc3442-classless-static-routes, ntp-servers;" >> $N
+	fi
+done
+
+# Agregar la linea solo si no existe
+[ -f /etc/resolv.conf.head ] && grep '#ciboulette' /etc/resolv.conf.head || cp /etc/resolv.conf.head /etc/resolv.conf.head$BACKUP && echo "nameserver 127.0.0.1 #ciboulette" >> /etc/resolv.conf.head
+
+# -------------------- tor -----------------------
+
+# hace un backup antes de instalar ciboulette
+[ ! "$(grep '#ciboulette' /etc/tor/torrc)" ] && cp /etc/tor/torrc /etc/tor/torrc$BACKUP
+
+# configuracion de tor sin ciboulette
+cat /etc/tor/torrc | grep -v "\(^DNSPort\|^VirtualAddrNetwork\|^AutomapHostsOnResolve\|^TransPort\|#ciboulette\)" > /tmp/torrc
+
+# nueva configuracion
+echo "VirtualAddrNetwork 10.192.0.0/10 #ciboulette
+AutomapHostsOnResolve 1 #ciboulette
+TransPort 9040 #ciboulette
+DNSPort 53 #ciboulette" >> /tmp/torrc
+
+mkdir -p /var/lib/tor/ciboulette/
+
+# incio del servicio oculto
+echo "HiddenServiceDir /var/lib/tor/ciboulette/ #ciboulette
+HiddenServicePort 80 127.0.0.1:4232   #ciboulette
+HiddenServicePort 5222 127.0.0.1:5222 #ciboulette
+HiddenServicePort 5269 127.0.0.1:5269 #ciboulette" >> /tmp/torrc
+
+# copia la configuracion de tor
+cat /tmp/torrc > /etc/tor/torrc
+
+# reincia tor
+service tor restart 2> /dev/null
+
+sleep 10
+
+# -------------------- restaura el ciboulette de cibuolette -----------------------
+
+# recupera el backup del servicio oculto
+tar -xf /tmp/ciboulette-backup.tar --directory /var/lib/tor/ciboulette/ 2> /dev/null
+
+# nombre de tu nodo
+cat "/var/lib/tor/ciboulette/hostname" > /tmp/hostname
+
+# -------------------- configuraciones -----------------------
+
+# redirecciona los DNS a Tor
+
+grep '#ciboulette' /tmp/rc.local || cp /tmp/rc.local /tmp/rc.local$BACKUP
+grep -v "\(ciboulette\|^exit\ 0$\)" /etc/rc.local > /tmp/rc.local
+echo "/usr/local/bin/ciboulette iptables" >> /tmp/rc.local
+echo "exit 0" >> /tmp/rc.local
+cat  /tmp/rc.local > /etc/rc.local
+
+# ------------------- instalacion de ciboulette ---------------------------
+
+# instala ciboulette
+
+cp ciboulette /usr/local/bin/ 2> /dev/null
+cp ciboulette.png /usr/share/pixmaps/ 2> /dev/null
+cp ciboulette.desktop /usr/share/applications/ 2> /dev/null
+
+# parche para versiones de nanoblogger 3.4.2
+
+cp -r lang /usr/share/nanoblogger/ 2> /dev/null
+cp plugins/markdown.sh /usr/share/nanoblogger/plugins/page/format/markdown.sh
+cp plugins/markdown.sh /usr/share/nanoblogger/plugins/entry/format/markdown.sh
+

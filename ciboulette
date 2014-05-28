@@ -1,9 +1,82 @@
 #!/bin/bash
 #
 #	Ciboulette una red social 100% libre, descentralizada y entre pares
-#	version 0.2
-#	AGPLv3+ © bazza
+#	version 0.3.7 - ailen
+#	AGPLv3+ | Licencias de Pares | Creative Commons Atribución-CompartirIgual 3.0 © Ernesto Bazzano (bazza)
 #
+
+# eso se usa para correrlo en rc.local
+if [ "$1" == "iptables" ]; then
+	[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0" && exit
+	# torifica los DNS (en lo posible)
+	iptables -t nat -A OUTPUT -p tcp -d 10.192.0.0/10 -j REDIRECT --to-ports 9040
+	exit
+fi
+
+if [ "$1" == "adduser" ]; then
+	[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0 $1 $2 $3" && exit
+	[ ! "$2" ] && echo "Necesita un sobrenombre como parametro, ejemplo: sudo $0 $1 sobrenombre clave" && exit
+	[ ! "$(which prosody)" ] && echo "Tiene que estar instalado prosody, ejemplo: sudo aptitude install prosody" && exit
+
+	# ------------------- prosody ---------------------------
+	# toma el usuario
+
+	HOST=$(cat /var/lib/tor/ciboulette/hostname)
+
+	[ ! "$HOST" ] && echo 'Error. No se pudo generar la dirección .onion, tal vez tu `/etc/tor/torrc` no este configurado correctamente. Modificar y volver a correr la instalación.' && exit
+
+	# generar una nueva instalación con un certificado copado
+
+	VIRTUAL="Host"
+	if [ ! -f "/etc/prosody/certs/$HOST.key" ]; then
+		if [ "$(prosodyctl | grep cert )" ]; then
+			prosodyctl cert generate $HOST && VIRTUAL="VirtualHost"
+		else
+			echo -e "AU\n\n\n\n\n\n\n" | \
+			openssl req -new -x509 -days 365 -nodes -out "/etc/prosody/certs/$HOST.crt" -newkey rsa:4096 \
+			-keyout "/etc/prosody/certs/$HOST.key"
+		fi
+	fi
+
+	# guarda el certificado asi no tenemos que aceptarlo mas :D
+
+	cp /etc/prosody/certs/$HOST.crt /etc/ssl/certs/ 2> /dev/null
+
+	# graba el nuevo host de prosody
+	echo "$VIRTUAL \"$HOST\"
+	ssl = {
+	  key = \"/etc/prosody/certs/$HOST.key\";
+	  certificate = \"/etc/prosody/certs/$HOST.crt\";
+	}" > /etc/prosody/conf.avail/$HOST.cfg.lua
+	cp /etc/prosody/conf.avail/$HOST.cfg.lua /etc/prosody/conf.d/$HOST.cfg.lua 2> /dev/null
+
+	# reinicie el servidor de prosody
+
+	prosodyctl stop 2> /dev/null
+	prosodyctl start 2> /dev/null
+
+	USUARIO=$2
+	CLAVE=$3
+	XMPP="${USUARIO}@${HOST}"
+	echo -e "$CLAVE\n$CLAVE\n" | prosodyctl adduser $XMPP $CLAVE 2> /dev/null
+	echo "tu cuenta de XMPP ya fue creada $XMPP"
+	exit
+fi
+
+export NOMBRE="ciboulette"
+export CARPETA=~/.${NOMBRE}/
+export BLOG="${CARPETA}blog"
+export COMPARTIR="${CARPETA}compartir"
+export NOVEDADES="${CARPETA}novedades"
+export WWW="${CARPETA}www"
+# programas
+export NB="nb -b $BLOG --template-dir $BLOG/templates"
+export RAWDOG="torify rawdog -d $NOVEDADES"
+# descarga con un limite de 500k por archivo
+[ "$(which wget)" ] && export WGET="torify wget --quota 500k -qO -" || export WGET="torify curl --max-filesize 500000 "
+
+# Renueva la llave gpg en el sitio
+# ln -s ~/.pgpkey "$WWW/gpg.asc" &> /dev/null
 
 #---------------------- funciones graficas -----------------
 function opciones {
@@ -23,9 +96,8 @@ function opciones {
 		N=$(($N+1))
 	done
 	# genera el menu
-	eval "zenity --title \"$TITULO\" --text \"$MENSAJE\" --list --height=250 --column \"\" --column \"\" --hide-column 1  --hide-header $C"
+	eval "zenity --title \"$TITULO\" --window-icon /usr/share/pixmaps/$NOMBRE.png --text \"$MENSAJE\" --list --height=350 --column \"\" --column \"\" --hide-column 1  --hide-header $C"
 }
-
 function error {
 	zenity --error --text="$*"
 }
@@ -39,7 +111,7 @@ function url {
 	zenity --title "URL" --text "Dirección" --entry --entry-text="$*"
 }
 function titulo {
-	zenity --title "Titulo" --text "¿Sobre que vas a hablar?" --entry --entry-text="$*"
+	zenity --title "Titulo" --text "$*" --entry
 }
 function archivo {
 	zenity --title "Elije el archivo" --file-selection
@@ -62,72 +134,128 @@ function mostrar {
 	echo "$MENSAJE" | xsel -i
 }
 function progreso {
-	pid=`mktemp`
+	pid=`mktemp -t ${NOMBRE}XXXX`
 	zenity --progress --pulsate --auto-close --title "Espere por favor..." --text="$*" & echo $! > $pid
 	cat /dev/stdin
 	kill `cat $pid`
 }
 function blogear {
-	cd ~/.ciboulette/
-	chronicle --config ~/.ciboulette/config
-	cp index.rss index.html
+	# nanoblogger construye el blog
+	$NB update all
 }
 
 function servidor_inicio {
 	# inicia el servidor
-	rm -f /tmp/ciboulette.pid
-	# Si corremos arch
-	[ "$(uname -r | grep ARCH)" ] && SERVER=/usr/bin/mini_httpd || SERVER=/usr/sbin/mini-httpd
-	$SERVER -i /tmp/ciboulette.pid -p 4232 -d ~/.ciboulette -T "UTF8" -c ~/.ciboulette/cgi-bin/
+	servidor_matar
+	/usr/sbin/mini-httpd -i /tmp/$NOMBRE.pid -p 4232 -d "$WWW" -T "UTF8" -c "cgi-bin/*" 2> /dev/null
 }
+
 function servidor_matar {
 	# matar el servidor
-	[ -f /tmp/ciboulette.pid ] && kill "$(cat /tmp/ciboulette.pid)" 2> /dev/null
+	[ -f /tmp/$NOMBRE.pid ] && kill "$(cat /tmp/$NOMBRE.pid)" 2> /dev/null
 }
 
 function nodo_agregar {
-	URL=`cat /dev/stdin`
-	torify rawdog -d ~/.ciboulette/novedades/ -a "$URL" 2> /dev/null
+	# aca se manda cualquiera
+	cat /dev/stdin | sed 's/\ /\n/g' | while read URL; do
+		# falta poner que si no tiene http:// lo agrege
+		URL=$(echo $URL | sed 's/\/$//g')
+		[ "$(echo $URL | grep -v "^http")" ] && URL="http://$URL"
+		# falta comprobar que no se repita
+		echo "feed 3h $URL" >> ${NOVEDADES}/config
+	done
+	# luego de agregarla actualiza novedades
+	nodos_actualizar
+	avatares_actualizar
 }
 function nodo_borrar {
-	URL=`cat /dev/stdin`
-	torify rawdog -d ~/.ciboulette/novedades/ -r "$URL" 2> /dev/null
+	cat /dev/stdin | sed 's/\ /\n/g' | while read URL; do
+		$RAWDOG -r "$URL" 2> /dev/null
+	done
 }
 function nodos_lista {
-	torify rawdog -d ~/.ciboulette/novedades/ -l 2> /dev/null
+	$RAWDOG -l 2> /dev/null
 }
 function nodos_actualizar {
-	torify rawdog -d ~/.ciboulette/novedades/ -wu 2> /dev/null
+	N=$($RAWDOG -uw 2> /dev/null | cut -d " " -f1) 2> /dev/null
+	$NB update articles # Este deberia ser en particular el articulo de novedades
+	export DISPLAY=:0
+	[ ! "$N" == "0" ] && \
+	notify-send -t -1 "Ciboulette" "<a href=\"http://localhost:4232/novedades\">$ID</a>$N mensajes</a>" \
+	-i "${BLOG}/images/logo.png"
+}
+function avatar {
+	# favicon
+	convert "$@" -strip -resize 16x16 ${CARPETA}favicon.ico
+	# Genera el avatar, le guarda el hostname y la gpg
+	# metadata
+	convert "$@" -strip -resize 128x128 -set url "$(cat ${CARPETA}hostname)" \
+	-set llave "$LLAVE" ${CARPETA}avatar.png
+	# se pueden sumar muchos mas datos
+	# qrencode "$(cat ${CARPETA}hostname)" -o ${CARPETA}qr.png
+}
+function avatares_actualizar {
+	# 1. actualizar avatare
+	#  1.1 si no tiene avatar buscar <image>, favicon.ico, primera imagen encontrada
+	# 2. que no superen cierta cantidad de bits o tiempo
+	# 3. convertirlos a png de 128px y grabarlos con el [hash de tu feed](http://offog.org/git/rawdog/config)
+	# Nota: para que no tarde mucho habria que poner procesos en paralelo
+	URLHASHS=$(echo $(ciboulette -l | grep "^htt\|..Hash:\ ") | sed 's/http/\nhttp/g; s/..Hash:\ \(.*\)$/ \1/g'| grep -v "^$")
+		echo "$URLHASHS" | while read URLHASH; do
+		URL=$(echo $URLHASH | sed 's/\ .*$//g')
+		BASEURL=$(echo $URL | cut -d "/" -f 3 )
+		HASH=$(echo $URLHASH | sed 's/^.*\ //g')
+		echo "Descargando avatar de $URL $BASEURL $HASH"
+		# Descargas en avatares
+		([ "$(echo URL | grep "\.onion")" ] && $WGET "http://${BASEURL}/favicon.{ico,png}" 2> /dev/null || $WGET "${URL}/avatar.png" 2> /dev/null ) \
+		| convert -'[128x128]' "${WWW}/avatares/${HASH}.png" 2> /dev/null
+		# falta leer el header y ver los avatares
+
+		# Si no puede conseguir el avatar lo genera con QR
+		[ ! -f "${WWW}/avatares/${HASH}.png" ] && echo "$URL" | qrencode -o - | convert -  -fill purple -opaque black -transparent white "${WWW}/avatares/${HASH}.png" 2> /dev/null
+	done
 }
 
-
-while getopts a:b:n:skdlhiuw OPCION; do
+while getopts a:b:n:skdlhiIuwz OPCION; do
 	case $OPCION in
-               a)
-			echo "Publicando articulo"
-			TITULO=${OPTARG}
-			TEXTO=`cat /dev/stdin`
-			echo -e "Title: $TITULO\n\n$TEXTO" > ~/.ciboulette/md/$(echo $TITULO |sed 's/\ /_/g;s/[^a-zA-Z0-9_]//g').md
-			blogear
-			exit
-                ;;
-                w) blogear; exit
-                ;;
-                n) echo ${OPTARG} | nodo_agregar; exit
-                ;;
-                b) echo ${OPTARG} | nodo_borrar; exit
-                ;;
-                l) nodos_lista; exit
-                ;;
-                d) nodos_actualizar; exit
-                ;;
-                s) servidor_matar
-		   servidor_inicio
-		 exit
-                ;;
-                k)
-			servidor_matar; exit
-                ;;
+        z)
+		avatares_actualizar
+	;;
+        g)
+		avatar $@
+	;;
+        a)
+		echo "Escriba el articulo y presione ctrl+D. Para generar otro parrafo use doble enter"
+		TITULO="`echo $@ | sed 's/^-a\ //g'`"
+		ARTICULO="`cat /dev/stdin`"
+		echo "Publicando articulo"
+		TMP=$(mktemp -t ${NOMBRE}XXXX)
+		$NB --title "$TITULO" --text "$ARTICULO" make-file $TMP/articulo.txt
+		$NB import entry $TMP/articulo.txt
+
+        ;;
+	w)
+		blogear
+        ;;
+        n)
+		echo $@ | nodo_agregar
+        ;;
+        b)
+		echo $@ | nodo_borrar
+        ;;
+        l)
+		nodos_lista
+        ;;
+        d)
+		nodos_actualizar
+        ;;
+        s)
+		servidor_matar
+		servidor_inicio
+        ;;
+        k)
+		servidor_matar
+        ;;
 	u)
 		NOMBRE=`basename $0`
         	AUTOR="b4zz4"
@@ -141,102 +269,118 @@ while getopts a:b:n:skdlhiuw OPCION; do
 		cd $REPO-$ZIP/
 		chmod +x $NOMBRE
 		./$NOMBRE -i && echo "actualizado"
-		exit
 	;;
 	h)
-		echo "$(basename $0) $(cat ~/.ciboulette/hostname)"
+		echo "$(basename $0) $(cat ${CARPETA}hostname)"
 		echo
-		echo "  -h | esta ayuda"
-		echo "  -i | instalación"
-		echo "  -w | actualizar tu ciboulette"
-		echo "  -s | iniciar el servidor"
-		echo "  -k | matar el servidor"
-		echo "  -a [titulo texto] | agregar articulo"
-		echo "  -n [url del nodo] | agregar nodo"
-		echo "  -d | actualizar noticias"
-		echo "  -b [url del nodo] | borrar nodo"
-		echo "  -l | lisa de nodos "
-		echo "  -u Actualizar la aplicación"
-		exit
+		echo "  -h  esta ayuda"
+		echo "  -s  iniciar el servidor"
+		echo "  -k  matar el servidor"
+		echo "  -u  actualizar el programa"
+		echo
+		echo "  -a \"Titulo de tu articulo\"		agregar articulo"
+		echo "  -n http://nodociboulette.onion	agregar un nodo amigo"
+		echo "  -b http://nodociboulette.onion	borrar un nodo"
+		echo "  -l lisa de nodos amigos"
+		echo "  -d actualizar noticias de otros nodos"
+		echo "  -w forzar a actualizar tus noticias"
+		echo "  -g /home/usuario/imagen.png		actualiza tu avatare "
+		echo "  -z actualiza los avatares de los nodos"
+		echo
+		echo " adduser sobrenombre	agrega una cuenta de XMPP"
+		echo " iptables		resuelve los onion por tor"
+
+		echo
 	;;
 	i)
-		NOMBRE=`basename $0`
-		echo -e "[Desktop Entry]\nName=$NOMBRE\nDescription=Red Social 100% Libre\nIcon=help-faq\nType=Application\nExec=$NOMBRE\nCategories=GTK;Utility;" > /tmp/$NOMBRE.desktop
-		# dependencias
-		TMP=$(mktemp)
-
-		# verifica el sistema operativo
-		if [ "$(which yum)" ]; then
-			aptitude="yum -y install"
-		elif [ "$(which pacman)" ]; then
-			aptitude="yaourt -S"
-		else
-			aptitude="apt-get -y install"
-		fi
-		if [ "$(which gksu)" ]; then
-			gksu="gksu"
-		else
-			gksu="su -c"
-		fi
+		# deshabilita este comando una vez que esta instalado
+		[ "$(readlink -f $0 | grep ^/usr/)" ] && exit
+		# no debe correrse como root
+		[ "$(id -u)" == "0" ] && echo "No correr esto como root" && exit
+		# comprueba que tengas sudo
+		[ ! "$(which sudo)" ] && echo 'Necesitas instalar el comando `sudo` por lo general para instalarlo en `apt-get install sudo`, lo siento :(' && exit
 
 		# Crea el directorio local y temas
+		mkdir -p $CARPETA
 
-		mkdir -p ~/.$NOMBRE/md 2> /dev/null
-		cp -r config ~/.$NOMBRE/
-		cp -r favicon.ico ~/.$NOMBRE/
-		FEED="$(cat ~/.$NOMBRE/novedades/config | grep "^feed ")"
-		cp -r novedades ~/.$NOMBRE/
-		echo "$FEED" >> ~/.$NOMBRE/novedades/config
+		echo "Escribi tu clave de administración para instalar Ciboulette"
+		sudo ./instalar || echo "error en la clave"
 
-                # comprueba si esta instalando o actualizando
-                if [ ! "$(cat ~/.ciboulette/hostname)" ]; then
-                        # agrega tu nombre de usuario por defecto
-                        echo "blog_title = `whoami`" >> ~/.$NOMBRE/config
-                fi
+		# direccion de tu ciboulette
+		echo "http://$(cat /tmp/hostname)" > ${CARPETA}hostname
 
-		echo "output = $HOME/.$NOMBRE" >> ~/.$NOMBRE/config
-		echo "input = $HOME/.$NOMBRE/md" >> ~/.$NOMBRE/config
+		./ciboulette -I
 
-		touch ~/.$NOMBRE/hostname
+		;;
+	I)
+
+		# backups de tus amigxs
+		[ -f "$NOVEDADES/config" ] && FEED="$(cat $NOVEDADES/config | grep "^feed ")"
+
+		# pide permiso
+		PWD=$(pwd)
+
+		# nombre del programa
+		NOMBRE=`basename $0`
 
 
-		# en Mint, Debian, Fedora (?)
-		PACKAGES="mini-httpd tor torsocks zenity chronicle rawdog libtext-markdown-perl"
+		# ----------------------------- INSTALACION ----------------------------------
 
-		# en Arch
-	        if [ "$(uname -r | grep ARCH)" ]; then
-			PACKAGES="mini_httpd tor torsocks zenity chronichle rawdog perl-text-markdown python2-feedparser"
-	        fi
+		# Crea el directorio local y temas
+		mkdir -p $CARPETA
+		cp -r base/* "$CARPETA"
 
-		echo "$aptitude $PACKAGES
-		echo 'HiddenServiceDir /var/lib/tor/${NOMBRE}/' >> /etc/tor/torrc
-		echo 'HiddenServicePort 80 127.0.0.1:4232' >> /etc/tor/torrc
-		cp $NOMBRE /usr/local/bin/
-		systemctl restart tor
-		/etc/init.d/tor restart
-		cp /tmp/$NOMBRE.desktop /usr/share/applications/$NOMBRE.desktop
-		sleep 10
-		cat "/var/lib/tor/${NOMBRE}/hostname" > /tmp/hostname" > $TMP
+		if [ "$XDG_PUBLICSHARE_DIR" ]; then
+			ls -s "$XDG_PUBLICSHARE_DIR" "$COMPARTIR"
+			echo "Compartiendo la carpeta $XDG_PUBLICSHARE_DIR"
+		else
+			# crea la carpeta compartir si esta no se puede asociar a la del sistema
+			mkdir $COMPARTIR &> /dev/null
+		fi
 
-	        echo "Se necesita autenticación como superusuario para instalar los paquetes. Debe proporcionar la contraseña de root"
-		$gksu "bash $TMP"
-		rm $TMP
+		# si no existe la configuración
+		if [ ! -f "~/.nb.conf" ]; then
+			# agrega el idioma
+			echo "NB_LANG="$(echo $LANG | cut -d'_' -f1)"" > ~/.nb.conf
+		fi
 
-		mkdir ~/.config/autostart/ 2> /dev/null
- 		echo -e "[Desktop Entry]\nName=$NOMBRE\nDescription=Red Social 100% Libre\nIcon=help-faq\nType=Application\nExec=$NOMBRE -s\nCategories=GTK;Utility;" > ~/.config/autostart/$NOMBRE.desktop
+		echo "$FEED" >> "$NOVEDADES/config"
 
-		echo "http://$(cat /tmp/hostname)" > ~/.$NOMBRE/hostname
 
-		echo
-		echo "Tu dirección de Ciboulette es $(cat ~/.${NOMBRE}/hostname)"
+		# incio en cada sesion
+		mkdir ~/.config/autostart/ &> /dev/null
+		cp ${NOMBRE}-s.desktop  ~/.config/autostart/
+
+		# solo para esta version
+		[ -d "${CARPETA}md" ] && sh chronicle2nanoblogger
+
+		# la idea de esto es compartir archivos
+		# mkdir ~/Ciboulette
+		# cd ~/Ciboulette
+		# ln -s "$BLOG/data/" Blog/
+		# ln -s "$COMPARTIR/" Compartir/
+		# ln -s "$NOVEDADES/" Novedades/
+
+		# genera el QR de tu ciboulette
+		qrencode "`cat ${CARPETA}hostname`" -o ${CARPETA}qr.png
+		# si no tiene avatar agrega uno
+		[ ! -f "${CARPETA}/avatar.png" ] && ciboulette -d ciboulette.png
+
 		# inicia el servidor
 		$NOMBRE -s &
-		$NOMBRE -w
-		$NOMBRE -d
-		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d # Ciboulette';) | crontab -
-		exit
-		;;
+		echo "Iniciando los archivos de ciboulette, espere por favor..."
+		# actualiza las novedades
+		$NOMBRE -d &> /dev/null
+		# actualiza las paginas
+		$NB update articles
+		$NB update main
+		# verifique si tenes articulos y actualice todo
+		(crontab -l | grep -v "# Ciboulette"; echo '*/5  * * * * /usr/local/bin/ciboulette -d &>/dev/null # Ciboulette';) | crontab -
+		$NOMBRE -h
+		xdg-open http://localhost:4232/articles/ayuda &
+	;;
 	esac
+	exit
 done
 
 
@@ -244,39 +388,63 @@ done
 # -------------------------- Wizard ----------------------------------
 
 # ¿Que queres hacer?
-MENU=`echo  "Publicar_un_articulo Avatar Perfil Leer_novedades Agrega_nodo_amigo Iniciar_Ciboulette Matar_Ciboulette" | opciones -t "Ciboulette" -m "¿Que queres hacer? - $(cat ~/.ciboulette/hostname)"`
+MENU=`echo  "Publicar_un_articulo Cambiar_tu_avatar Modificar_tu_plan Editar_tu_perfil Leer_novedades Agrega_un_nodo_amigo Quitar_un_nodo Configura_el_chat Iniciar_Ciboulette Matar_Ciboulette Actualizar_el_programa" | opciones -t "Ciboulette" -m "Tu nodo: $(cat ${CARPETA}hostname)"`
 case $MENU in
 		0 )
 			# Publicar articulo
-			TITULO="$(titulo)"
-			mensaje | ciboulette -a "$TITULO"
-			xdg-open "http://127.0.0.1:4232"
+			TITULO="$(titulo "Titulo de tu artículo" || exit)"
+			mensaje | ciboulette -a "$TITULO" || exit
 		;;
 		1 )
 			# Imagen del perfil
-			ARCHIVO=$(archivo "Imagen del perfil")
-			convert "$ARCHIVO" -resize 16x16 ~/.ciboulette/favicon.ico
-			convert "$ARCHIVO" -resize 128x128 ~/.ciboulette/avatar.png
+			$NOMBRE -g "$(archivo "Imagen del perfil")"
+			# generar respuesta
+			echo "avatar actualizado" | alerta
 		;;
 		2)
-			# Configuración del perfil
-			xdg-open ~/.ciboulette/config
+			titulo "¿Cual es tu plan?" > ~/.plan
+			echo "plan actualizado" | alerta
+			$NOMBRE -d
+			$NOMBRE -w
 		;;
 		3)
-			# Novedades
-			xdg-open "http://127.0.0.1:4232/novedades/"
+			# Configuración del perfil
+			xdg-open "${BLOG}/articles/perfil.txt"
+			blogear # deberia solo actualizar la pagina de perfil
 		;;
 		4)
-			# Agregar nodo
-			URL=$(url)
-			ciboulette -n "$URL"
+			# Novedades
+			xdg-open "http://localhost:4232/articles/novedades/"
 		;;
 		5)
-			# Inicia al servidor
-			ciboulette -s
+			# Agregar nodo
+			$NOMBRE -n $(url)
 		;;
 		6)
+			# necesita una automatización para el zenity
+			$NOMBRE -b $(ciboulette -l | grep "\(Title\|Link\)" \
+			| sed 's/^.*:\ //g' \
+			| zenity --list --column "Nodo" --column "URL" --hide-header \
+			--multiple --print-column 2 --title "Elija los nodos a borrar" --separator " ")
+		;;
+		7)
+			USUARIO=$(echo $USER | titulo "nombre para tu chat, ejemplo: $USER" \
+			| sed 'y/A-Z/a-z/; s/\ /_/g; s/ñ/n/g; s/-/_/g; s/[^a-z0-9_]//g')
+			[ "$USUARIO" == "" ] && exit
+			CLAVE=$(clave "clave para iniciar el chat")
+			[ "$CLAVE" == "" ] && exit
+			gksu $NOMBRE adduser "$USUARIO" "$CLAVE" | zenity --text-info
+		;;
+		8)
+			# Inicia al servidor
+			$NOMBRE -s
+		;;
+		9)
 			# Mata el servidor
-			ciboulette -k
+			$NOMBRE -k
+		;;
+		10)
+			# Mata el servidor
+			$NOMBRE -u
 		;;
 esac

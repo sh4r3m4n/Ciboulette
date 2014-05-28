@@ -1,0 +1,18 @@
+<!-- category_index -->
+	<div class="jumbotron">
+		<!-- falta el avatar del usuario -->
+		<img src="${BASE_URL}avatar.png" class="pull-left" />
+		<h1><a href="${BASE_URL}articles/perfil" accesskey="1">${BLOG_TITLE}</a></h1>
+		<!-- esto no deberia estar si no hay BLOG_TITLE -->
+		<p class="lead">${BLOG_DESCRIPTION}</p>
+		<!-- falta el metodo para postear si esta en localhost -->
+	</div>
+	<div class="row marketing">
+		<div class="col-md-12">
+			<h2>$template_catarchives <span class="glyphicon glyphicon-tags"></span>$NB_ArchiveTitle</h2>
+			<ol class="breadcrumb">
+				<li><a href="${BASE_URL}$ARCHIVES_DIR/$NB_INDEX">$template_archives</a></li>
+			</ol>
+			<!-- $NB_ArchiveTitle -->
+			<!-- muestra todos los articulos de una categoria -->
+	</div>

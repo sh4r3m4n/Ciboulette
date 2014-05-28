@@ -1,0 +1,52 @@
+plugindirs plugins
+splitstate false
+
+maxarticles 0
+maxage 0
+
+expireage 1d
+
+keepmin 20
+
+currentonly false
+
+timesections true
+timeformat %H:%M
+daysections true
+dayformat %A, %d de %B
+datetimeformat %H:%M, %A, %d de %B
+
+template templates/template
+itemtemplate templates/item
+
+outputfile index.html
+
+userefresh false
+showfeeds false
+
+numthreads 0
+timeout 30s
+
+ignoretimeouts true
+verbose false
+blocklevelhtml false
+tidyhtml false
+sortbyfeeddate true
+useids true
+
+hideduplicates id
+
+newfeedperiod 1h
+
+changeconfig true
+
+xmllanguage es
+
+outputxml rss.xml
+outputfoaf foafroll.xml
+outputopml contactos.opml
+
+xmltitle Ciboulette
+xmllink http://wiki.hackcoop.com.ar/Ciboulette
+xmldescription Una red social 100% libre, entre pares, descentralizada y distribuida
+

@@ -1,0 +1,10 @@
+# to generate the rss feed, override the template and the itemtemplate
+
+timesections false
+plugindirs none
+daysections false
+define feedoutput true
+
+template rss/template
+itemtemplate rss/itemtemplate
+outputfile rss.xml

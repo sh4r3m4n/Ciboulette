@@ -1,0 +1,30 @@
+<!-- PAGE-BEGIN-ITEM -->
+    <div class="itemheader feed-__feed_hash__ feed-__feed_id__" id="header__hash__" onclick="toggleall('none');toggle('item__guid__')">
+        <!-- <p class="itembyline">
+        __if_date__  __date____endif__	
+	</p> -->
+<div class="media" id="parent__hash__" >
+
+<div class="row">
+  <div class="col-xs-3 col-md-3">
+    <div>
+	<a href="__url__" >
+          <img data-src="holder.js/96x96" alt="__if_author__ __author__ __endif__" src="../../avatares/__feed_hash__.png"  />
+	  <!-- si no tiene avatar tiene que crearlo o marcar que estan offline -->
+        </a>
+ 	<p>
+	__if_author__ <span class="label label-info">__author__</span> __else__ <span class="label label-info"> __feed_title__</span> __endif__
+	<!-- aca podrian ir las etiqeutas --> 
+	</p>
+    </div>
+  </div>
+  <div class="col-sm-9">
+    <h4 class="media-heading unread"><a href="__url__"><span class="glyphicon glyphicon-link"><!-- enlace --></span></a> __title_no_link__</h4>
+	__if_description__<div class="itemdescription" id="item__guid__">
+	__description__
+	</div>__endif__
+  </div>
+</div>
+</div>
+<!-- PAGE-END-ITEM -->
+
