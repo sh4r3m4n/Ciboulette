@@ -14,8 +14,8 @@ if [ "$1" == "iptables" ]; then
 fi
 
 if [ "$1" == "adduser" ]; then
-	[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0" && exit
-	[ ! "$2" ] && echo "Necesita un sobrenombre como parametro, ejemplo: sudo $0 $1 sobrenombre" && exit
+	[ ! "$(id -u)" == "0" ] && echo "Necesitas permiso de root, ejemplo: sudo $0 $1 $2 $3" && exit
+	[ ! "$2" ] && echo "Necesita un sobrenombre como parametro, ejemplo: sudo $0 $1 sobrenombre clave" && exit
 
 	# ------------------- prosody ---------------------------
 	# toma el usuario
