@@ -59,7 +59,7 @@ AutomapHostsOnResolve 1 #ciboulette
 TransPort 9040 #ciboulette
 DNSPort 53 #ciboulette" >> /tmp/torrc
 
-mkdir /var/lib/tor/ciboulette/
+mkdir -p /var/lib/tor/ciboulette/
 
 # incio del servicio oculto
 echo "HiddenServiceDir /var/lib/tor/ciboulette/ #ciboulette
