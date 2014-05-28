@@ -261,9 +261,17 @@ while getopts a:b:n:skdlhiIuwz OPCION; do
 		# comprueba que tengas sudo
 		[ ! "$(which sudo)" ] && echo 'Necesitas instalar el comando `sudo` por lo general para instalarlo en `apt-get install sudo`, lo siento :(' && exit
 
+		# Crea el directorio local y temas
+		mkdir -p $CARPETA
+
 		echo "Escribi tu clave de administración para instalar Ciboulette"
 		sudo ./instalar || echo "error en la clave"; exit
+		./ciboulette -I
 
+		# direccion de tu ciboulette
+		echo "http://$(cat /tmp/hostname)" > ${CARPETA}hostname
+
+		;;
 	I)
 
 		# backups de tus amigxs
@@ -298,8 +306,6 @@ while getopts a:b:n:skdlhiIuwz OPCION; do
 
 		echo "$FEED" >> "$NOVEDADES/config"
 
-		# direccion de tu ciboulette
-		echo "http://$(cat /tmp/hostname)" > ${CARPETA}hostname
 
 		# incio en cada sesion
 		mkdir ~/.config/autostart/ &> /dev/null
