@@ -177,7 +177,7 @@ function avatares_actualizar {
 	done
 }
 
-while getopts a:b:n:skdlhiuwz OPCION; do
+while getopts a:b:n:skdlhiIuwz OPCION; do
 	case $OPCION in
         z)
 		avatares_actualizar
@@ -249,7 +249,6 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		echo "  -z actualiza los avatares de los nodos"
 		echo
 		echo " adduser sobrenombre	agrega una cuenta de XMPP"
-		echo " opennic		cambia nuestro DNS por opennic"
 		echo " iptables		resuelve los onion por tor"
 
 		echo
@@ -262,18 +261,20 @@ while getopts a:b:n:skdlhiuwz OPCION; do
 		# comprueba que tengas sudo
 		[ ! "$(which sudo)" ] && echo 'Necesitas instalar el comando `sudo` por lo general para instalarlo en `apt-get install sudo`, lo siento :(' && exit
 
+		echo "Escribi tu clave de administración para instalar Ciboulette"
+		sudo ./instalar || echo "error en la clave"; exit
 
-		# nombre del programa
-		NOMBRE=`basename $0`
-
+	I)
 
 		# backups de tus amigxs
 		[ -f "$NOVEDADES/config" ] && FEED="$(cat $NOVEDADES/config | grep "^feed ")"
 
 		# pide permiso
 		PWD=$(pwd)
-		echo "Escribi tu clave de administración para instalar Ciboulette"
-		sudo ./instalar || echo "error en la clave"; exit
+
+		# nombre del programa
+		NOMBRE=`basename $0`
+
 
 		# ----------------------------- INSTALACION ----------------------------------
 
